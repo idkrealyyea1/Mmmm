@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="billing_title">نظام الفواتير — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+
+  <div class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-left">
+        <div class="m-logo" style="width:48px;"><img src="images/logo.webp" alt="Marshmallow" class="m-logo-img"></div>
+        <h2 class="english-heading">Marshmallow <span data-t="nav_billing">الفواتير</span></h2>
+      </div>
+      <div class="admin-header-right">
+        <div class="admin-user-badge">
+          <span class="dot"></span>
+          <span id="adminName">Admin</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="window.location.href='admin.html'">
+          <span data-t="nav_admin">لوحة التحكم</span>
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">
+          <span data-t="nav_logout">تسجيل الخروج</span>
+        </button>
+        <button class="lang-toggle btn-sm" onclick="Lang.toggle(); location.reload();">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <nav class="admin-sidebar-nav">
+        <a href="admin.html">
+          <span class="icon">📊</span> <span data-t="admin_overview">نظرة عامة</span>
+        </a>
+        <a href="#billing" class="active">
+          <span class="icon">💰</span> <span data-t="nav_billing">الفواتير</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-section active" id="section-billing">
+        <h3 class="mb-3" data-t="billing_title">نظام الفواتير</h3>
+        <p class="mb-3" style="opacity:0.6;" data-t="billing_subtitle">إدارة المدفوعات والمبالغ</p>
+
+        <!-- Billing Stats -->
+        <div class="billing-stats-grid" id="billingStats">
+          <div class="billing-stat-card">
+            <div class="stat-icon-b">📋</div>
+            <div class="billing-stat-number" id="statTotalBookings">-</div>
+            <div class="billing-stat-label" data-t="billing_total_bookings">إجمالي الحجوزات</div>
+          </div>
+          <div class="billing-stat-card">
+            <div class="stat-icon-b">💰</div>
+            <div class="billing-stat-number" id="statTotalRevenue">-</div>
+            <div class="billing-stat-label" data-t="billing_total_revenue">إجمالي الإيرادات</div>
+          </div>
+          <div class="billing-stat-card">
+            <div class="stat-icon-b">✅</div>
+            <div class="billing-stat-number" id="statTotalPaid">-</div>
+            <div class="billing-stat-label" data-t="billing_total_paid">إجمالي المدفوع</div>
+          </div>
+          <div class="billing-stat-card">
+            <div class="stat-icon-b">⏳</div>
+            <div class="billing-stat-number" id="statPendingPayments">-</div>
+            <div class="billing-stat-label" data-t="billing_pending_payments">المدفوعات المعلقة</div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="billing-controls">
+          <div class="billing-search">
+            <input type="text" class="form-input" id="billingSearch" data-t-ph="billing_search_ph" placeholder="ابحث باسم العميل..." oninput="filterBillingTable()">
+          </div>
+          <div class="billing-section-tabs" id="billingSectionTabs">
+            <button class="billing-section-tab active" onclick="switchBillingSection('all', this)"><span data-t="billing_section_all">الكل</span></button>
+            <button class="billing-section-tab" onclick="switchBillingSection('chalet', this)"><span data-t="billing_section_chalet">الشاليه</span></button>
+            <button class="billing-section-tab" onclick="switchBillingSection('hall', this)"><span data-t="billing_section_hall">الصالة</span></button>
+            <button class="billing-section-tab" onclick="switchBillingSection('photography', this)"><span data-t="billing_section_photo">التصوير</span></button>
+            <button class="billing-section-tab" onclick="switchBillingSection('overnight', this)"><span data-t="billing_section_overnight">المبيت</span></button>
+            <button class="billing-section-tab" onclick="switchBillingSection('salon', this)"><span data-t="billing_section_salon">الكوافير</span></button>
+          </div>
+        </div>
+
+        <!-- Billing Table -->
+        <div class="admin-panel">
+          <div id="billingTableContainer">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="billing_loading">جاري تحميل بيانات الفواتير...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Payment Modal -->
+  <div class="modal-overlay" id="editPaymentModal">
+    <div class="modal" style="max-width:520px;">
+      <div class="modal-header">
+        <h3 data-t="billing_edit_title">تعديل بيانات الدفع</h3>
+        <button class="modal-close" onclick="hideModal('editPaymentModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="editPaymentAlert"></div>
+        <div class="billing-modal-info">
+          <span class="billing-modal-info-label" data-t="billing_edit_customer">العميل</span>
+          <span class="billing-modal-info-value" id="editCustomerName">-</span>
+        </div>
+        <div class="billing-modal-grid">
+          <div class="form-group billing-modal-full" style="margin-bottom:0;">
+            <label class="form-label" data-t="billing_edit_total">المبلغ الإجمالي</label>
+            <input type="number" class="form-input" id="editTotal" min="0" step="0.01">
+          </div>
+          <div class="form-group billing-modal-full" style="margin-bottom:0;">
+            <label class="form-label" data-t="billing_edit_paid">المبلغ المدفوع</label>
+            <input type="number" class="form-input" id="editPaid" min="0" step="0.01" oninput="updateRemaining()">
+          </div>
+          <div class="form-group billing-modal-full" style="margin-bottom:0;">
+            <label class="form-label" data-t="billing_edit_status">حالة الدفع</label>
+            <select class="form-input" id="editPaymentStatus">
+              <option value="unpaid" data-t="billing_status_unpaid">غير مدفوع</option>
+              <option value="partial" data-t="billing_status_partial">دفعة جزئية</option>
+              <option value="half" data-t="billing_status_half">نصف المبلغ</option>
+              <option value="paid" data-t="billing_status_paid">مدفوع بالكامل</option>
+            </select>
+          </div>
+        </div>
+        <div class="billing-modal-info" style="margin-top:16px;">
+          <span class="billing-modal-info-label" data-t="billing_th_remaining">المتبقي</span>
+          <span class="billing-modal-info-value" id="editRemaining" style="color:var(--danger);">-</span>
+        </div>
+        <button class="btn btn-primary btn-block" id="savePaymentBtn" onclick="savePayment()">
+          <span data-t="billing_edit_save">حفظ التغييرات</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    if (!Auth.requireAuth("admin")) {
+      throw new Error("Not authorized");
+    }
+
+    Lang.init();
+    document.getElementById("adminName").textContent = Auth.getUsername();
+
+    var splashLogo = document.getElementById("splashLogo");
+    if (splashLogo) splashLogo.innerHTML = getSplashLogoSVG();
+    var splash = document.getElementById("splash");
+    if (splash) {
+      setTimeout(function() {
+        splash.classList.add("hide");
+        setTimeout(function() { splash.remove(); }, 700);
+      }, 2400);
+    }
+
+    let currentBillingSection = "all";
+    let allBillingData = [];
+
+    function escapeHtml(str) {
+      if (str == null) return "";
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    async function loadBillingStats() {
+      try {
+        const result = await API.getBillingStats();
+        if (result.success) {
+          document.getElementById("statTotalBookings").textContent = result.totalBookings || 0;
+          document.getElementById("statTotalRevenue").textContent = (result.totalRevenue || 0) + " " + t("billing_revenue_sar");
+          document.getElementById("statTotalPaid").textContent = (result.totalPaid || 0) + " " + t("billing_revenue_sar");
+          document.getElementById("statPendingPayments").textContent = result.pendingPayments || 0;
+        }
+      } catch (err) {
+        console.error("Stats load error:", err);
+      }
+    }
+
+    async function loadBillingData(section) {
+      const container = document.getElementById("billingTableContainer");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("billing_loading") + '</p></div>';
+      try {
+        const result = await API.getBillingData(section);
+        if (result.success && result.data) {
+          allBillingData = result.data;
+          renderBillingTable(allBillingData);
+        } else {
+          container.innerHTML = '<p style="opacity:0.5;text-align:center;padding:60px 24px;">' + t("billing_no_data") + '</p>';
+        }
+      } catch (err) {
+        container.innerHTML = '<div class="alert alert-error" style="margin:20px;">' + t("alert_server") + '</div>';
+      }
+    }
+
+    function renderBillingTable(data) {
+      const container = document.getElementById("billingTableContainer");
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p style="opacity:0.5;text-align:center;padding:60px 24px;">' + t("billing_no_data") + '</p>';
+        return;
+      }
+      let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+      html += '<thead><tr>';
+      html += '<th>' + t("billing_th_customer") + '</th>';
+      html += '<th>' + t("billing_th_date") + '</th>';
+      html += '<th>' + t("billing_th_time") + '</th>';
+      html += '<th>' + t("billing_th_section") + '</th>';
+      html += '<th>' + t("billing_th_type") + '</th>';
+      html += '<th>' + t("billing_th_phone") + '</th>';
+      html += '<th>' + t("billing_th_total") + '</th>';
+      html += '<th>' + t("billing_th_paid") + '</th>';
+      html += '<th>' + t("billing_th_remaining") + '</th>';
+      html += '<th>' + t("billing_th_status") + '</th>';
+      html += '<th>' + t("th_actions") + '</th>';
+      html += '</tr></thead><tbody>';
+
+      data.forEach(row => {
+        const remaining = (row.total || 0) - (row.paid || 0);
+        const remainingClass = remaining <= 0 ? "zero" : "due";
+        const statusKey = row.paymentStatus || "unpaid";
+        const statusText = t("billing_status_" + statusKey);
+        const sectionText = t("billing_section_" + (row.section || "chalet"));
+        const typeText = row.type ? (t("type_" + row.type) || row.type) : '-';
+        const totalStr = row.total != null ? row.total + " " + t("billing_revenue_sar") : '-';
+        const paidStr = row.paid != null ? row.paid + " " + t("billing_revenue_sar") : '-';
+
+        html += '<tr data-id="' + escapeHtml(row.id) + '" data-section="' + escapeHtml(row.section || 'chalet') + '">';
+        html += '<td>' + escapeHtml(row.customerName || '-') + '</td>';
+        html += '<td style="font-family:var(--font-english-body)">' + escapeHtml(row.date || '-') + '</td>';
+        html += '<td style="font-family:var(--font-english-body)">' + escapeHtml(row.hour || '-') + '</td>';
+        html += '<td>' + sectionText + '</td>';
+        html += '<td>' + typeText + '</td>';
+        html += '<td style="font-family:var(--font-english-body);direction:ltr;text-align:right">' + escapeHtml(row.phone || '-') + '</td>';
+        html += '<td style="font-family:var(--font-english-body)">' + totalStr + '</td>';
+        html += '<td style="font-family:var(--font-english-body)">' + paidStr + '</td>';
+        html += '<td style="font-family:var(--font-english-body)"><span class="billing-remaining ' + remainingClass + '">' + remaining + " " + t("billing_revenue_sar") + '</span></td>';
+        html += '<td><span class="billing-payment-badge ' + statusKey + '">' + statusText + '</span></td>';
+        html += '<td><div class="table-actions"><button class="btn-confirm" onclick="openEditPayment(\'' + escapeHtml(row.id) + '\', \'' + escapeHtml(row.section || 'chalet') + '\')">' + t("billing_edit_save") + '</button><button class="btn-delete" onclick="confirmDeleteBooking(\'' + escapeHtml(row.id) + '\', \'' + escapeHtml(row.section || 'chalet') + '\')" title="' + t("btn_delete") + '">🗑️</button></div></td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+      container.innerHTML = html;
+    }
+
+    function filterBillingTable() {
+      const query = document.getElementById("billingSearch").value.trim().toLowerCase();
+      if (!query) {
+        renderBillingTable(allBillingData);
+        return;
+      }
+      const filtered = allBillingData.filter(row =>
+        (row.customerName && row.customerName.toLowerCase().includes(query)) ||
+        (row.phone && row.phone.includes(query))
+      );
+      renderBillingTable(filtered);
+    }
+
+    function switchBillingSection(section, btn) {
+      currentBillingSection = section;
+      document.querySelectorAll(".billing-section-tab").forEach(t => t.classList.remove("active"));
+      btn.classList.add("active");
+      loadBillingData(section);
+    }
+
+    let editId = null;
+    let editSection = null;
+
+    function openEditPayment(id, section) {
+      editId = id;
+      editSection = section;
+      const row = document.querySelector('tr[data-id="' + id + '"]');
+      if (!row) return;
+      const cells = row.querySelectorAll("td");
+      document.getElementById("editCustomerName").textContent = cells[0].textContent;
+      const totalStr = cells[6].textContent.replace(/[^0-9.]/g, "");
+      const paidStr = cells[7].textContent.replace(/[^0-9.]/g, "");
+      document.getElementById("editTotal").value = parseFloat(totalStr) || 0;
+      document.getElementById("editPaid").value = parseFloat(paidStr) || 0;
+      const statusBadge = row.querySelector(".billing-payment-badge");
+      const statusMap = { unpaid: "unpaid", partial: "partial", half: "half", paid: "paid" };
+      const found = Object.keys(statusMap).find(k => statusBadge && statusBadge.classList.contains(k));
+      document.getElementById("editPaymentStatus").value = found || "unpaid";
+      updateRemaining();
+      showModal("editPaymentModal");
+    }
+
+    function updateRemaining() {
+      const total = parseFloat(document.getElementById("editTotal").value) || 0;
+      const paid = parseFloat(document.getElementById("editPaid").value) || 0;
+      const remaining = total - paid;
+      const el = document.getElementById("editRemaining");
+      el.textContent = remaining + " " + t("billing_revenue_sar");
+      el.style.color = remaining <= 0 ? "var(--success)" : "var(--danger)";
+      if (remaining <= 0) {
+        document.getElementById("editPaymentStatus").value = "paid";
+      } else if (paid === 0) {
+        document.getElementById("editPaymentStatus").value = "unpaid";
+      } else if (paid >= total / 2) {
+        document.getElementById("editPaymentStatus").value = "half";
+      } else {
+        document.getElementById("editPaymentStatus").value = "partial";
+      }
+    }
+
+    async function savePayment() {
+      const total = parseFloat(document.getElementById("editTotal").value) || 0;
+      const paid = parseFloat(document.getElementById("editPaid").value) || 0;
+      const status = document.getElementById("editPaymentStatus").value;
+
+      if (total < 0 || paid < 0) {
+        showAlert("editPaymentAlert", "error", t("billing_edit_error"));
+        return;
+      }
+
+      const btn = document.getElementById("savePaymentBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("billing_edit_saving");
+
+      try {
+        const result = await API.updateBillingPayment(editId, editSection, { total, paid, paymentStatus: status });
+        if (result.success) {
+          hideModal("editPaymentModal");
+          loadBillingData(currentBillingSection);
+          loadBillingStats();
+        } else {
+          showAlert("editPaymentAlert", "error", result.message || t("billing_edit_error"));
+        }
+      } catch (err) {
+        showAlert("editPaymentAlert", "error", t("alert_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("billing_edit_save");
+    }
+
+    function confirmDeleteBooking(id, section) {
+      if (!confirm(t("confirm_delete"))) return;
+      deleteBookingRow(id, section);
+    }
+
+    async function deleteBookingRow(id, section) {
+      const typeMap = { chalet: "chalet", hall: "hall", photography: "photography", overnight: "mabath" };
+      const type = typeMap[section];
+      if (!type) { alert(t("alert_error")); return; }
+      try {
+        const result = await API.deleteBooking(id, type);
+        if (result.success) {
+          loadBillingData(currentBillingSection);
+          loadBillingStats();
+        } else {
+          alert(result.message || t("alert_error"));
+        }
+      } catch (err) {
+        alert(t("alert_server"));
+      }
+    }
+
+    loadBillingStats();
+    loadBillingData("all");
+  </script>
+</body>
+</html>

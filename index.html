@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marshmallow — Photo Chalet & Events</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero-bg{background:linear-gradient(135deg,rgba(252,245,239,0.7),rgba(245,234,225,0.6)),url('images/landingpageformobilefirstlandingpageandchaletbacground.webp') center center/cover no-repeat}
+    @media(min-width:769px){
+      .hero-bg{background:linear-gradient(135deg,rgba(252,245,239,0.7),rgba(245,234,225,0.6)),url('images/sallahbeackgrounddesktop.webp') center center/cover no-repeat}
+    }
+    .landing-img-mobile{display:none}
+    @media(max-width:768px){
+      .landing-img{display:none}
+      .landing-img-mobile{display:block}
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+
+  <!-- Landing Page Overlay -->
+  <div class="landing-overlay" id="landingOverlay">
+    <img class="landing-img" src="images/sallahbeackgrounddesktop.webp" alt="Marshmallow Resort" fetchpriority="high">
+    <img class="landing-img landing-img-mobile" src="images/landingpageformobilefirstlandingpageandchaletbacground.webp" alt="Marshmallow Resort" loading="lazy">
+    <div class="landing-vignette"></div>
+    <div class="landing-content">
+      <img class="landing-logo-img" src="images/logo.webp" alt="Marshmallow Logo">
+      <h1 class="landing-brand english-heading">MARSHMALLOW</h1>
+      <div class="landing-tagline">PHOTO CHALET & EVENTS</div>
+      <div class="landing-divider"></div>
+      <button class="landing-enter-btn" onclick="enterSite()">
+        <span class="landing-btn-text">أهلاً بك في عالمنا</span>
+        <span class="landing-btn-arrow">←</span>
+      </button>
+    </div>
+  </div>
+
+  <header class="site-header"></header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-logo-m" id="heroLogo"><img src="images/logo.webp" alt="Marshmallow" class="m-logo-img"></div>
+      <h1 class="hero-title english-heading" data-t="hero_title">MARSHMALLOW</h1>
+      <div class="hero-subtitle-ar" data-t="hero_subtitle"> PHOTO CHALET & EVENTS</div>
+      <p class="hero-tagline" data-t="hero_tagline">استوديو تصوير وشاليه فاخر للمناسبات والأفراح.</p>
+
+      <div class="services-grid">
+        <a href="chalet.html" class="service-card">
+          <div class="service-card-icon">🏡</div>
+          <div class="service-card-title" data-t="home_chalet_title">حجز الشاليه</div>
+          <div class="service-card-desc" data-t="home_chalet_desc">استمتع بتجربة مميزة في شاليهنا الفاخر</div>
+        </a>
+        <a href="mabath.html" class="service-card">
+          <div class="service-card-icon">🌙</div>
+          <div class="service-card-title" data-t="home_sleep_title">المبيت</div>
+          <div class="service-card-desc" data-t="home_sleep_desc">احجز ليلة مميزة في شاليهنا الفاخر</div>
+        </a>
+        <a href="hall.html" class="service-card">
+          <div class="service-card-icon">🏛️</div>
+          <div class="service-card-title" data-t="home_hall_title">حجز الصالة</div>
+          <div class="service-card-desc" data-t="home_hall_desc">احجز صالتنا لمناسباتك</div>
+        </a>
+        <a href="photography.html" class="service-card">
+          <div class="service-card-icon">📸</div>
+          <div class="service-card-title" data-t="home_photo_title">حجز جلسة تصوير</div>
+          <div class="service-card-desc" data-t="home_photo_desc">احجز موعدك لجلسة تصوير</div>
+        </a>
+        <a href="salon.html" class="service-card">
+          <div class="service-card-icon">💇‍♀️</div>
+          <div class="service-card-title" data-t="home_salon_title">مركز التجميل</div>
+          <div class="service-card-desc" data-t="home_salon_desc">خدمات تجميل وعناية</div>
+        </a>
+        <a href="https://wa.me/972566004044" target="_blank" class="service-card">
+          <div class="service-card-icon">📞</div>
+          <div class="service-card-title" data-t="home_contact_title">تواصل معنا</div>
+          <div class="service-card-desc" data-t="home_contact_desc">تواصل عبر واتساب</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="section-icon">⭐</div>
+      <div class="section-header">
+        <h2 data-t="testimonials_title">آراء عملائنا</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="testimonials-container" id="homeTestimonials"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/testimonials.js"></script>
+  <script>
+    initPage("home");
+
+    /* --- Landing Overlay --- */
+    (function() {
+      var landing = document.getElementById("landingOverlay");
+      var splash = document.getElementById("splash");
+
+      if (sessionStorage.getItem("marshmallow_entered")) {
+        landing.style.display = "none";
+      } else {
+        if (splash) { splash.style.display = "none"; }
+        document.body.style.overflow = "hidden";
+      }
+    })();
+
+    function enterSite() {
+      var landing = document.getElementById("landingOverlay");
+      landing.classList.add("leaving");
+      document.body.style.overflow = "auto";
+      sessionStorage.setItem("marshmallow_entered", "1");
+      setTimeout(function() { landing.style.display = "none"; }, 800);
+    }
+
+    (async function loadTestimonials() {
+      try {
+        const result = await API.getTestimonials();
+        if (result.success && result.testimonials && result.testimonials.length > 0) {
+          createTestimonialsSlider({
+            containerId: "homeTestimonials",
+            testimonials: result.testimonials
+          });
+        } else {
+          document.getElementById("homeTestimonials").innerHTML =
+            `<p class="testimonials-empty">${t("testimonials_empty")}</p>`;
+        }
+      } catch (err) {
+        document.getElementById("homeTestimonials").innerHTML =
+          `<p class="testimonials-empty">${t("testimonials_empty")}</p>`;
+      }
+    })();
+  </script>
+</body>
+</html>

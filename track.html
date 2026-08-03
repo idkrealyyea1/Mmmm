@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="track_title">تتبع حجزك — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+
+  <header class="site-header"></header>
+
+  <main class="page-container">
+    <div class="section-header">
+      <h1 data-t="track_title">تتبع حجزك</h1>
+      <div class="section-line"></div>
+      <p data-t="track_subtitle">أدخل رقم الهاتف الذي استخدمته في الحجز لعرض حالة حجوزاتك</p>
+    </div>
+
+    <div class="track-form-card">
+      <div id="trackAlert"></div>
+      <div class="form-group">
+        <label class="form-label" data-t="track_phone_label">رقم الهاتف / واتساب</label>
+        <input type="tel" class="form-input" id="trackPhone" data-t-ph="track_phone_ph" placeholder="05XXXXXXXX" dir="ltr" style="text-align:left">
+      </div>
+      <button class="btn btn-primary btn-block" id="trackBtn" onclick="lookupBookings()">
+        <span data-t="track_btn">عرض حجوزاتي</span>
+      </button>
+      <div class="track-notification-box">
+        <div>
+          <strong data-t="track_notifications_title">ابقَ على اطلاع</strong>
+          <p data-t="track_notifications_copy">فعّل إشعارات المتصفح لتعرف فور تأكيد حجزك.</p>
+        </div>
+        <button class="btn btn-secondary" id="notificationBtn" type="button" onclick="enableNotifications()">
+          <span data-t="track_notifications_btn">تفعيل الإشعارات</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="trackResults" class="track-results"></div>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    initPage("track");
+
+    const lastPhone = getLastBookingPhone();
+    if (lastPhone) document.getElementById("trackPhone").value = lastPhone;
+
+    function getSectionLabel(section) {
+      const key = { chalet: "service_chalet", hall: "service_hall", photography: "service_photography", mabath: "service_mabath", salon: "service_salon" }[section];
+      return key ? t(key) : section;
+    }
+
+    function getTimeLabel(hour, section) {
+      if (!hour) return "-";
+      if (section === "mabath") {
+        if (hour === "day") return t("slot_day");
+        if (hour === "night") return t("slot_night");
+      }
+      return hour;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[char]));
+    }
+
+    function getStatusStep(status) {
+      if (status === "confirmed") return 2;
+      if (status === "cancelled") return 0;
+      return 1;
+    }
+
+    function renderStatusProgress(status) {
+      const cancelled = status === "cancelled";
+      const step = getStatusStep(status);
+      return `<div class="track-progress ${cancelled ? "is-cancelled" : ""}">
+        <div class="track-progress-step ${step >= 1 ? "active" : ""}">
+          <span>1</span><small>${t("status_pending")}</small>
+        </div>
+        <div class="track-progress-line ${step >= 2 ? "active" : ""}"></div>
+        <div class="track-progress-step ${step >= 2 ? "active" : ""}">
+          <span>${cancelled ? "×" : "2"}</span><small>${cancelled ? t("status_cancelled") : t("status_confirmed")}</small>
+        </div>
+      </div>`;
+    }
+
+    function renderBookings(bookings) {
+      const container = document.getElementById("trackResults");
+      if (!bookings || bookings.length === 0) {
+        container.innerHTML = `<div class="track-empty-card"><div class="track-empty-mark">—</div><p>${t("track_no_bookings")}</p><small>${t("track_no_bookings_hint")}</small></div>`;
+        return;
+      }
+      let html = "";
+      bookings.forEach(b => {
+        const statusText = t("status_" + b.status) || b.status;
+        const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+        html += `<div class="track-card">
+          <div class="track-card-top">
+            <div><span class="track-section">${escapeHtml(getSectionLabel(b.section))}</span><div class="track-card-caption">${escapeHtml(statusText)}</div></div>
+            <span class="track-status ${escapeHtml(b.status)}"><span class="dot"></span>${escapeHtml(statusText)}</span>
+          </div>
+          ${renderStatusProgress(b.status)}
+          <div class="track-details">
+            <div class="track-row"><span>${t("th_date")}</span><strong>${escapeHtml(b.date || '-')}</strong></div>
+            <div class="track-row"><span>${t("th_time")}</span><strong>${escapeHtml(getTimeLabel(b.hour, b.section))}</strong></div>
+            <div class="track-row"><span>${t("th_price")}</span><strong>${escapeHtml(priceText)}</strong></div>
+          </div>
+          <div class="track-id">${t("track_booking_id")}: ${escapeHtml(b.id)}</div>
+        </div>`;
+      });
+      container.innerHTML = `<div class="track-results-heading"><strong>${bookings.length} ${t("track_results_count")}</strong><button class="track-refresh" type="button" onclick="lookupBookings(true)">${t("track_refresh")}</button></div>${html}`;
+    }
+
+    async function enableNotifications() {
+      const phone = document.getElementById("trackPhone").value.trim();
+      const button = document.getElementById("notificationBtn");
+      button.disabled = true;
+      button.querySelector("span").textContent = t("track_notifications_working");
+      try {
+        const result = await enableBookingNotifications(phone);
+        showAlert("trackAlert", result.success ? "success" : "error",
+          result.success ? t("track_notifications_enabled") : (result.message || t("alert_error")));
+        if (result.success) button.querySelector("span").textContent = t("track_notifications_enabled_short");
+      } catch (error) {
+        showAlert("trackAlert", "error", t("track_notifications_unavailable"));
+      }
+      button.disabled = false;
+    }
+
+    async function lookupBookings(silent = false) {
+      const phone = document.getElementById("trackPhone").value.trim();
+      if (!phone) {
+        if (!silent) showAlert("trackAlert", "error", t("track_error_empty"));
+        return;
+      }
+
+      const btn = document.getElementById("trackBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("track_searching");
+      if (!silent) document.getElementById("trackResults").innerHTML = `<div class="loading-overlay"><div class="spinner"></div><div class="loading-text">${t("track_searching")}</div></div>`;
+
+      try {
+        const result = await API.getCustomerBookings(phone);
+        if (result.success) {
+          renderBookings(result.bookings);
+          saveLastBookingPhone(phone);
+        } else {
+          if (!silent) showAlert("trackAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) {
+        if (!silent) showAlert("trackAlert", "error", t("alert_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("track_btn");
+    }
+
+    restoreBookingNotificationRegistration();
+  </script>
+</body>
+</html>

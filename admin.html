@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="admin_title">لوحة التحكم — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+  <div class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-left">
+        <div class="m-logo" style="width:48px;"><img src="images/logo.webp" alt="Marshmallow" class="m-logo-img"></div>
+        <h2 class="english-heading">Marshmallow Admin</h2>
+      </div>
+      <div class="admin-header-right">
+        <div class="admin-user-badge">
+          <span class="dot"></span>
+          <span id="adminName">Admin</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">
+          <span data-t="nav_logout">تسجيل الخروج</span>
+        </button>
+        <button class="lang-toggle btn-sm" onclick="Lang.toggle(); location.reload();">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <nav class="admin-sidebar-nav">
+        <a href="#dashboard" class="active" onclick="showSection('dashboard')">
+          <span class="icon">📊</span> <span data-t="admin_overview">نظرة عامة</span>
+        </a>
+        <a href="#chalet-bookings" onclick="showSection('chalet-bookings')">
+          <span class="icon">🏡</span> <span data-t="admin_chalet_bk">حجوزات الشاليه</span>
+        </a>
+        <a href="#hall-bookings" onclick="showSection('hall-bookings')">
+          <span class="icon">🏛️</span> <span data-t="admin_hall_bk">حجوزات الصالة</span>
+        </a>
+        <a href="#mabath-bookings" onclick="showSection('mabath-bookings')">
+          <span class="icon">🌙</span> <span data-t="admin_mabath_bk">حجوزات المبيت</span>
+        </a>
+        <a href="#photo-bookings" onclick="showSection('photo-bookings')">
+          <span class="icon">📸</span> <span data-t="admin_photo_bk">حجوزات التصوير</span>
+        </a>
+        <a href="#salon-bookings" onclick="showSection('salon-bookings')">
+          <span class="icon">💇‍♀️</span> <span data-t="admin_salon_bk">حجوزات الكوافير</span>
+        </a>
+        <a href="#photographers" onclick="showSection('photographers')">
+          <span class="icon">👥</span> <span data-t="admin_photographers">المصورون</span>
+        </a>
+        <a href="#testimonials" onclick="showSection('testimonials')">
+          <span class="icon">⭐</span> <span data-t="admin_testimonials">آراء العملاء</span>
+        </a>
+        <a href="#data-mgmt" onclick="showSection('data-mgmt')">
+          <span class="icon">📁</span> <span data-t="admin_data_mgmt">إدارة البيانات</span>
+        </a>
+        <a href="#pricing" onclick="showSection('pricing')">
+          <span class="icon">💰</span> <span data-t="admin_pricing">التسعير</span>
+        </a>
+        <a href="#manual-booking" onclick="showSection('manual-booking')">
+          <span class="icon">📝</span> <span data-t="admin_manual_booking">حجز يدوي</span>
+        </a>
+        <a href="billing.html" style="border-top:1px solid rgba(184,144,126,0.15);margin-top:4px;padding-top:12px;">
+          <span class="icon">💰</span> <span data-t="nav_billing">الفواتير</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+
+      <!-- Dashboard Section -->
+      <div class="admin-section active" id="section-dashboard">
+        <h3 class="mb-3" data-t="admin_overview">نظرة عامة</h3>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon rose">🏡</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statChaletTotal">-</div>
+              <div class="stat-label" data-t="admin_total_chalet">حجوزات الشاليه</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold">📸</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statPhotoTotal">-</div>
+              <div class="stat-label" data-t="admin_total_photo">حجوزات التصوير</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🏛️</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statHallTotal">-</div>
+              <div class="stat-label" data-t="admin_total_hall">حجوزات الصالة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">🌙</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statMabathTotal">-</div>
+              <div class="stat-label" data-t="admin_total_mabath">حجوزات المبيت</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon rose">💇‍♀️</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statSalonTotal">-</div>
+              <div class="stat-label" data-t="admin_total_salon">حجوزات الكوافير</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statConfirmed">-</div>
+              <div class="stat-label" data-t="admin_confirmed">مؤكدة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">⏳</div>
+            <div class="stat-info">
+              <div class="stat-number" id="statPending">-</div>
+              <div class="stat-label" data-t="admin_pending">قيد الانتظار</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_monthly">حجوزات هذا الشهر</h3>
+          </div>
+          <div id="barChartContainer">
+            <div class="bar-chart" id="barChart"></div>
+            <div class="bar-chart-labels" id="barChartLabels"></div>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_top_photo">أكثر المصوّرين نشاطًا</h3>
+          </div>
+          <div id="topPhotographers">
+            <p style="opacity:0.5;text-align:center;padding:20px;" data-t="admin_no_data">جاري التحميل...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chalet Bookings Section -->
+      <div class="admin-section" id="section-chalet-bookings">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_chalet_bk">حجوزات الشاليه</h3>
+            <div class="admin-panel-filters" id="chaletFilters">
+              <button class="filter-btn active" onclick="filterChaletBookings('all', this)">
+                <span data-t="btn_filter_all">الكل</span>
+              </button>
+              <button class="filter-btn" onclick="filterChaletBookings('pending', this)">
+                <span data-t="btn_filter_pending">قيد الانتظار</span>
+              </button>
+              <button class="filter-btn" onclick="filterChaletBookings('confirmed', this)">
+                <span data-t="btn_filter_confirmed">مؤكد</span>
+              </button>
+              <button class="filter-btn" onclick="filterChaletBookings('cancelled', this)">
+                <span data-t="btn_filter_cancelled">ملغى</span>
+              </button>
+            </div>
+          </div>
+          <div id="chaletBookingsTable">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_bookings">جاري تحميل جدول الحجوزات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hall Bookings Section -->
+      <div class="admin-section" id="section-hall-bookings">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_hall_bk">حجوزات الصالة</h3>
+            <div class="admin-panel-filters" id="hallFilters">
+              <button class="filter-btn active" onclick="filterHallBookings('all', this)">
+                <span data-t="btn_filter_all">الكل</span>
+              </button>
+              <button class="filter-btn" onclick="filterHallBookings('pending', this)">
+                <span data-t="btn_filter_pending">قيد الانتظار</span>
+              </button>
+              <button class="filter-btn" onclick="filterHallBookings('confirmed', this)">
+                <span data-t="btn_filter_confirmed">مؤكد</span>
+              </button>
+              <button class="filter-btn" onclick="filterHallBookings('cancelled', this)">
+                <span data-t="btn_filter_cancelled">ملغى</span>
+              </button>
+            </div>
+          </div>
+          <div id="hallBookingsTable">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_bookings">جاري تحميل جدول الحجوزات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mabath Bookings Section -->
+      <div class="admin-section" id="section-mabath-bookings">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_mabath_bk">حجوزات المبيت</h3>
+            <div class="admin-panel-filters" id="mabathFilters">
+              <button class="filter-btn active" onclick="filterMabathBookings('all', this)">
+                <span data-t="btn_filter_all">الكل</span>
+              </button>
+              <button class="filter-btn" onclick="filterMabathBookings('pending', this)">
+                <span data-t="btn_filter_pending">قيد الانتظار</span>
+              </button>
+              <button class="filter-btn" onclick="filterMabathBookings('confirmed', this)">
+                <span data-t="btn_filter_confirmed">مؤكد</span>
+              </button>
+              <button class="filter-btn" onclick="filterMabathBookings('cancelled', this)">
+                <span data-t="btn_filter_cancelled">ملغى</span>
+              </button>
+            </div>
+          </div>
+          <div id="mabathBookingsTable">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_bookings">جاري تحميل جدول الحجوزات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photography Bookings Section -->
+      <div class="admin-section" id="section-photo-bookings">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_photo_bk">حجوزات التصوير</h3>
+            <div class="admin-panel-filters" id="photoFilters">
+              <button class="filter-btn active" onclick="filterPhotoBookings('all', this)">
+                <span data-t="btn_filter_all">الكل</span>
+              </button>
+              <button class="filter-btn" onclick="filterPhotoBookings('pending', this)">
+                <span data-t="btn_filter_pending">قيد الانتظار</span>
+              </button>
+              <button class="filter-btn" onclick="filterPhotoBookings('confirmed', this)">
+                <span data-t="btn_filter_confirmed">مؤكد</span>
+              </button>
+              <button class="filter-btn" onclick="filterPhotoBookings('cancelled', this)">
+                <span data-t="btn_filter_cancelled">ملغى</span>
+              </button>
+            </div>
+          </div>
+          <div id="photoBookingsTable">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_bookings">جاري تحميل جدول الحجوزات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salon Bookings Section -->
+      <div class="admin-section" id="section-salon-bookings">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_salon_bk">حجوزات الكوافير</h3>
+            <div class="admin-panel-filters" id="salonFilters">
+              <button class="filter-btn active" onclick="filterSalonBookings('all', this)">
+                <span data-t="btn_filter_all">الكل</span>
+              </button>
+              <button class="filter-btn" onclick="filterSalonBookings('pending', this)">
+                <span data-t="btn_filter_pending">قيد الانتظار</span>
+              </button>
+              <button class="filter-btn" onclick="filterSalonBookings('confirmed', this)">
+                <span data-t="btn_filter_confirmed">مؤكد</span>
+              </button>
+              <button class="filter-btn" onclick="filterSalonBookings('cancelled', this)">
+                <span data-t="btn_filter_cancelled">ملغى</span>
+              </button>
+            </div>
+          </div>
+          <div id="salonBookingsTable">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_bookings">جاري تحميل جدول الحجوزات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photographers Section -->
+      <div class="admin-section" id="section-photographers">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_add_photo">إضافة مصوّر جديد</h3>
+          </div>
+          <div class="add-form">
+            <input type="text" class="form-input" id="newPhotoName" data-t-ph="admin_full_name" placeholder="الاسم الكامل">
+            <input type="text" class="form-input" id="newPhotoUsername" data-t-ph="admin_username" placeholder="اسم المستخدم">
+            <input type="text" class="form-input" id="newPhotoPassword" data-t-ph="admin_temp_pass" placeholder="كلمة المرور المؤقتة">
+            <button class="btn btn-primary" onclick="addPhotographer()">
+              <span data-t="admin_add_btn">إضافة</span>
+            </button>
+          </div>
+          <div id="photographersList">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_photographers">جاري تحميل المصورين...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <div class="admin-section" id="section-testimonials">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_testimonials">آراء العملاء</h3>
+          </div>
+          <div id="testimonialsList">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_testimonials">جاري تحميل التقييمات...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Management Section -->
+      <div class="admin-section" id="section-data-mgmt">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_data_mgmt">إدارة البيانات</h3>
+          </div>
+          <div class="data-mgmt-grid">
+            <button class="data-mgmt-btn" onclick="exportCSV('chalet')">
+              <span class="icon">📊</span>
+              <span data-t="admin_export_chalet">تصدير حجوزات الشاليه</span>
+            </button>
+            <button class="data-mgmt-btn" onclick="exportCSV('hall')">
+              <span class="icon">📊</span>
+              <span data-t="admin_export_hall">تصدير حجوزات الصالة</span>
+            </button>
+            <button class="data-mgmt-btn" onclick="exportCSV('photography')">
+              <span class="icon">📊</span>
+              <span data-t="admin_export_photo">تصدير حجوزات التصوير</span>
+            </button>
+            <button class="data-mgmt-btn" onclick="exportCSV('salon')">
+              <span class="icon">📊</span>
+              <span data-t="admin_export_salon">تصدير حجوزات الكوافير</span>
+            </button>
+            <button class="data-mgmt-btn" onclick="exportAllCSV()">
+              <span class="icon">📦</span>
+              <span data-t="admin_export_all">تصدير كل البيانات</span>
+            </button>
+            <button class="data-mgmt-btn" onclick="runBackup()" id="backupBtn">
+              <span class="icon">💾</span>
+              <span data-t="admin_backup">إنشاء نسخة احتياطية</span>
+            </button>
+          </div>
+          <div id="backupAlert" class="mt-2"></div>
+
+          <div class="mt-3">
+            <h4 data-t="admin_backup_history">سجل النسخ الاحتياطية</h4>
+            <div id="backupHistory" class="mt-2">
+              <p style="opacity:0.5;padding:12px;" data-t="admin_no_data">جاري التحميل...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Management Section -->
+      <div class="admin-section" id="section-pricing">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_pricing_title">إدارة التسعير</h3>
+          </div>
+
+          <div class="admin-panel" style="margin-bottom:20px;">
+            <h4 data-t="admin_pricing_add" style="margin-bottom:14px;">إضافة سعر جديد</h4>
+            <div class="add-form">
+                <select class="form-input" id="newPricingService" onchange="updatePricingTypes()">
+                <option value="chalet" data-t="service_chalet">الشاليه</option>
+                <option value="hall" data-t="service_hall">الصالة</option>
+                <option value="photography" data-t="service_photography">التصوير</option>
+                <option value="mabath" data-t="service_mabath">المبيت</option>
+              </select>
+              <select class="form-input" id="newPricingType">
+                <option value="day" data-t="type_day">نهاري</option>
+                <option value="overnight" data-t="type_overnight">مبيت</option>
+                <option value="hour" data-t="type_hour">ساعة</option>
+              </select>
+              <select class="form-input" id="newPricingDay">
+                <option value="*" data-t="all_days">كل الأيام</option>
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+              <input type="number" class="form-input" id="newPricingPrice" placeholder="0" min="0" step="0.01">
+              <button class="btn btn-primary" onclick="addPricingRow()">
+                <span data-t="admin_add_btn">إضافة</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="pricingList">
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+              <p class="loading-text" data-t="admin_loading_pricing">جاري تحميل الأسعار...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manual Booking Section -->
+      <div class="admin-section" id="section-manual-booking">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_manual_title">إنشاء حجز يدوي</h3>
+          </div>
+
+          <div class="add-form" style="flex-direction:column;gap:12px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_type">نوع الخدمة</label>
+                <select class="form-input" id="manualService" onchange="updateManualSubTypes()">
+                  <option value="chalet" data-t="service_chalet">الشاليه</option>
+                  <option value="hall" data-t="service_hall">الصالة</option>
+                  <option value="photography" data-t="service_photography">التصوير</option>
+                  <option value="mabath" data-t="service_mabath">المبيت</option>
+                  <option value="salon" data-t="service_salon">الكوافير</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_subtype">نوع الحجز</label>
+                <select class="form-input" id="manualSubtype">
+                  <option value="day" data-t="type_day">نهاري</option>
+                  <option value="overnight" data-t="type_overnight">مبيت</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_date">التاريخ (YYYY-MM-DD)</label>
+                <input type="text" class="form-input" id="manualDate" placeholder="2026-01-15">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_time">الوقت</label>
+                <select class="form-input" id="manualHour">
+                  <option value="09:00">09:00</option><option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option><option value="12:00">12:00</option>
+                  <option value="13:00">13:00</option><option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option><option value="16:00">16:00</option>
+                  <option value="17:00">17:00</option><option value="18:00">18:00</option>
+                  <option value="19:00">19:00</option><option value="20:00">20:00</option>
+                  <option value="21:00">21:00</option><option value="22:00">22:00</option>
+                  <option value="23:00">23:00</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_customer">اسم العميل</label>
+                <input type="text" class="form-input" id="manualCustomerName">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_phone">رقم الهاتف</label>
+                <input type="tel" class="form-input" id="manualPhone">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_manual_guests">عدد الأشخاص</label>
+                <input type="number" class="form-input" id="manualGuests" min="1" value="1">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" data-t="admin_pricing_price">السعر</label>
+                <input type="number" class="form-input" id="manualPrice" min="0" step="0.01">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" data-t="admin_manual_notes">ملاحظات</label>
+              <textarea class="form-input" id="manualNotes" rows="2"></textarea>
+            </div>
+            <div id="manualBookingAlert"></div>
+            <button class="btn btn-primary btn-lg" onclick="submitManualBooking()" style="align-self:flex-start;">
+              <span data-t="admin_manual_submit">إنشاء الحجز</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    if (!Auth.requireAuth("admin")) {
+      throw new Error("Not authorized");
+    }
+
+    function escapeHtml(str) {
+      if (str == null) return "";
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    Lang.init();
+    document.getElementById("adminName").textContent = Auth.getUsername();
+
+    // Splash screen
+    var splashLogo = document.getElementById("splashLogo");
+    if (splashLogo) splashLogo.innerHTML = getSplashLogoSVG();
+    var splash = document.getElementById("splash");
+    if (splash) {
+      setTimeout(function() {
+        splash.classList.add("hide");
+        setTimeout(function() { splash.remove(); }, 700);
+      }, 2400);
+    }
+
+    let currentFilter = { chalet: "all", hall: "all", photo: "all", mabath: "all", salon: "all" };
+
+    function showSection(name) {
+      document.querySelectorAll(".admin-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".admin-sidebar-nav a").forEach(a => a.classList.remove("active"));
+      document.getElementById(`section-${name}`).classList.add("active");
+      document.querySelector(`[href="#${name}"]`).classList.add("active");
+
+      if (name === "dashboard") loadDashboard();
+      if (name === "chalet-bookings") loadChaletBookings();
+      if (name === "hall-bookings") loadHallBookings();
+      if (name === "mabath-bookings") loadMabathBookings();
+      if (name === "photo-bookings") loadPhotoBookings();
+      if (name === "salon-bookings") loadSalonBookings();
+      if (name === "photographers") loadPhotographers();
+      if (name === "testimonials") loadTestimonials();
+      if (name === "data-mgmt") loadBackupHistory();
+      if (name === "pricing") loadPricing();
+    }
+
+    // === Dashboard ===
+    let lastPendingCount = 0;
+    async function loadDashboard() {
+      try {
+        const result = await API.getAdminStats(0, 0);
+        if (result.success) {
+          lastPendingCount = result.pending || 0;
+          document.getElementById("statChaletTotal").textContent = result.chaletTotal || 0;
+          document.getElementById("statPhotoTotal").textContent = result.photoTotal || 0;
+          document.getElementById("statHallTotal").textContent = result.hallTotal || 0;
+          document.getElementById("statMabathTotal").textContent = result.mabathTotal || 0;
+          document.getElementById("statSalonTotal").textContent = result.salonTotal || 0;
+          document.getElementById("statConfirmed").textContent = result.confirmed || 0;
+          document.getElementById("statPending").textContent = result.pending || 0;
+          renderBarChart(result.dailyBookings || {}, new Date());
+          renderTopPhotographers(result.topPhotographers || []);
+        } else {
+          console.error("Dashboard API error:", result);
+          document.getElementById("statsGrid").innerHTML =
+            `<p style="padding:20px;text-align:center;color:var(--error)">خطأ: ${result.message || "فشل تحميل البيانات"}</p>`;
+        }
+      } catch (err) {
+        console.error("Dashboard load error:", err);
+        document.getElementById("statsGrid").innerHTML =
+          `<p style="padding:20px;text-align:center;color:var(--error)">خطأ: ${err.message}</p>`;
+      }
+    }
+
+    function renderBarChart(dailyBookings, now) {
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const maxVal = Math.max(1, ...Object.values(dailyBookings));
+      let chartHtml = "";
+      let labelsHtml = "";
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const count = dailyBookings[d] || 0;
+        const height = Math.max(4, (count / maxVal) * 100);
+        const label = Lang.isAr() ? `${d}: ${count} حجز` : `Day ${d}: ${count} bookings`;
+        chartHtml += `<div class="bar-chart-bar" style="height:${height}%">
+          <div class="tooltip">${label}</div>
+        </div>`;
+        labelsHtml += `<span>${d}</span>`;
+      }
+
+      document.getElementById("barChart").innerHTML = chartHtml;
+      document.getElementById("barChartLabels").innerHTML = labelsHtml;
+    }
+
+    function renderTopPhotographers(list) {
+      const container = document.getElementById("topPhotographers");
+      if (list.length === 0) {
+        container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:20px;">${t("admin_no_data")}</p>`;
+        return;
+      }
+      let html = "";
+      list.forEach(p => {
+        html += `<div class="photographer-card">
+          <div class="photographer-info">
+            <div class="photographer-avatar">${(p.name || p.username || '?')[0]}</div>
+            <div>
+              <div class="photographer-name">${p.name || p.username}</div>
+              <div class="photographer-username">${p.count} ${t("th_bookings")}</div>
+            </div>
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // === Chalet Bookings ===
+    async function loadChaletBookings(status) {
+      const container = document.getElementById("chaletBookingsTable");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getAllBookings("chalet", status === "all" ? null : status, 0, 0);
+        console.log("Chalet bookings result:", result);
+        if (result.success && result.bookings && result.bookings.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("th_date")}</th><th>${t("th_time")}</th><th>${t("th_type")}</th>
+            <th>${t("th_customer")}</th><th>${t("th_phone")}</th><th>${t("th_guests")}</th>
+            <th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.bookings.forEach(b => {
+            const statusClass = b.status;
+            const statusText = t("status_" + b.status);
+            const typeText = b.type === "overnight" ? t("type_overnight") : t("type_day");
+            const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            html += `<tr data-id="${b.id}">
+              <td>${b.date}</td>
+              <td style="font-family:var(--font-english-body)">${b.hour}</td>
+              <td>${typeText}</td>
+              <td>${escapeHtml(b.customerName)}</td>
+              <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone)}</td>
+              <td>${b.guests}</td>
+              <td style="font-family:var(--font-english-body)">${priceText}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${b.status === 'pending' ? `
+                    <button class="btn-confirm" onclick="updateStatus('${b.id}', 'chalet', 'confirmed')">${t("btn_confirm")}</button>
+                    <button class="btn-cancel" onclick="updateStatus('${b.id}', 'chalet', 'cancelled')">${t("btn_cancel")}</button>
+                  ` : ''}
+                  <button class="btn-delete" onclick="deleteBooking('${b.id}', 'chalet')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_bookings")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function filterChaletBookings(status, btn) {
+      currentFilter.chalet = status;
+      btn.parentElement.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadChaletBookings(status);
+    }
+
+    // === Hall Bookings ===
+    async function loadHallBookings(status) {
+      const container = document.getElementById("hallBookingsTable");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getAllBookings("hall", status === "all" ? null : status, 0, 0);
+        if (result.success && result.bookings && result.bookings.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("th_date")}</th><th>${t("th_time")}</th><th>${t("th_type")}</th>
+            <th>${t("th_customer")}</th><th>${t("th_phone")}</th><th>${t("th_guests")}</th>
+            <th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.bookings.forEach(b => {
+            const statusClass = b.status;
+            const statusText = t("status_" + b.status);
+            const typeText = t("service_hall");
+            const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            html += `<tr data-id="${b.id}">
+              <td>${b.date}</td>
+              <td style="font-family:var(--font-english-body)">${b.hour}</td>
+              <td>${typeText}</td>
+              <td>${escapeHtml(b.customerName)}</td>
+              <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone)}</td>
+              <td>${b.guests}</td>
+            <td style="font-family:var(--font-english-body)">${priceText}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${b.status === 'pending' ? `
+                    <button class="btn-confirm" onclick="updateStatus('${b.id}', 'hall', 'confirmed')">${t("btn_confirm")}</button>
+                    <button class="btn-cancel" onclick="updateStatus('${b.id}', 'hall', 'cancelled')">${t("btn_cancel")}</button>
+                  ` : ''}
+                  <button class="btn-delete" onclick="deleteBooking('${b.id}', 'hall')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_bookings")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function filterHallBookings(status, btn) {
+      currentFilter.hall = status;
+      btn.parentElement.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadHallBookings(status);
+    }
+
+    // === Photo Bookings ===
+    async function loadPhotoBookings(status) {
+      const container = document.getElementById("photoBookingsTable");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getAllBookings("photography", status === "all" ? null : status, 0, 0);
+        if (result.success && result.bookings && result.bookings.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("th_date")}</th><th>${t("th_time")}</th><th>${t("th_customer")}</th>
+            <th>${t("th_phone")}</th><th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_notes")}</th><th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.bookings.forEach(b => {
+            const statusClass = b.status;
+            const statusText = t("status_" + b.status);
+            const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            html += `<tr data-id="${b.id}">
+              <td>${b.date}</td>
+              <td style="font-family:var(--font-english-body)">${b.hour}</td>
+              <td>${escapeHtml(b.customerName || b.photographerUsername || '-')}</td>
+              <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone || '-')}</td>
+              <td style="font-family:var(--font-english-body)">${priceText}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>${escapeHtml(b.notes || '-')}</td>
+              <td>
+                <div class="table-actions">
+                  ${b.status === 'pending' ? `
+                    <button class="btn-confirm" onclick="updateStatus('${b.id}', 'photography', 'confirmed')">${t("btn_confirm")}</button>
+                    <button class="btn-cancel" onclick="updateStatus('${b.id}', 'photography', 'cancelled')">${t("btn_cancel")}</button>
+                  ` : ''}
+                  <button class="btn-delete" onclick="deleteBooking('${b.id}', 'photography')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_bookings")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function filterPhotoBookings(status, btn) {
+      currentFilter.photo = status;
+      btn.parentElement.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadPhotoBookings(status);
+    }
+
+    // === Mabath Bookings ===
+    async function loadMabathBookings(status) {
+      const container = document.getElementById("mabathBookingsTable");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getAllBookings("mabath", status === "all" ? null : status, 0, 0);
+        if (result.success && result.bookings && result.bookings.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("th_date")}</th><th>${t("th_time")}</th><th>${t("th_customer")}</th>
+            <th>${t("th_phone")}</th><th>${t("th_guests")}</th><th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.bookings.forEach(b => {
+            const statusClass = b.status;
+            const statusText = t("status_" + b.status);
+            const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            const slotLabel = b.hour === "night" ? t("slot_night") : b.hour === "day" ? t("slot_day") : b.hour;
+            html += `<tr data-id="${b.id}">
+              <td>${b.date}</td>
+              <td style="font-family:var(--font-english-body)">${slotLabel}</td>
+              <td>${escapeHtml(b.customerName)}</td>
+              <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone)}</td>
+              <td>${b.guests || '-'}</td>
+              <td style="font-family:var(--font-english-body)">${priceText}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${b.status === 'pending' ? `
+                    <button class="btn-confirm" onclick="updateStatus('${b.id}', 'mabath', 'confirmed')">${t("btn_confirm")}</button>
+                    <button class="btn-cancel" onclick="updateStatus('${b.id}', 'mabath', 'cancelled')">${t("btn_cancel")}</button>
+                  ` : ''}
+                  <button class="btn-delete" onclick="deleteBooking('${b.id}', 'mabath')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_bookings")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function filterMabathBookings(status, btn) {
+      currentFilter.mabath = status;
+      btn.parentElement.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadMabathBookings(status);
+    }
+
+    // === Salon Bookings ===
+    async function loadSalonBookings(status) {
+      const container = document.getElementById("salonBookingsTable");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getAllBookings("salon", status === "all" ? null : status, 0, 0);
+        if (result.success && result.bookings && result.bookings.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("th_date")}</th><th>${t("th_type")}</th><th>${t("th_customer")}</th>
+            <th>${t("th_phone")}</th><th>${t("th_guests")}</th><th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.bookings.forEach(b => {
+            const statusClass = b.status;
+            const statusText = t("status_" + b.status);
+            const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            const dateText = b.date || '-';
+            const serviceName = b.type || '-';
+            html += `<tr data-id="${b.id}">
+              <td style="font-family:var(--font-english-body);direction:ltr">${dateText}</td>
+              <td>${escapeHtml(serviceName)}</td>
+              <td>${escapeHtml(b.customerName)}</td>
+              <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone || '-')}</td>
+              <td>${b.guests || '-'}</td>
+              <td style="font-family:var(--font-english-body)">${priceText}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${b.status === 'pending' ? `
+                    <button class="btn-confirm" onclick="updateStatus('${b.id}', 'salon', 'confirmed')">${t("btn_confirm")}</button>
+                    <button class="btn-cancel" onclick="updateStatus('${b.id}', 'salon', 'cancelled')">${t("btn_cancel")}</button>
+                  ` : ''}
+                  <button class="btn-delete" onclick="deleteBooking('${b.id}', 'salon')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_bookings")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function filterSalonBookings(status, btn) {
+      currentFilter.salon = status;
+      btn.parentElement.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadSalonBookings(status);
+    }
+
+    // === Booking Actions ===
+    function showToast(message, type) {
+      const existing = document.querySelector('.action-toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = 'action-toast' + (type === 'delete' ? ' toast-delete' : '');
+      toast.innerHTML = `<span class="toast-icon">${type === 'delete' ? '🗑️' : '✅'}</span><span>${message}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    async function updateStatus(id, type, newStatus) {
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      try {
+        const result = await API.updateBookingStatus(id, type, newStatus);
+        if (result.success) {
+          if (newStatus === 'confirmed') {
+            const notif = result.notification;
+            let notifText = '';
+            if (notif) {
+              if (notif.sent > 0) {
+                notifText = Lang.isAr()
+                  ? ` · تم إرسال الإشعار إلى ${notif.sent} جهاز`
+                  : ` · Notification sent to ${notif.sent} device(s)`;
+              } else if (notif.attempted > 0) {
+                const reason = Array.isArray(notif.reasons) && notif.reasons.length ? ' — ' + notif.reasons[0] : '';
+                notifText = (Lang.isAr() ? ' · فشل إرسال الإشعار' : ' · Notification failed') + reason;
+              } else {
+                notifText = Lang.isAr() ? ' · لا يوجد إشعار مفعّل' : ' · No notifications enabled';
+              }
+            }
+            showToast((Lang.isAr() ? 'تم تأكيد الحجز بنجاح' : 'Booking confirmed successfully') + notifText, 'confirm');
+            if (row) {
+              row.classList.add('row-confirm');
+              const badge = row.querySelector('.status-badge');
+              if (badge) {
+                badge.className = 'status-badge confirmed';
+                badge.innerHTML = `<span class="dot"></span>${t("status_confirmed")}`;
+              }
+              const actionsCell = row.querySelector('.table-actions');
+              if (actionsCell) {
+                actionsCell.innerHTML = `<button class="btn-delete" onclick="deleteBooking('${id}', '${type}')">${t("btn_delete")}</button>`;
+              }
+              setTimeout(() => {
+                if (type === "chalet") loadChaletBookings(currentFilter.chalet);
+                else if (type === "hall") loadHallBookings(currentFilter.hall);
+                else if (type === "mabath") loadMabathBookings(currentFilter.mabath);
+                else if (type === "salon") loadSalonBookings(currentFilter.salon);
+                else loadPhotoBookings(currentFilter.photo);
+              }, 1000);
+            } else {
+              if (type === "chalet") loadChaletBookings(currentFilter.chalet);
+              else if (type === "hall") loadHallBookings(currentFilter.hall);
+              else if (type === "mabath") loadMabathBookings(currentFilter.mabath);
+              else if (type === "salon") loadSalonBookings(currentFilter.salon);
+              else loadPhotoBookings(currentFilter.photo);
+            }
+          } else {
+            showToast(Lang.isAr() ? 'تم إلغاء الحجز' : 'Booking cancelled', 'confirm');
+            if (type === "chalet") loadChaletBookings(currentFilter.chalet);
+            else if (type === "hall") loadHallBookings(currentFilter.hall);
+            else if (type === "mabath") loadMabathBookings(currentFilter.mabath);
+            else if (type === "salon") loadSalonBookings(currentFilter.salon);
+            else loadPhotoBookings(currentFilter.photo);
+          }
+        }
+      } catch (err) {
+        alert(t("alert_error"));
+      }
+    }
+
+    async function deleteBooking(id, type) {
+      if (!confirm(t("confirm_delete"))) return;
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      try {
+        const result = await API.deleteBooking(id, type);
+        if (result.success) {
+          showToast(Lang.isAr() ? 'تم حذف الحجز' : 'Booking deleted', 'delete');
+          if (row) {
+            row.classList.add('row-delete');
+            setTimeout(() => {
+              if (type === "chalet") loadChaletBookings(currentFilter.chalet);
+              else if (type === "hall") loadHallBookings(currentFilter.hall);
+              else if (type === "mabath") loadMabathBookings(currentFilter.mabath);
+              else if (type === "salon") loadSalonBookings(currentFilter.salon);
+              else loadPhotoBookings(currentFilter.photo);
+            }, 500);
+          } else {
+            if (type === "chalet") loadChaletBookings(currentFilter.chalet);
+            else if (type === "hall") loadHallBookings(currentFilter.hall);
+            else if (type === "mabath") loadMabathBookings(currentFilter.mabath);
+            else if (type === "salon") loadSalonBookings(currentFilter.salon);
+            else loadPhotoBookings(currentFilter.photo);
+          }
+        }
+      } catch (err) {
+        alert(t("alert_error"));
+      }
+    }
+
+    // === Photographers Management ===
+    async function loadPhotographers() {
+      const container = document.getElementById("photographersList");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_photographers") + '</p></div>';
+      try {
+        const result = await API.getPhotographers();
+        if (result.success && result.photographers && result.photographers.length > 0) {
+          let html = "";
+          result.photographers.forEach(p => {
+            const inactive = p.active === false || p.active === 'false' ? (Lang.isAr() ? ' (معطّل)' : ' (inactive)') : '';
+            html += `<div class="photographer-card">
+              <div class="photographer-info">
+                <div class="photographer-avatar">${(p.fullName || p.username || '?')[0]}</div>
+                <div>
+                  <div class="photographer-name">${escapeHtml(p.fullName || p.username)}</div>
+                  <div class="photographer-username">@${escapeHtml(p.username)}${inactive}</div>
+                </div>
+              </div>
+            </div>`;
+          });
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:20px;">${t("admin_no_photo")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    async function addPhotographer() {
+      const name = document.getElementById("newPhotoName").value.trim();
+      const username = document.getElementById("newPhotoUsername").value.trim();
+      const password = document.getElementById("newPhotoPassword").value.trim();
+
+      if (!name || !username || !password) {
+        alert(t("login_error_empty"));
+        return;
+      }
+
+      try {
+        const result = await API.createPhotographer({ fullName: name, username, password });
+        if (result.success) {
+          document.getElementById("newPhotoName").value = "";
+          document.getElementById("newPhotoUsername").value = "";
+          document.getElementById("newPhotoPassword").value = "";
+          loadPhotographers();
+        } else {
+          alert(result.message || t("alert_error"));
+        }
+      } catch (err) {
+        alert(t("alert_server"));
+      }
+    }
+
+    // === Testimonials Management ===
+    async function loadTestimonials() {
+      const container = document.getElementById("testimonialsList");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_testimonials") + '</p></div>';
+      try {
+        const result = await API.getTestimonials();
+        if (result.success && result.testimonials && result.testimonials.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("admin_test_name")}</th><th>${t("admin_test_rating")}</th>
+            <th>${t("admin_test_comment")}</th><th>${t("admin_test_approved")}</th>
+            <th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.testimonials.forEach(test => {
+            const stars = "★".repeat(test.rating) + "☆".repeat(5 - test.rating);
+            const statusText = test.approved ? t("status_confirmed") : t("status_pending");
+            const statusClass = test.approved ? "confirmed" : "pending";
+            html += `<tr>
+              <td>${escapeHtml(test.name)}</td>
+              <td style="color:var(--gold)">${stars}</td>
+              <td>${escapeHtml(test.comment.substring(0, 60))}${test.comment.length > 60 ? '...' : ''}</td>
+              <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${!test.approved ? `<button class="btn-confirm" onclick="approveTestimonial('${test.id}')">${t("btn_approve")}</button>` : ''}
+                  ${test.approved ? `<button class="btn-cancel" onclick="rejectTestimonial('${test.id}')">${t("btn_reject")}</button>` : ''}
+                  <button class="btn-delete" onclick="deleteTestimonialAction('${test.id}')">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_no_testimonials")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    async function approveTestimonial(id) {
+      if (!confirm(t("confirm_approve"))) return;
+      try {
+        await API.updateTestimonialStatus(id, true);
+        loadTestimonials();
+      } catch (err) { alert(t("alert_error")); }
+    }
+
+    async function rejectTestimonial(id) {
+      if (!confirm(t("confirm_reject"))) return;
+      try {
+        await API.updateTestimonialStatus(id, false);
+        loadTestimonials();
+      } catch (err) { alert(t("alert_error")); }
+    }
+
+    async function deleteTestimonialAction(id) {
+      if (!confirm(t("confirm_delete"))) return;
+      try {
+        await API.deleteTestimonial(id);
+        loadTestimonials();
+      } catch (err) { alert(t("alert_error")); }
+    }
+
+    // === Data Export ===
+    async function exportCSV(type) {
+      try {
+        const result = await API.exportBookings(type);
+        if (result.success && result.data) {
+          downloadCSV(result.data, `marshmallow_${type}_bookings.csv`);
+        }
+      } catch (err) { alert(t("alert_error")); }
+    }
+
+    async function exportAllCSV() {
+      try {
+        const result = await API.exportAllData();
+        if (result.success && result.sheets) {
+          Object.entries(result.sheets).forEach(([name, data]) => {
+            if (data && data.length > 0) {
+              setTimeout(() => downloadCSV(data, `marshmallow_${name}.csv`), 200);
+            }
+          });
+        }
+      } catch (err) { alert(t("alert_error")); }
+    }
+
+    function downloadCSV(rows, filename) {
+      if (!rows || rows.length === 0) return;
+      const headers = Object.keys(rows[0]);
+      const csvContent = [
+        headers.join(","),
+        ...rows.map(row => headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(","))
+      ].join("\n");
+
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    // === Backup ===
+    async function runBackup() {
+      const btn = document.getElementById("backupBtn");
+      btn.disabled = true;
+      btn.querySelector("span:last-child").textContent = t("admin_backing_up");
+
+      try {
+        const result = await API.createBackup();
+        if (result.success) {
+          showAlert("backupAlert", "success", t("admin_backup_success"));
+          loadBackupHistory();
+        } else {
+          showAlert("backupAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) {
+        showAlert("backupAlert", "error", t("alert_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span:last-child").textContent = t("admin_backup");
+    }
+
+    async function loadBackupHistory() {
+      const container = document.getElementById("backupHistory");
+      try {
+        const result = await API.getBackupHistory();
+        if (result.success && result.backups && result.backups.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="backup-table">';
+          html += `<thead><tr>
+            <th>${t("admin_backup_name")}</th><th>${t("admin_backup_date")}</th><th>${t("admin_backup_link")}</th>
+          </tr></thead><tbody>`;
+
+          result.backups.forEach(b => {
+            html += `<tr>
+              <td>${escapeHtml(b.name)}</td>
+              <td>${escapeHtml(b.date)}</td>
+              <td>${b.link ? `<a href="${escapeHtml(b.link)}" target="_blank">🔗</a>` : '-'}</td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;padding:12px;">${t("admin_no_data")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<p style="opacity:0.5;padding:12px;">${t("alert_server")}</p>`;
+      }
+    }
+
+    // Load dashboard on start
+    loadDashboard();
+    loadChaletBookings();
+    loadPhotoBookings();
+
+    // New booking alert: poll pending count and notify the admin
+    async function checkNewBookings() {
+      try {
+        const result = await API.getAdminStats(0, 0);
+        if (result.success && (result.pending || 0) > lastPendingCount) {
+          const diff = (result.pending || 0) - lastPendingCount;
+          showToast(Lang.isAr()
+            ? `🔔 طلب حجز جديد (${diff})! راجع لوحة التحكم`
+            : `🔔 New booking request (${diff})! Check the dashboard`, 'confirm');
+          lastPendingCount = result.pending || 0;
+          document.getElementById("statPending").textContent = lastPendingCount;
+          const active = document.querySelector('.admin-section.active');
+          if (active) {
+            const name = active.id.replace('section-', '');
+            if (name === 'dashboard') loadDashboard();
+            else if (name === 'chalet-bookings') loadChaletBookings();
+            else if (name === 'hall-bookings') loadHallBookings();
+            else if (name === 'mabath-bookings') loadMabathBookings();
+            else if (name === 'photo-bookings') loadPhotoBookings();
+            else if (name === 'salon-bookings') loadSalonBookings();
+          }
+        }
+      } catch (err) { /* silent */ }
+    }
+    setInterval(checkNewBookings, 45000);
+
+    // === Pricing Management ===
+    async function loadPricing() {
+      const container = document.getElementById("pricingList");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_pricing") + '</p></div>';
+      try {
+        const result = await API.getPricing();
+        if (result.success && result.pricing && result.pricing.length > 0) {
+          let html = '<div class="admin-table-wrapper"><table class="admin-table">';
+          html += `<thead><tr>
+            <th>${t("admin_pricing_service")}</th><th>${t("admin_pricing_type")}</th>
+            <th>${t("admin_pricing_day")}</th><th>${t("admin_pricing_price")} (${t("price_sar")})</th>
+            <th>${t("th_actions")}</th>
+          </tr></thead><tbody>`;
+
+          result.pricing.forEach(p => {
+            const serviceText = p.service === "chalet" ? t("service_chalet") : p.service === "hall" ? t("service_hall") : p.service === "mabath" ? t("service_mabath") : t("service_photography");
+            let typeText = p.type;
+            if (p.service === "mabath") {
+              if (p.type === "day") typeText = t("slot_day");
+              else if (p.type === "night") typeText = t("slot_night");
+            } else {
+              if (p.type === "day") typeText = t("type_day");
+              else if (p.type === "night") typeText = t("slot_night");
+              else if (p.type === "overnight") typeText = t("type_overnight");
+              else if (p.type === "hour") typeText = t("type_hour");
+            }
+            const dayText = p.day === "*" ? t("all_days") : p.day;
+
+            html += `<tr data-index="${p.index}">
+              <td>${serviceText}</td>
+              <td>${typeText}</td>
+              <td>${dayText}</td>
+              <td style="font-family:var(--font-english-body)">
+                <input type="number" class="form-input pricing-inline-input" value="${p.price}" 
+                  style="width:100px;padding:6px 10px;font-size:0.85rem;" min="0" step="0.01"
+                  data-index="${p.index}">
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn-confirm" onclick="savePricingRow(${p.index})">${t("admin_pricing_save")}</button>
+                  <button class="btn-cancel" onclick="deletePricingRow(${p.index})">${t("btn_delete")}</button>
+                </div>
+              </td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:30px;">${t("admin_pricing_no_data")}</p>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function updatePricingTypes() {
+      const service = document.getElementById("newPricingService").value;
+      const typeSelect = document.getElementById("newPricingType");
+      if (service === "mabath") {
+        typeSelect.innerHTML = `
+          <option value="day">${t("slot_day")}</option>
+          <option value="night">${t("slot_night")}</option>`;
+      } else if (service === "hall") {
+        typeSelect.innerHTML = `<option value="hall">${t("service_hall")}</option>`;
+      } else if (service === "photography") {
+        typeSelect.innerHTML = `<option value="hour">${t("type_hour")}</option>`;
+      } else {
+        typeSelect.innerHTML = `
+          <option value="day">${t("type_day")}</option>
+          <option value="overnight">${t("type_overnight")}</option>`;
+      }
+    }
+
+    async function addPricingRow() {
+      const service = document.getElementById("newPricingService").value;
+      const type = document.getElementById("newPricingType").value;
+      const day = document.getElementById("newPricingDay").value;
+      const price = document.getElementById("newPricingPrice").value;
+
+      if (!price || parseFloat(price) < 0) {
+        alert(t("modal_error_fill"));
+        return;
+      }
+
+      try {
+        const result = await API.addPricing({ service, type, day, price: parseFloat(price) });
+        if (result.success) {
+          document.getElementById("newPricingPrice").value = "";
+          loadPricing();
+          showToast(t("admin_pricing_added"), "confirm");
+        }
+      } catch (err) {
+        alert(t("alert_error"));
+      }
+    }
+
+    async function savePricingRow(index) {
+      const input = document.querySelector(`.pricing-inline-input[data-index="${index}"]`);
+      if (!input) return;
+      const price = parseFloat(input.value);
+      if (isNaN(price) || price < 0) return;
+
+      try {
+        const result = await API.updatePricing({ index, price });
+        if (result.success) {
+          showToast(t("admin_pricing_updated"), "confirm");
+        }
+      } catch (err) {
+        alert(t("alert_error"));
+      }
+    }
+
+    async function deletePricingRow(index) {
+      if (!confirm(t("confirm_delete_pricing"))) return;
+      try {
+        const result = await API.deletePricing({ index });
+        if (result.success) {
+          showToast(t("admin_pricing_deleted"), "delete");
+          loadPricing();
+        }
+      } catch (err) {
+        alert(t("alert_error"));
+      }
+    }
+
+    // === Manual Booking ===
+    function updateManualSubTypes() {
+      const service = document.getElementById("manualService").value;
+      const subtypeSelect = document.getElementById("manualSubtype");
+      if (service === "photography") {
+        subtypeSelect.innerHTML = `<option value="hour">${t("type_hour")}</option>`;
+      } else if (service === "hall") {
+        subtypeSelect.innerHTML = `<option value="hall">${t("service_hall")}</option>`;
+      } else if (service === "mabath") {
+        subtypeSelect.innerHTML = `
+          <option value="day">${t("slot_day")}</option>
+          <option value="night">${t("slot_night")}</option>`;
+      } else {
+        subtypeSelect.innerHTML = `
+          <option value="day">${t("type_day")}</option>
+          <option value="overnight">${t("type_overnight")}</option>`;
+      }
+    }
+
+    async function submitManualBooking() {
+      const service = document.getElementById("manualService").value;
+      const subtype = document.getElementById("manualSubtype").value;
+      const date = document.getElementById("manualDate").value.trim();
+      const hour = document.getElementById("manualHour").value;
+      const customerName = document.getElementById("manualCustomerName").value.trim();
+      const phone = document.getElementById("manualPhone").value.trim();
+      const guests = document.getElementById("manualGuests").value;
+      const price = document.getElementById("manualPrice").value;
+      const notes = document.getElementById("manualNotes").value.trim();
+
+      if (!date || !customerName || !phone) {
+        showAlert("manualBookingAlert", "error", t("modal_error_fill"));
+        return;
+      }
+
+      try {
+        const result = await API.adminCreateBooking({
+          service, subtype, date, hour, customerName, phone, guests, notes, price: parseFloat(price) || 0
+        });
+        if (result.success) {
+          showAlert("manualBookingAlert", "success", t("admin_manual_success"));
+          document.getElementById("manualCustomerName").value = "";
+          document.getElementById("manualPhone").value = "";
+          document.getElementById("manualNotes").value = "";
+          document.getElementById("manualPrice").value = "";
+          document.getElementById("manualGuests").value = "1";
+        } else {
+          showAlert("manualBookingAlert", "error", result.message || t("admin_manual_error"));
+        }
+      } catch (err) {
+        showAlert("manualBookingAlert", "error", t("alert_server"));
+      }
+    }
+  </script>
+</body>
+</html>

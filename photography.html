@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="photo_title">حجز جلسة تصوير — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body{background:none!important}
+    .bg-fixed{position:fixed;inset:0;z-index:0;background:url('images/galleryinphotobooking.webp') center center/cover no-repeat;pointer-events:none}
+    .page-container{position:relative;z-index:1}
+    .gallery-section{
+      position:relative;
+      border-radius:var(--radius-lg);
+      padding:28px 16px;
+      box-shadow:var(--shadow-md);
+    }
+    .bg-fixed::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.5)}
+    @media(min-width:769px){
+      .bg-fixed{background-image:url('images/photography-bg-desktop.webp')}
+    }
+
+    .role-selector{position:fixed;inset:0;z-index:99998;display:flex;align-items:center;justify-content:center;padding:24px}
+    .role-selector .bg-fixed-overlay{position:absolute;inset:0;background:rgba(252,245,239,0.95);z-index:1}
+    .role-selector-inner{position:relative;z-index:2;text-align:center;max-width:520px;width:100%}
+    .role-selector-inner h1{font-family:var(--font-english-heading);font-size:2rem;margin-bottom:6px;letter-spacing:3px}
+    .role-selector-inner .sub{font-size:0.85rem;color:var(--rose-mauve);margin-bottom:32px}
+    .role-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .role-card{background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);padding:40px 24px;cursor:pointer;transition:all var(--transition);border:2px solid transparent;text-align:center}
+    .role-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:var(--rose-mauve)}
+    .role-card .icon{font-size:2.8rem;margin-bottom:12px}
+    .role-card h3{font-size:1.1rem;margin-bottom:6px}
+    .role-card p{font-size:0.82rem;color:var(--charcoal);opacity:0.6;line-height:1.6}
+    .photographer-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:var(--rose-mauve);color:var(--white);border-radius:20px;font-size:0.78rem;font-weight:600;margin-top:24px;cursor:pointer;transition:all var(--transition)}
+    .photographer-badge:hover{background:var(--rose-mauve-dark)}
+    @media(max-width:600px){.role-cards{grid-template-columns:1fr}.role-selector-inner h1{font-size:1.5rem}}
+  </style>
+</head>
+<body>
+  <div class="bg-fixed"></div>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+
+  <header class="site-header"></header>
+
+  <!-- Role Selector Overlay -->
+  <div class="role-selector" id="roleSelector">
+    <div class="bg-fixed-overlay"></div>
+    <div class="role-selector-inner">
+      <h1>MARSHMALLOW</h1>
+      <div class="sub">PHOTO CHALET & EVENTS</div>
+      <div class="role-cards">
+        <div class="role-card" onclick="enterAsGuest()">
+          <div class="icon">📸</div>
+          <h3 data-t="photo_guest_title">حجز جلسة تصوير</h3>
+          <p data-t="photo_guest_desc">تصفح المواعيد المتاحة واحجز جلستك بدون تسجيل دخول</p>
+        </div>
+        <div class="role-card" onclick="showPhotographerLogin()">
+          <div class="icon">🔐</div>
+          <h3 data-t="photo_photog_title">دخول المصورين</h3>
+          <p data-t="photo_photog_desc">تسجيل دخول المصورين لعرض وإدارة الحجوزات</p>
+        </div>
+      </div>
+      <!-- Inline login form -->
+      <div id="photographerLoginForm" class="hidden" style="max-width:320px;margin:24px auto 0;text-align:right">
+        <div class="form-group">
+          <label class="form-label" data-t="login_username">اسم المستخدم</label>
+          <input type="text" class="form-input" id="photogUser" dir="ltr" data-t-ph="login_username_ph" placeholder="أدخل اسم المستخدم">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t="login_password">كلمة المرور</label>
+          <input type="password" class="form-input" id="photogPassword" dir="ltr" data-t-ph="login_password_ph" placeholder="أدخل كلمة المرور">
+        </div>
+        <div id="photogLoginAlert"></div>
+        <button class="btn btn-primary btn-block" onclick="photographerLogin()">
+          <span data-t="photo_photog_btn">تسجيل الدخول</span>
+        </button>
+        <button class="btn btn-secondary btn-block mt-2" onclick="cancelPhotographerLogin()">
+          <span data-t="photo_photog_back">رجوع</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photographer badge (visible only when logged in) -->
+  <div id="photographerBar" class="hidden" style="position:fixed;top:0;left:0;right:0;z-index:99997;background:var(--rose-mauve);color:var(--white);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:0.85rem">
+    <span><span id="photogBadgeName"></span></span>
+    <span style="display:flex;gap:12px;align-items:center">
+      <a href="admin.html" style="color:var(--white);text-decoration:underline;font-size:0.78rem" data-t="nav_admin">لوحة التحكم</a>
+      <button onclick="photographerLogout()" style="background:transparent;border:1px solid rgba(255,255,255,0.5);color:var(--white);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.78rem" data-t="photo_photog_logout">تسجيل الخروج</button>
+    </span>
+  </div>
+
+  <main class="page-container">
+    <div class="section-header">
+      <h1 data-t="photo_title">حجز جلسة تصوير</h1>
+      <div class="section-line"></div>
+      <p data-t="photo_subtitle">اختر اليوم والوقت المناسب لجلستك</p>
+    </div>
+
+    <div class="calendar-wrapper">
+      <div id="photoCalendar"></div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-section">
+      <h2 class="gallery-section-title" data-t="gallery_photo">معرض التصوير</h2>
+      <div id="photoGallery"></div>
+    </div>
+  </main>
+
+  <!-- Time Modal -->
+  <div class="modal-overlay" id="photoDayModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="photoModalDate">تفاصيل اليوم</h3>
+        <button class="modal-close" onclick="hideModal('photoDayModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="photoAlert"></div>
+        <div id="photoSlotsContainer"><div class="loading-overlay"><div class="spinner"></div><p class="loading-text" data-t="slots_loading">جاري تحميل المواعيد...</p></div></div>
+        <div id="photoPriceDisplay" class="hidden">
+          <div class="price-display">
+            <span class="price-label" data-t="price_label">السعر</span>
+            <span><span class="price-value" id="photoPriceValue">0</span> <span class="price-currency" data-t="price_sar">ريال</span> <span class="price-currency" data-t="price_per_hour">/ساعة</span></span>
+          </div>
+        </div>
+        <div id="photoBookingForm" class="hidden">
+          <div style="width:60px;height:1px;background:var(--gold);margin:16px auto;"></div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_full_name">الاسم الكامل</label>
+            <input type="text" class="form-input" id="photoCustomerName" data-t-ph="modal_full_name_ph" placeholder="أدخل اسمك الكامل">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_phone">رقم الهاتف / واتساب</label>
+            <input type="tel" class="form-input" id="photoCustomerPhone" data-t-ph="modal_phone_ph" placeholder="05XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_notes_photo">ملاحظات</label>
+            <textarea class="form-input" id="photoNotes" data-t-ph="modal_notes_photo_ph" placeholder="أي ملاحظات..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-block" id="submitPhotoBtn" onclick="submitPhotoBooking()">
+            <span data-t="photo_request_btn">إرسال الطلب</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal-overlay" id="photoConfirmModal">
+    <div class="modal">
+      <div class="modal-body">
+        <div class="booking-confirmation">
+          <div class="icon">📸</div>
+          <h3 data-t="photo_request_title">تم إرسال طلب الحجز!</h3>
+          <p data-t="photo_request_msg">تم استلام طلبك بنجاح. سيتم التواصل معك من قبل الإدارة لتأكيد الموعد.</p>
+          <a class="btn btn-success" id="photoConfirmWhatsApp" href="#" target="_blank">
+            <span data-t="confirm_wa">تأكيد عبر واتساب</span>
+          </a>
+          <br>
+          <a class="btn btn-secondary mt-2" href="track.html" style="display:inline-block;text-decoration:none">
+            <span data-t="confirm_track">تتبع حالة حجزك</span>
+          </a>
+          <button class="btn btn-secondary mt-2" onclick="hideModal('photoConfirmModal')">
+            <span data-t="confirm_close">إغلاق</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" href="https://wa.me/972566004044" target="_blank" data-t-aria="home_contact_title">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/galleryData.js"></script>
+  <script src="js/gallery.js"></script>
+  <script>
+    initPage("photography");
+
+    let pageInitialized = false;
+    let photoSelectedDate = null;
+    let photoSelectedSlot = null;
+    let photoCalendar = null;
+    let photoCurrentPrice = 0;
+
+    /* ---- Role selector ---- */
+    function initPhotoPage() {
+      if (pageInitialized) return;
+      pageInitialized = true;
+      photoCalendar = createCalendar({
+        containerId: "photoCalendar",
+        type: "photography",
+        onDayClick: openPhotoDayModal
+      });
+      createGallery({ containerId: "photoGallery", category: "photography", columns: 3 });
+    }
+
+    function enterAsGuest() {
+      document.getElementById("roleSelector").style.display = "none";
+      initPhotoPage();
+    }
+
+    function showPhotographerLogin() {
+      document.querySelector(".role-cards").classList.add("hidden");
+      document.getElementById("photographerLoginForm").classList.remove("hidden");
+    }
+
+    function cancelPhotographerLogin() {
+      document.getElementById("photographerLoginForm").classList.add("hidden");
+      document.getElementById("photogLoginAlert").innerHTML = "";
+      document.querySelector(".role-cards").classList.remove("hidden");
+    }
+
+    async function photographerLogin() {
+      const username = document.getElementById("photogUser").value.trim();
+      const password = document.getElementById("photogPassword").value.trim();
+      if (!username || !password) {
+        document.getElementById("photogLoginAlert").innerHTML = `<div class="alert alert-error">${t("login_error_empty")}</div>`;
+        return;
+      }
+      try {
+        const result = await Auth.login(username, password);
+        if (result && result.success) {
+          document.getElementById("roleSelector").style.display = "none";
+          showPhotographerBar();
+          initPhotoPage();
+        } else {
+          document.getElementById("photogLoginAlert").innerHTML = `<div class="alert alert-error">${t("photo_photog_error")}</div>`;
+        }
+      } catch (err) {
+        document.getElementById("photogLoginAlert").innerHTML = `<div class="alert alert-error">${t("login_error_server")}</div>`;
+      }
+    }
+
+    function showPhotographerBar() {
+      const user = Auth.getSession();
+      if (user) {
+        const name = user.fullName || user.username;
+        document.getElementById("photogBadgeName").textContent = t("photo_photog_badge").replace("{name}", name);
+        document.getElementById("photographerBar").classList.remove("hidden");
+      }
+    }
+
+    function photographerLogout() {
+      Auth.clearSession();
+      location.reload();
+    }
+
+    /* On load: skip selector if already logged in as photographer/admin */
+    (function() {
+      if (Auth.isLoggedIn()) {
+        const role = Auth.getRole();
+        if (role === "photographer" || role === "admin") {
+          document.getElementById("roleSelector").style.display = "none";
+          showPhotographerBar();
+          initPhotoPage();
+          return;
+        }
+      }
+      document.getElementById("roleSelector").style.display = "flex";
+    })();
+
+    async function openPhotoDayModal(date) {
+      photoSelectedDate = date;
+      photoSelectedSlot = null;
+      photoCurrentPrice = 0;
+      document.getElementById("photoBookingForm").classList.add("hidden");
+      document.getElementById("photoPriceDisplay").classList.add("hidden");
+      document.getElementById("photoModalDate").textContent = formatDateAr(date);
+      document.getElementById("photoSlotsContainer").innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text" data-t="slots_loading">جاري تحميل المواعيد...</p></div>';
+      showModal("photoDayModal");
+
+      /* Fetch price */
+      const dayOfWeek = new Date(date).getDay();
+      try {
+        const priceResult = await API.getPrice("photography", "hour", dayOfWeek);
+        if (priceResult.success && priceResult.price) {
+          photoCurrentPrice = parseFloat(priceResult.price);
+          document.getElementById("photoPriceValue").textContent = photoCurrentPrice;
+          document.getElementById("photoPriceDisplay").classList.remove("hidden");
+        }
+      } catch (err) { /* optional */ }
+
+      try {
+        const result = await API.getDayDetails("photography", date);
+        if (result.success) {
+          renderPhotoSlots(result.bookedSlots || []);
+        } else {
+          document.getElementById("photoSlotsContainer").innerHTML =
+            `<div class="alert alert-error">${t("alert_error")}</div>`;
+        }
+      } catch (err) {
+        document.getElementById("photoSlotsContainer").innerHTML =
+          `<div class="alert alert-error">${t("alert_server")}</div>`;
+      }
+    }
+
+    function renderPhotoSlots(bookedSlots) {
+      const container = document.getElementById("photoSlotsContainer");
+      const bookedMap = {};
+      bookedSlots.forEach(s => {
+        if (typeof s === "object") bookedMap[s.hour] = s.status;
+        else bookedMap[s] = "pending";
+      });
+      let html = '<div class="slots-container">';
+      for (let mins = 8 * 60; mins <= 18 * 60; mins += 30) {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        const slot = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+        const slotStatus = bookedMap[slot] || null;
+        const isConfirmed = slotStatus === "confirmed";
+        const period = h < 12 ? t("time_am") : t("time_pm");
+        const h12 = h > 12 ? h - 12 : h;
+        const minStr = String(m).padStart(2, "0");
+        const slotClass = isConfirmed ? 'booked confirmed-slot' : 'available';
+        html += `<div class="time-slot ${slotClass}" data-slot="${slot}"
+                      ${isConfirmed ? '' : `onclick="selectPhotoSlot(this, '${slot}')"`}>
+                    ${h12}:${minStr} ${period}</div>`;
+      }
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function selectPhotoSlot(el, slot) {
+      document.querySelectorAll("#photoSlotsContainer .time-slot").forEach(s => s.classList.remove("selected"));
+      el.classList.add("selected");
+      photoSelectedSlot = slot;
+      document.getElementById("photoBookingForm").classList.remove("hidden");
+    }
+
+    async function submitPhotoBooking() {
+      const name = document.getElementById("photoCustomerName").value.trim();
+      const phone = document.getElementById("photoCustomerPhone").value.trim();
+      const notes = document.getElementById("photoNotes").value.trim();
+
+      if (!name || !phone) { showAlert("photoAlert", "error", t("modal_error_fill")); return; }
+      if (!photoSelectedDate || !photoSelectedSlot) { showAlert("photoAlert", "error", t("modal_error_select")); return; }
+
+      const btn = document.getElementById("submitPhotoBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("modal_sending");
+
+      try {
+        const result = await API.submitPhotographyBooking({
+          customerName: name, phone: phone,
+          date: photoSelectedDate, hour: photoSelectedSlot,
+          notes: notes, price: photoCurrentPrice
+        });
+        if (result.success) {
+          hideModal("photoDayModal");
+          saveLastBookingPhone(phone);
+          const waMsg = Lang.isAr()
+            ? `مرحبًا، أريد حجز جلسة تصوير:\nالتاريخ: ${photoSelectedDate}\nالوقت: ${photoSelectedSlot}\nالاسم: ${name}\nالهاتف: ${phone}`
+            : `Hello, I want to book a photo session:\nDate: ${photoSelectedDate}\nTime: ${photoSelectedSlot}\nName: ${name}\nPhone: ${phone}`;
+          document.getElementById("photoConfirmWhatsApp").href = getWhatsAppLink(waMsg);
+          showModal("photoConfirmModal");
+          if (photoCalendar && photoCalendar.refresh) photoCalendar.refresh();
+        } else {
+          showAlert("photoAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) { showAlert("photoAlert", "error", t("modal_error_server")); }
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("photo_request_btn");
+    }
+  </script>
+</body>
+</html>

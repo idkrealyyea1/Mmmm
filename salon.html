@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="salon_title">مركز التجميل — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body{background:none!important}
+    .bg-fixed{position:fixed;inset:0;z-index:0;background:url('images/salon/chooseforbackgroundsalon.webp') center center/cover no-repeat;pointer-events:none}
+    .page-container{position:relative;z-index:1}
+    .gallery-section{
+      position:relative;
+      border-radius:var(--radius-lg);
+      padding:28px 16px;
+      box-shadow:var(--shadow-md);
+    }
+    .bg-fixed::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.45)}
+    .salon-hero{position:relative;background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),url('images/salon/chooseforbackgroundsalon.webp') center center/cover no-repeat;min-height:320px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-xl);margin-bottom:40px;overflow:hidden}
+    .salon-hero .section-header{border:none;padding:60px 24px;margin:0;position:relative;z-index:1}
+    .salon-hero .section-header h1{color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+    .salon-hero .section-header p{color:rgba(255,255,255,0.85)}
+    .salon-hero .section-line{background:var(--gold)}
+    @media(max-width:768px){
+      .bg-fixed{background-image:url('images/salon/backgroundforthesalon.webp')}
+      .salon-hero{background-image:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),url('images/salon/backgroundforthesalon.webp')}
+      .salon-hero{min-height:240px;border-radius:var(--radius-lg);margin-bottom:24px}
+      .salon-hero .section-header{padding:40px 16px}
+    }
+    .salon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+    .salon-card{background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);overflow:hidden;transition:all var(--transition)}
+    .salon-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+    .salon-card-img{height:180px;background:rgba(245,240,235,0.7);display:flex;align-items:center;justify-content:center;font-size:3rem;border-bottom:2px solid rgba(184,144,126,0.1)}
+    .salon-card-body{padding:20px}
+    .salon-card-body h3{font-size:1.05rem;margin-bottom:6px}
+    .salon-card-body p{font-size:0.85rem;color:var(--charcoal);opacity:0.7;line-height:1.7;margin-bottom:8px}
+    .salon-card-price{font-family:var(--font-english-body);font-weight:700;color:var(--rose-mauve-dark);font-size:1rem;margin-bottom:12px}
+    .salon-card-actions{display:flex;gap:8px}
+  </style>
+</head>
+<body>
+  <div class="bg-fixed"></div>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+  <header class="site-header"></header>
+
+  <main class="page-container">
+    <div class="salon-hero">
+      <div class="section-header">
+        <h1 data-t="salon_title">مركز التجميل والكوافير</h1>
+        <div class="section-line"></div>
+        <p data-t="salon_subtitle">خدمات تجميل وعناية متكاملة بأيدي أمهر الخبيرات</p>
+      </div>
+    </div>
+
+    <div class="salon-grid" id="salonGrid">
+      <div class="loading-overlay" style="grid-column:1/-1;">
+        <div class="spinner"></div>
+        <div class="loading-text" data-t="cal_loading">جاري تحميل...</div>
+      </div>
+    </div>
+
+    <!-- Salon Work Gallery -->
+    <div class="gallery-section" style="margin-top:48px;">
+      <h2 class="gallery-section-title">خدمات الكوافير</h2>
+      <div id="salonWorkGallery"></div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-section" style="margin-top:48px;">
+      <h2 class="gallery-section-title" data-t="gallery_salon">معرض خدمات التجميل</h2>
+      <div id="salonGallery"></div>
+    </div>
+  </main>
+
+  <!-- Salon Booking Modal -->
+  <div class="modal-overlay" id="salonModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="salonModalTitle">طلب حجز</h3>
+        <button class="modal-close" onclick="hideModal('salonModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" data-t="salon_service_label">الخدمة المختارة</label>
+          <input type="text" class="form-input" id="salonServiceName" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t="modal_full_name">الاسم الكامل</label>
+          <input type="text" class="form-input" id="salonName" data-t-ph="modal_full_name_ph" placeholder="أدخل اسمك الكامل">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t="modal_phone">رقم الهاتف / واتساب</label>
+          <input type="tel" class="form-input" id="salonPhone" data-t-ph="modal_phone_ph" placeholder="05XXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label class="form-label">التاريخ المفضل (اختياري)</label>
+          <input type="date" class="form-input" id="salonDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t="modal_notes_photo">ملاحظات (اختياري)</label>
+          <textarea class="form-input" id="salonNotes" data-t-ph="modal_notes_photo_ph" placeholder="أي ملاحظات حول الخدمة..."></textarea>
+        </div>
+        <div id="salonAlert"></div>
+        <button class="btn btn-primary btn-block" id="submitSalonBtn" onclick="submitSalonBooking()">
+          <span data-t="salon_request_btn">إرسال الطلب</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salon Confirmation Modal -->
+  <div class="modal-overlay" id="salonConfirmModal">
+    <div class="modal">
+      <div class="modal-body">
+        <div class="booking-confirmation">
+          <div class="icon">✅</div>
+          <h3 data-t="salon_request_title">تم إرسال طلب الحجز!</h3>
+          <p data-t="salon_request_msg">تم استلام طلبك بنجاح. سيتم التواصل معك من قبل الإدارة لتأكيد الموعد.</p>
+          <a class="btn btn-success" id="salonConfirmWhatsApp" href="#" target="_blank">
+            <span data-t="confirm_wa">تأكيد عبر واتساب</span>
+          </a>
+          <br>
+          <a class="btn btn-secondary mt-2" href="track.html" style="display:inline-block;text-decoration:none">
+            <span data-t="confirm_track">تتبع حالة حجزك</span>
+          </a>
+          <button class="btn btn-secondary mt-2" onclick="hideModal('salonConfirmModal')">
+            <span data-t="confirm_close">إغلاق</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" href="https://wa.me/972566004044" target="_blank" data-t-aria="home_contact_title">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/salonServices.js"></script>
+  <script src="js/galleryData.js"></script>
+  <script src="js/gallery.js"></script>
+  <script>
+    initPage("salon");
+
+    function renderSalonServices() {
+      const grid = document.getElementById("salonGrid");
+      let html = "";
+      SALON_SERVICES.forEach(service => {
+        const name = Lang.isAr() ? service.name : (service.name_en || service.name);
+        const desc = Lang.isAr() ? service.description : (service.description_en || service.description);
+        const waText = Lang.isAr() ? `مرحبًا، أريد حجز خدمة: ${service.name}` : `Hello, I want to book: ${service.name_en || service.name}`;
+        html += `<div class="salon-card">
+          <div class="salon-card-img">${service.icon}</div>
+          <div class="salon-card-body">
+            <h3>${name}</h3>
+            <p>${desc}</p>
+            ${service.price ? `<div class="salon-card-price">${service.price}</div>` : ''}
+            <div class="salon-card-actions">
+              <button class="btn btn-primary btn-sm" onclick="openSalonBooking('${service.id}')">
+                <span data-t="salon_book_site">احجزي عبر الموقع</span>
+              </button>
+              <a href="${getWhatsAppLink(waText)}" target="_blank" class="btn btn-success btn-sm">
+                <span data-t="salon_book_wa">احجزي عبر واتساب</span>
+              </a>
+            </div>
+          </div>
+        </div>`;
+      });
+      grid.innerHTML = html;
+    }
+
+    function openSalonBooking(serviceId) {
+      const service = SALON_SERVICES.find(s => s.id === serviceId);
+      if (!service) return;
+      const name = Lang.isAr() ? service.name : (service.name_en || service.name);
+      document.getElementById("salonServiceName").value = name;
+      document.getElementById("salonName").value = "";
+      document.getElementById("salonPhone").value = "";
+      document.getElementById("salonDate").value = "";
+      document.getElementById("salonNotes").value = "";
+      document.getElementById("salonAlert").innerHTML = "";
+      document.getElementById("salonModalTitle").textContent = Lang.isAr() ? "طلب حجز" : "Booking Request";
+      showModal("salonModal");
+    }
+
+    async function submitSalonBooking() {
+      const name = document.getElementById("salonName").value.trim();
+      const phone = document.getElementById("salonPhone").value.trim();
+      const date = document.getElementById("salonDate").value;
+      const notes = document.getElementById("salonNotes").value.trim();
+      const serviceName = document.getElementById("salonServiceName").value;
+
+      if (!name || !phone) { showAlert("salonAlert", "error", t("modal_error_fill")); return; }
+
+      const btn = document.getElementById("submitSalonBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("modal_sending");
+
+      try {
+        const result = await API.submitSalonBooking({
+          type: serviceName, date, hour: "",
+          customerName: name, phone, guests: "1", notes, price: 0
+        });
+
+        if (result.success) {
+          hideModal("salonModal");
+          saveLastBookingPhone(phone);
+          const dateText = date ? date : "-";
+          const waMsg = Lang.isAr()
+            ? `مرحبًا، أريد تأكيد طلب خدمة من الكوافير:\nالخدمة: ${serviceName}\nالتاريخ: ${dateText}\nالاسم: ${name}\nالهاتف: ${phone}\nملاحظات: ${notes || "-"}`
+            : `Hello, I want to confirm my salon service request:\nService: ${serviceName}\nDate: ${dateText}\nName: ${name}\nPhone: ${phone}\nNotes: ${notes || "-"}`;
+          document.getElementById("salonConfirmWhatsApp").href = getWhatsAppLink(waMsg);
+          showModal("salonConfirmModal");
+        } else {
+          showAlert("salonAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) {
+        showAlert("salonAlert", "error", t("modal_error_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("salon_request_btn");
+    }
+
+    renderSalonServices();
+    createGallery({ containerId: "salonWorkGallery", category: "salon_work", columns: 3 });
+    createGallery({ containerId: "salonGallery", category: "salon", columns: 3 });
+  </script>
+</body>
+</html>

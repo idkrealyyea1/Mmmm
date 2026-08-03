@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="chalet_title">حجز الشاليه — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body{background:none!important}
+    .bg-fixed{position:fixed;inset:0;z-index:0;background:url('images/landingpageformobilefirstlandingpageandchaletbacground.webp') center center/cover no-repeat;pointer-events:none}
+    .bg-fixed::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(252,245,239,0.5),rgba(245,234,225,0.4))}
+    .page-container{position:relative;z-index:1}
+    .gallery-section{
+      position:relative;
+      border-radius:var(--radius-lg);
+      padding:28px 16px;
+      box-shadow:var(--shadow-md);
+    }
+    .section-header{border:none;padding:40px 0 20px}
+    .section-header h1{font-family:var(--font-arabic-body);font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="bg-fixed"></div>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+
+  <header class="site-header"></header>
+
+  <main class="page-container">
+    <div class="section-header">
+      <h1 data-t="chalet_title">حجز الشاليه</h1>
+      <div class="section-line"></div>
+      <p data-t="chalet_subtitle">اختر اليوم المناسب لحجز الشاليه</p>
+    </div>
+
+    <div class="calendar-wrapper">
+      <div id="chaletCalendar"></div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-section">
+      <h2 class="gallery-section-title" data-t="gallery_chalet">معرض الشاليه</h2>
+      <div id="chaletGallery"></div>
+    </div>
+  </main>
+
+  <!-- Day Details Modal -->
+  <div class="modal-overlay" id="dayModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalDate">تفاصيل اليوم</h3>
+        <button class="modal-close" onclick="hideModal('dayModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="chaletAlert"></div>
+        <div id="slotsContainer">
+          <div class="loading-overlay">
+            <div class="spinner"></div>
+            <p class="loading-text" data-t="slots_loading">جاري تحميل المواعيد...</p>
+          </div>
+        </div>
+        <div id="priceDisplay" class="hidden">
+          <div class="price-display">
+            <span class="price-label" data-t="price_label">السعر</span>
+            <span><span class="price-value" id="priceValue">0</span> <span class="price-currency" data-t="price_sar">ريال</span></span>
+          </div>
+        </div>
+        <div id="bookingForm" class="hidden">
+          <div style="width:60px;height:1px;background:var(--gold);margin:16px auto;"></div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_full_name">الاسم الكامل</label>
+            <input type="text" class="form-input" id="customerName" data-t-ph="modal_full_name_ph" placeholder="أدخل اسمك الكامل">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_phone">رقم الهاتف / واتساب</label>
+            <input type="tel" class="form-input" id="customerPhone" data-t-ph="modal_phone_ph" placeholder="05XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_guests">عدد الأشخاص</label>
+            <input type="number" class="form-input" id="guestCount" min="1" max="50" value="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="modal_notes">ملاحظات إضافية</label>
+            <textarea class="form-input" id="bookingNotes" data-t-ph="modal_notes_ph" placeholder="أي طلبات خاصة..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-block" id="submitBookingBtn" onclick="submitBooking()">
+            <span data-t="modal_confirm">تأكيد الحجز</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal">
+      <div class="modal-body">
+        <div class="booking-confirmation">
+          <div class="icon">✅</div>
+          <h3 data-t="confirm_title">تم استلام طلب الحجز!</h3>
+          <p id="confirmMsg" data-t="confirm_msg">تم إرسال طلبك بنجاح.</p>
+          <a class="btn btn-success" id="confirmWhatsApp" href="#" target="_blank">
+            <span data-t="confirm_wa">تأكيد عبر واتساب</span>
+          </a>
+          <br>
+          <a class="btn btn-secondary mt-2" href="track.html" style="display:inline-block;text-decoration:none">
+            <span data-t="confirm_track">تتبع حالة حجزك</span>
+          </a>
+          <button class="btn btn-secondary mt-2" onclick="hideModal('confirmModal')">
+            <span data-t="confirm_close">إغلاق</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" href="https://wa.me/972566004044" target="_blank" data-t-aria="home_contact_title">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/galleryData.js"></script>
+  <script src="js/gallery.js"></script>
+  <script>
+    initPage("chalet");
+
+    let selectedDate = null;
+    let currentPrice = 0;
+
+    let calendar = createCalendar({
+      containerId: "chaletCalendar",
+      type: "chalet",
+      onDayClick: openDayModal
+    });
+
+    createGallery({ containerId: "chaletGallery", category: "chalet", columns: 2 });
+
+    function formatDateDisplay(dateStr) {
+      const parts = dateStr.split("-");
+      return parts[2] + "/" + parts[1] + "/" + parts[0];
+    }
+
+    async function openDayModal(date) {
+      selectedDate = date;
+      currentPrice = 0;
+      document.getElementById("bookingForm").classList.add("hidden");
+      document.getElementById("priceDisplay").classList.add("hidden");
+      document.getElementById("modalDate").textContent = formatDateDisplay(date);
+      document.getElementById("slotsContainer").innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("price_loading") + '</p></div>';
+      showModal("dayModal");
+
+      const dayOfWeek = new Date(date).getDay();
+      try {
+        const priceResult = await API.getPrice("chalet", "day", dayOfWeek);
+        if (priceResult.success && priceResult.price) {
+          currentPrice = parseFloat(priceResult.price);
+          document.getElementById("priceValue").textContent = currentPrice;
+          document.getElementById("priceDisplay").classList.remove("hidden");
+        }
+      } catch (err) { /* price optional */ }
+
+      document.getElementById("slotsContainer").innerHTML = '';
+      document.getElementById("bookingForm").classList.remove("hidden");
+    }
+
+    async function submitBooking() {
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
+      const guests = document.getElementById("guestCount").value;
+      const notes = document.getElementById("bookingNotes").value.trim();
+
+      if (!name || !phone) { showAlert("chaletAlert", "error", t("modal_error_fill")); return; }
+      if (!selectedDate) { showAlert("chaletAlert", "error", t("modal_error_select")); return; }
+
+      const btn = document.getElementById("submitBookingBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("modal_sending");
+
+      try {
+        const result = await API.submitChaletBooking({
+          type: "day", date: selectedDate, hour: "full_day",
+          customerName: name, phone, guests, notes, price: currentPrice
+        });
+
+        if (result.success) {
+          hideModal("dayModal");
+          saveLastBookingPhone(phone);
+          const dateDisplay = formatDateDisplay(selectedDate);
+          const waMsg = Lang.isAr()
+            ? `مرحبًا، أريد تأكيد حجز شاليه:\nالتاريخ: ${dateDisplay}\nالسعر: ${currentPrice} ${t("price_sar")}\nالاسم: ${name}\nالهاتف: ${phone}\nعدد الأشخاص: ${guests}`
+            : `Hello, I want to confirm a chalet booking:\nDate: ${dateDisplay}\nPrice: ${currentPrice} SAR\nName: ${name}\nPhone: ${phone}\nGuests: ${guests}`;
+          document.getElementById("confirmWhatsApp").href = getWhatsAppLink(waMsg);
+          showModal("confirmModal");
+          calendar.refresh();
+        } else {
+          showAlert("chaletAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) {
+        showAlert("chaletAlert", "error", t("modal_error_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("modal_confirm");
+    }
+  </script>
+</body>
+</html>

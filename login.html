@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-t="login_title">تسجيل الدخول — Marshmallow</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="splash-screen" id="splash">
+    <div class="splash-logo-m" id="splashLogo"></div>
+    <div class="splash-brand">MARSHMALLOW</div>
+    <div class="splash-sub">PHOTO CHALET & EVENTS</div>
+    <div class="splash-line"></div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+  <div class="login-page">
+    <div class="login-card">
+      <div class="m-logo" style="width:72px;height:72px;margin:0 auto 12px;" id="loginLogo"></div>
+      <h2 class="login-title english-heading" data-t="brand_name">MARSHMALLOW</h2>
+      <p class="login-subtitle" data-t="login_subtitle"> PHOTO CHALET & EVENTS</p>
+
+      <div id="loginAlert"></div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" data-t="login_username">اسم المستخدم</label>
+          <input type="text" class="form-input" id="username" data-t-ph="login_username_ph" placeholder="أدخل اسم المستخدم" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t="login_password">كلمة المرور</label>
+          <input type="password" class="form-input" id="password" data-t-ph="login_password_ph" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginBtn">
+          <span data-t="login_btn">تسجيل الدخول</span>
+        </button>
+      </form>
+
+      <div class="mt-3">
+        <a href="index.html" class="btn btn-ghost" style="font-size:0.85rem;">
+          <span data-t="login_back">العودة للرئيسية</span>
+        </a>
+      </div>
+
+      <div class="mt-2 text-center">
+        <button class="lang-toggle" onclick="Lang.toggle(); location.reload();">
+          <span data-t-lang>EN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/translations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    Lang.init();
+
+    // Splash screen
+    var splashLogo = document.getElementById("splashLogo");
+    if (splashLogo) splashLogo.innerHTML = getSplashLogoSVG();
+    var loginLogo = document.getElementById("loginLogo");
+    if (loginLogo) loginLogo.innerHTML = getMLogoSVG();
+    var splash = document.getElementById("splash");
+    if (splash) {
+      setTimeout(function() {
+        splash.classList.add("hide");
+        setTimeout(function() { splash.remove(); }, 700);
+      }, 2400);
+    }
+
+    if (Auth.isLoggedIn()) {
+      if (Auth.isAdmin()) {
+        window.location.href = "admin.html";
+      } else if (Auth.isPhotographer()) {
+        window.location.href = "photography.html";
+      }
+    }
+
+    document.querySelector("[data-t-lang]").textContent = Lang.isAr() ? "EN" : "عربي";
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        showAlert("loginAlert", "error", t("login_error_empty"));
+        return;
+      }
+
+      const btn = document.getElementById("loginBtn");
+      btn.disabled = true;
+      btn.querySelector("span").textContent = t("login_btn_loading");
+
+      try {
+        const result = await Auth.login(username, password);
+        if (result.success) {
+          if (result.role === "admin") {
+            window.location.href = "admin.html";
+          } else if (result.role === "photographer") {
+            window.location.href = "photography.html";
+          } else {
+            showAlert("loginAlert", "error", t("alert_error"));
+          }
+        } else {
+          showAlert("loginAlert", "error", result.message || t("login_error"));
+        }
+      } catch (err) {
+        showAlert("loginAlert", "error", t("login_error_server"));
+      }
+
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("login_btn");
+    }
+  </script>
+</body>
+</html>
