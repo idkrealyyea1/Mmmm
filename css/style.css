@@ -1658,6 +1658,7 @@ select.form-input {
 /* === Testimonials === */
 .testimonials-section {
   padding: 60px 0;
+  position: relative;
 }
 
 .section-icon {
@@ -2753,5 +2754,97 @@ select.form-input {
     flex-direction: column;
     gap: 12px;
     text-align: center;
+  }
+}
+
+/* ===== Decorative Background Elements ===== */
+/* Soft blurred orbs, rings, dots & sparkles used behind page content.
+   Layering notes:
+   - .decor-layer          : sits BEHIND section content (z-index -1).
+   - .decor-layer-on-top   : sits ON TOP of section backgrounds but below content,
+                             used inside sections that already have a background image.
+   - .decor-layer-fixed    : fixed full-screen ambient layer behind everything. */
+
+.decor-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.decor-layer-on-top {
+  z-index: 1;
+}
+
+.decor-layer-fixed {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.decor-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(45px);
+  will-change: transform;
+  animation: decorFloat 14s ease-in-out infinite alternate;
+}
+
+.decor-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(184, 144, 126, 0.22);
+  animation: decorFloat 20s ease-in-out infinite alternate-reverse;
+}
+
+.decor-ring-gold {
+  border-style: dashed;
+  border-color: rgba(201, 162, 93, 0.35);
+}
+
+.decor-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--rose-mauve);
+  animation: decorPulse 5s ease-in-out infinite;
+}
+
+.decor-dot-gold {
+  background: var(--gold);
+}
+
+.decor-sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  animation: decorSparkle 3.5s ease-in-out infinite;
+}
+
+@keyframes decorFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(18px, -22px) scale(1.07); }
+}
+
+@keyframes decorPulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes decorSparkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7) rotate(0deg); }
+  50%      { opacity: 0.95; transform: scale(1.2) rotate(45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor-orb,
+  .decor-ring,
+  .decor-dot,
+  .decor-sparkle {
+    animation: none;
   }
 }

@@ -12,6 +12,8 @@
       padding:80px 24px 64px;
       border-radius:0 0 var(--radius-lg) var(--radius-lg);
       margin-bottom:48px;
+      position:relative;
+      overflow:hidden;
     }
     .about-hero h1{color:#fff;font-family:var(--font-arabic-body);font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,0.4)}
     .about-section .gallery-grid{margin-top:8px}
@@ -21,6 +23,20 @@
   </style>
 </head>
 <body>
+  <div class="decor-layer-fixed" aria-hidden="true">
+    <div class="decor-orb" style="width:420px;height:420px;top:-140px;right:-120px;background:radial-gradient(circle,rgba(184,144,126,0.3),transparent 70%)"></div>
+    <div class="decor-orb" style="width:360px;height:360px;top:34%;left:-130px;background:radial-gradient(circle,rgba(201,162,93,0.26),transparent 70%)"></div>
+    <div class="decor-orb" style="width:400px;height:400px;bottom:-150px;right:-130px;background:radial-gradient(circle,rgba(184,144,126,0.28),transparent 70%)"></div>
+    <div class="decor-ring" style="width:180px;height:180px;top:22%;right:10%"></div>
+    <div class="decor-ring decor-ring-gold" style="width:120px;height:120px;bottom:20%;left:12%"></div>
+    <div class="decor-ring" style="width:60px;height:60px;top:48%;left:20%"></div>
+    <div class="decor-dot decor-dot-gold" style="width:12px;height:12px;top:14%;left:24%"></div>
+    <div class="decor-dot" style="width:10px;height:10px;top:60%;right:26%"></div>
+    <div class="decor-dot decor-dot-gold" style="width:8px;height:8px;bottom:12%;right:20%"></div>
+    <div class="decor-sparkle" style="top:30%;left:30%"></div>
+    <div class="decor-sparkle" style="top:56%;right:34%"></div>
+    <div class="decor-sparkle" style="bottom:30%;left:28%"></div>
+  </div>
   <div class="splash-screen" id="splash">
     <div class="splash-logo-m" id="splashLogo"></div>
     <div class="splash-brand">MARSHMALLOW</div>
@@ -37,6 +53,16 @@
 
   <main class="page-container">
     <div class="about-hero">
+      <div class="decor-layer decor-layer-on-top" aria-hidden="true">
+        <div class="decor-orb" style="width:340px;height:340px;top:-130px;left:-110px;background:radial-gradient(circle,rgba(201,162,93,0.35),transparent 70%)"></div>
+        <div class="decor-orb" style="width:300px;height:300px;bottom:-150px;right:-100px;background:radial-gradient(circle,rgba(184,144,126,0.35),transparent 70%)"></div>
+        <div class="decor-ring" style="width:160px;height:160px;top:18%;right:14%"></div>
+        <div class="decor-ring decor-ring-gold" style="width:90px;height:90px;bottom:24%;left:18%"></div>
+        <div class="decor-dot decor-dot-gold" style="width:12px;height:12px;top:32%;left:26%"></div>
+        <div class="decor-dot" style="width:9px;height:9px;bottom:34%;right:24%"></div>
+        <div class="decor-sparkle" style="top:26%;left:32%"></div>
+        <div class="decor-sparkle" style="bottom:30%;right:30%"></div>
+      </div>
       <h1 data-t="about_title">من نحن</h1>
       <div class="section-line"></div>
     </div>
