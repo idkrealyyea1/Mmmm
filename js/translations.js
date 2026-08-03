@@ -200,7 +200,7 @@ const T = {
   "about_services_title":{ ar: "خدماتنا",              en: "Our Services" },
   "about_book_now":    { ar: "احجز الآن",             en: "Book Now" },
   "about_location_title": { ar: "موقعنا",              en: "Our Location" },
-  "about_location_desc":  { ar: "زورونا في موقعنا — اضغط على الخريطة للحصول على الاتجاهات", en: "Visit us — click the map for directions" },
+  "about_location_desc":  { ar: "زورونا في شاطئ الرمال (Sand Beach) — اضغط على الخريطة للحصول على الاتجاهات", en: "Visit us at Sand Beach — click the map for directions" },
   "about_stats_sessions":{ ar: "جلسة تصوير+",         en: "+ Photo Sessions" },
   "about_stats_clients":{ ar: "عميل سعيد+",           en: "+ Happy Clients" },
   "about_stats_services":{ ar: "خدمة رئيسية",         en: "Main Services" },
