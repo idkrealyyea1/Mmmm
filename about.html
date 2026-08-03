@@ -6,6 +6,19 @@
   <title data-t="about_title">من نحن — Marshmallow</title>
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .about-hero{
+      background:linear-gradient(rgba(20,16,18,0.45),rgba(20,16,18,0.55)),url('images/sallahbeackgrounddesktop.webp') center center/cover no-repeat;
+      padding:80px 24px 64px;
+      border-radius:0 0 var(--radius-lg) var(--radius-lg);
+      margin-bottom:48px;
+    }
+    .about-hero h1{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.4)}
+    .about-section .gallery-grid{margin-top:8px}
+    @media(max-width:768px){
+      .about-hero{padding:56px 20px 44px}
+    }
+  </style>
 </head>
 <body>
   <div class="splash-screen" id="splash">
@@ -64,6 +77,42 @@
       <p data-t="about_vision">أن نكون الخيار الأول للمناسبات والتصوير في المنطقة.</p>
     </div>
 
+    <!-- Tour -->
+    <div class="about-section text-center">
+      <h2 data-t="about_tour_title">جولة في المكان</h2>
+      <div class="section-line" style="margin:0 auto 20px"></div>
+    </div>
+
+    <div class="about-section">
+      <h2 data-t="about_tour_chalet_title">الشاليه الفاخر</h2>
+      <p data-t="about_tour_chalet_desc">شاليه خاص بتصميم داخلي أنيق، مثالي للتصوير والمناسبات الخاصة والاسترخاء.</p>
+      <div id="tourChaletGallery"></div>
+    </div>
+
+    <div class="about-section">
+      <h2 data-t="about_tour_hall_title">قاعة المناسبات</h2>
+      <p data-t="about_tour_hall_desc">قاعة فسيحة مجهزة لاستضافة الأفراح والمناسبات بتجهيزات راقية.</p>
+      <div id="tourHallGallery"></div>
+    </div>
+
+    <div class="about-section">
+      <h2 data-t="about_tour_mabath_title">المبيت</h2>
+      <p data-t="about_tour_mabath_desc">استمتع بمبيت مريح بعد المناسبة مع تجهيزات كاملة وخدمة مميزة.</p>
+      <div id="tourMabathGallery"></div>
+    </div>
+
+    <div class="about-section">
+      <h2 data-t="about_tour_photo_title">استوديو التصوير</h2>
+      <p data-t="about_tour_photo_desc">استوديو احترافي بأحدث المعدات والإضاءة لالتقاط أجمل اللحظات.</p>
+      <div id="tourPhotoGallery"></div>
+    </div>
+
+    <div class="about-section">
+      <h2 data-t="about_tour_salon_title">مركز التجميل</h2>
+      <p data-t="about_tour_salon_desc">كوافير ومركز تجميل متكامل بأيدي خبيرات لكل خدمات العروس والتجميل.</p>
+      <div id="tourSalonGallery"></div>
+    </div>
+
     <!-- Mission -->
     <div class="about-section">
       <h2 data-t="about_mission_title">رسالتنا</h2>
@@ -94,6 +143,16 @@
           <h3 data-t="about_why_4_title">أسعار منافسة</h3>
           <p data-t="about_why_4">نظام أسعار ديناميكي يناسب جميع الميزانيات</p>
         </div>
+        <div class="about-card">
+          <div class="icon">🏛️</div>
+          <h3 data-t="about_why_5_title">قاعة مناسبات راقية</h3>
+          <p data-t="about_why_5">صالة واسعة مجهزة لاستضافة الأفراح والاحتفالات</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">🌙</div>
+          <h3 data-t="about_why_6_title">مبيت مريح</h3>
+          <p data-t="about_why_6">إقامة مريحة بتجهيزات كاملة وخدمة مميزة</p>
+        </div>
       </div>
     </div>
 
@@ -104,6 +163,14 @@
         <a href="chalet.html" class="about-card" style="cursor:pointer">
           <div class="icon">🏡</div>
           <h3 data-t="home_chalet_title">حجز الشاليه</h3>
+        </a>
+        <a href="hall.html" class="about-card" style="cursor:pointer">
+          <div class="icon">🏛️</div>
+          <h3 data-t="home_hall_title">حجز القاعة</h3>
+        </a>
+        <a href="mabath.html" class="about-card" style="cursor:pointer">
+          <div class="icon">🌙</div>
+          <h3 data-t="home_sleep_title">المبيت</h3>
         </a>
         <a href="photography.html" class="about-card" style="cursor:pointer">
           <div class="icon">📸</div>
@@ -116,6 +183,36 @@
       </div>
       <div class="text-center mt-3">
         <a href="chalet.html" class="btn btn-primary btn-lg" data-t="about_book_now">احجز الآن</a>
+      </div>
+    </div>
+
+    <!-- How to book -->
+    <div class="about-section">
+      <h2 data-t="about_steps_title">كيف تحجز؟</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="icon">1️⃣</div>
+          <h3 data-t="about_step1_title">اختر الخدمة والتاريخ</h3>
+          <p data-t="about_step1_desc">اختر الخدمة والتاريخ المناسبين من صفحة الخدمة.</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">2️⃣</div>
+          <h3 data-t="about_step2_title">أدخل بياناتك</h3>
+          <p data-t="about_step2_desc">املأ نموذج الحجز باسمك ورقم هاتفك بسهولة.</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">3️⃣</div>
+          <h3 data-t="about_step3_title">أكد عبر واتساب</h3>
+          <p data-t="about_step3_desc">أكد طلبك مباشرة عبر واتساب للحصول على تأكيد أسرع.</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">4️⃣</div>
+          <h3 data-t="about_step4_title">تتبع حجزك</h3>
+          <p data-t="about_step4_desc">تابع حالة حجزك في أي وقت من صفحة تتبع الحجز.</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <a href="track.html" class="btn btn-primary btn-lg">📋 <span data-t="track_title">تتبع حجزك</span></a>
       </div>
     </div>
 
@@ -139,6 +236,18 @@
     <div class="gallery-section">
       <h2 class="gallery-section-title" data-t="gallery_title">معرض الصور</h2>
       <div id="aboutGallery"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="about-section text-center">
+      <h2 data-t="about_cta_title">جاهز لتجربة لا تُنسى؟</h2>
+      <p data-t="about_cta_desc">احجز الآن ودعنا نصنع أجمل ذكرياتك.</p>
+      <div class="mt-3">
+        <a href="chalet.html" class="btn btn-primary btn-lg" data-t="about_book_now">احجز الآن</a>
+        <a href="https://wa.me/972566004044" class="btn btn-success btn-lg" target="_blank">
+          💬 <span data-t="confirm_wa">تأكيد عبر واتساب</span>
+        </a>
+      </div>
     </div>
   </main>
 
@@ -191,6 +300,11 @@
 
     /* Gallery */
     createGallery({ containerId: "aboutGallery", category: "chalet", columns: 3 });
+    createGallery({ containerId: "tourChaletGallery", category: "chalet", columns: 3 });
+    createGallery({ containerId: "tourHallGallery", category: "hall", columns: 3 });
+    createGallery({ containerId: "tourMabathGallery", category: "mabath", columns: 3 });
+    createGallery({ containerId: "tourPhotoGallery", category: "photography", columns: 3 });
+    createGallery({ containerId: "tourSalonGallery", category: "salon", columns: 3 });
   </script>
 </body>
 </html>
