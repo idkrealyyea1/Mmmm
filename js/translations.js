@@ -126,6 +126,10 @@ const T = {
   "modal_notes_ph":    { ar: "أي طلبات خاصة...",      en: "Any special requests..." },
   "modal_notes_photo": { ar: "ملاحظات (اختياري)",      en: "Notes (Optional)" },
   "modal_notes_photo_ph":{ ar: "أي ملاحظات حول الجلسة...", en: "Any notes about the session..." },
+  "photo_photog_label": { ar: "المصور",                  en: "Photographer" },
+  "photo_photog_place": { ar: "مصور المكان",             en: "Place photographer" },
+  "photo_photog_own":   { ar: "المصور معي",              en: "Photographer with me" },
+  "modal_error_photog": { ar: "يرجى اختيار نوع المصور",  en: "Please choose a photographer option" },
   "modal_confirm":     { ar: "تأكيد الحجز",           en: "Confirm Booking" },
   "modal_sending":     { ar: "جاري الإرسال...",        en: "Sending..." },
   "modal_error_fill":  { ar: "يرجى ملء الاسم ورقم الهاتف", en: "Please fill name and phone" },
@@ -343,6 +347,7 @@ const T = {
   "footer_contact":    { ar: "تواصل معنا",             en: "Contact Us" },
   "footer_phone":      { ar: "0566004044",             en: "+972566004044" },
   "footer_studora":    { ar: "تصميم وبرمجة",           en: "Designed & Developed by" },
+  "footer_click_contact": { ar: "اضغط للتواصل",        en: "Click to contact" },
   "nav_links":         { ar: "روابط سريعة",            en: "Quick Links" },
 
   // === Time ===

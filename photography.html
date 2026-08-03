@@ -34,6 +34,15 @@
     .role-card p{font-size:0.82rem;color:var(--charcoal);opacity:0.6;line-height:1.6}
     .photographer-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:var(--rose-mauve);color:var(--white);border-radius:20px;font-size:0.78rem;font-weight:600;margin-top:24px;cursor:pointer;transition:all var(--transition)}
     .photographer-badge:hover{background:var(--rose-mauve-dark)}
+    .photog-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .photog-option{position:relative;cursor:pointer}
+    .photog-option input{position:absolute;opacity:0;pointer-events:none}
+    .photog-option .opt-card{display:block;border:2px solid rgba(184,144,126,0.25);border-radius:var(--radius-md);padding:12px 14px;text-align:center;transition:all var(--transition);background:var(--white)}
+    .photog-option input:checked + .opt-card{border-color:var(--rose-mauve);background:var(--warm-white);box-shadow:var(--shadow-sm)}
+    .photog-option:hover .opt-card{border-color:var(--rose-mauve)}
+    .photog-option .opt-emoji{font-size:1.4rem;display:block;margin-bottom:4px}
+    .photog-option .opt-title{font-size:0.85rem;font-weight:700;color:var(--charcoal)}
+    @media(max-width:600px){.photog-options{grid-template-columns:1fr}}
     @media(max-width:600px){.role-cards{grid-template-columns:1fr}.role-selector-inner h1{font-size:1.5rem}}
   </style>
 </head>
@@ -144,6 +153,25 @@
           <div class="form-group">
             <label class="form-label" data-t="modal_phone">رقم الهاتف / واتساب</label>
             <input type="tel" class="form-input" id="photoCustomerPhone" data-t-ph="modal_phone_ph" placeholder="05XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="photo_photog_label">المصور</label>
+            <div class="photog-options">
+              <label class="photog-option">
+                <input type="radio" name="photoPhotographerOption" value="place" checked>
+                <span class="opt-card">
+                  <span class="opt-emoji">📸</span>
+                  <span class="opt-title" data-t="photo_photog_place">مصور المكان</span>
+                </span>
+              </label>
+              <label class="photog-option">
+                <input type="radio" name="photoPhotographerOption" value="own">
+                <span class="opt-card">
+                  <span class="opt-emoji">🤳</span>
+                  <span class="opt-title" data-t="photo_photog_own">المصور معي</span>
+                </span>
+              </label>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label" data-t="modal_notes_photo">ملاحظات</label>
@@ -351,8 +379,11 @@
       const name = document.getElementById("photoCustomerName").value.trim();
       const phone = document.getElementById("photoCustomerPhone").value.trim();
       const notes = document.getElementById("photoNotes").value.trim();
+      const photographerEl = document.querySelector('input[name="photoPhotographerOption"]:checked');
+      const photographerOption = photographerEl ? photographerEl.value : "";
 
       if (!name || !phone) { showAlert("photoAlert", "error", t("modal_error_fill")); return; }
+      if (!photographerOption) { showAlert("photoAlert", "error", t("modal_error_photog")); return; }
       if (!photoSelectedDate || !photoSelectedSlot) { showAlert("photoAlert", "error", t("modal_error_select")); return; }
 
       const btn = document.getElementById("submitPhotoBtn");
@@ -363,14 +394,18 @@
         const result = await API.submitPhotographyBooking({
           customerName: name, phone: phone,
           date: photoSelectedDate, hour: photoSelectedSlot,
-          notes: notes, price: photoCurrentPrice
+          notes: notes, price: photoCurrentPrice,
+          photographerOption: photographerOption
         });
         if (result.success) {
           hideModal("photoDayModal");
           saveLastBookingPhone(phone);
+          const photogText = photographerOption === "place"
+            ? (Lang.isAr() ? "المصور: مصور المكان" : "Photographer: Place photographer")
+            : (Lang.isAr() ? "المصور: المصور معي" : "Photographer: Photographer with me");
           const waMsg = Lang.isAr()
-            ? `مرحبًا، أريد حجز جلسة تصوير:\nالتاريخ: ${photoSelectedDate}\nالوقت: ${photoSelectedSlot}\nالاسم: ${name}\nالهاتف: ${phone}`
-            : `Hello, I want to book a photo session:\nDate: ${photoSelectedDate}\nTime: ${photoSelectedSlot}\nName: ${name}\nPhone: ${phone}`;
+            ? `مرحبًا، أريد حجز جلسة تصوير:\nالتاريخ: ${photoSelectedDate}\nالوقت: ${photoSelectedSlot}\n${photogText}\nالاسم: ${name}\nالهاتف: ${phone}`
+            : `Hello, I want to book a photo session:\nDate: ${photoSelectedDate}\nTime: ${photoSelectedSlot}\n${photogText}\nName: ${name}\nPhone: ${phone}`;
           document.getElementById("photoConfirmWhatsApp").href = getWhatsAppLink(waMsg);
           showModal("photoConfirmModal");
           if (photoCalendar && photoCalendar.refresh) photoCalendar.refresh();

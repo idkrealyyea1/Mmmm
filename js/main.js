@@ -301,6 +301,8 @@ function renderHeader(activePage) {
 }
 
 /* --- Footer --- */
+const STUDORA_WHATSAPP = "972567439846";
+
 function renderFooter() {
   const footer = document.querySelector(".site-footer");
   if (!footer) return;
@@ -329,14 +331,6 @@ function renderFooter() {
           </div>
         </div>
         <div class="footer-col">
-          <div class="footer-col-title">${t("footer_team")}
-            <a href="https://wa.me/972567439846" target="_blank" style="display:inline-flex;vertical-align:middle;margin-inline-start:8px" aria-label="WhatsApp">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-            </a>
-          </div>
-          <p style="font-size:0.78rem;opacity:0.6;line-height:1.7;margin:0 0 12px">${t("footer_team_desc")}</p>
-        </div>
-        <div class="footer-col">
           <div class="footer-col-title">${t("footer_contact")}</div>
           <div class="footer-contact-item">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
@@ -347,16 +341,27 @@ function renderFooter() {
             <span>${t("footer_phone")}</span>
           </div>
         </div>
+        <div class="footer-col footer-col-team">
+          <div class="footer-col-title">${t("footer_team")}</div>
+          <p class="footer-team-desc">${t("footer_team_desc")}</p>
+          <a class="footer-team-studora" href="https://wa.me/${STUDORA_WHATSAPP}" target="_blank" aria-label="Studora — WhatsApp">
+            <span class="footer-team-studora-name">Studora</span>
+            <span class="footer-team-studora-cta">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+              ${t("footer_click_contact")}
+            </span>
+          </a>
+        </div>
       </div>
       <div class="footer-credit-section">
         <div class="footer-credit-goldline"></div>
         <div class="footer-credit-label">${t("footer_studora")}</div>
-        <a href="https://wa.me/972566004044" target="_blank" class="footer-credit-brand">
+        <a href="https://wa.me/${STUDORA_WHATSAPP}" target="_blank" class="footer-credit-brand">
           <svg class="footer-credit-star" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,1 13,7 19,8 14.5,12.5 15.5,19 10,15.5 4.5,19 5.5,12.5 1,8 7,7" fill="currentColor"/></svg>
           Studora
           <svg class="footer-credit-star" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,1 13,7 19,8 14.5,12.5 15.5,19 10,15.5 4.5,19 5.5,12.5 1,8 7,7" fill="currentColor"/></svg>
         </a>
-        <a href="https://wa.me/972566004044" target="_blank" class="footer-credit-wa">WhatsApp</a>
+        <a href="https://wa.me/${STUDORA_WHATSAPP}" target="_blank" class="footer-credit-wa">WhatsApp · ${t("footer_click_contact")}</a>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-bottom">

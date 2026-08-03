@@ -755,17 +755,19 @@
           let html = '<div class="admin-table-wrapper"><table class="admin-table">';
           html += `<thead><tr>
             <th>${t("th_date")}</th><th>${t("th_time")}</th><th>${t("th_customer")}</th>
-            <th>${t("th_phone")}</th><th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_notes")}</th><th>${t("th_actions")}</th>
+            <th>${t("photo_photog_label")}</th><th>${t("th_phone")}</th><th>${t("th_price")}</th><th>${t("th_status")}</th><th>${t("th_notes")}</th><th>${t("th_actions")}</th>
           </tr></thead><tbody>`;
 
           result.bookings.forEach(b => {
             const statusClass = b.status;
             const statusText = t("status_" + b.status);
             const priceText = b.price ? `${b.price} ${t("price_sar")}` : '-';
+            const photogText = b.photographerOption ? t("photo_photog_" + b.photographerOption) : '-';
             html += `<tr data-id="${b.id}">
               <td>${b.date}</td>
               <td style="font-family:var(--font-english-body)">${b.hour}</td>
               <td>${escapeHtml(b.customerName || b.photographerUsername || '-')}</td>
+              <td>${escapeHtml(photogText)}</td>
               <td style="font-family:var(--font-english-body);direction:ltr;text-align:right">${escapeHtml(b.phone || '-')}</td>
               <td style="font-family:var(--font-english-body)">${priceText}</td>
               <td><span class="status-badge ${statusClass}"><span class="dot"></span>${statusText}</span></td>

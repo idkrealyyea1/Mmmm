@@ -92,6 +92,7 @@ create table if not exists photo_bookings (
   customer_name          text default '',
   phone                  text default '',
   photographer_username  text default '',
+  photographer_option    text default '',   -- place | own (customer's photographer choice)
   notes                  text default '',
   price                  numeric default 0,
   status                 text default 'pending',
@@ -101,6 +102,9 @@ create table if not exists photo_bookings (
   payment_status         text default 'unpaid',
   created_at             timestamptz default now()
 );
+
+-- If you already created photo_bookings before this field existed, run:
+-- alter table photo_bookings add column if not exists photographer_option text default '';
 
 -- ============================================================
 -- SALON BOOKINGS
