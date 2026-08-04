@@ -587,6 +587,9 @@
       throw new Error("Not authorized");
     }
 
+    // iOS: web push needs the site installed on the home screen — show the banner here too.
+    if (typeof showIOSInstallBanner === "function") showIOSInstallBanner();
+
     function escapeHtml(str) {
       if (str == null) return "";
       return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -1506,6 +1509,9 @@
       try {
         const existing = await getAdminSubscription();
         if (existing) {
+          try {
+            await API.unsubscribePush(existing.toJSON().endpoint, "admin");
+          } catch (e) { /* best effort */ }
           await existing.unsubscribe();
           try { localStorage.removeItem(ADMIN_NOTIF_KEY); } catch (e) {}
           setAdminNotifStatus(Lang.isAr() ? "تم إيقاف الإشعارات" : "Notifications disabled", false);

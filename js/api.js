@@ -79,8 +79,8 @@ const API = {
     });
   },
 
-  unsubscribePush(endpoint) {
-    return this._call("unsubscribePush", { endpoint });
+  unsubscribePush(endpoint, phone) {
+    return this._call("unsubscribePush", { endpoint, phone });
   },
 
   getPrice(service, type, dayOfWeek) {
