@@ -63,6 +63,8 @@ function createCalendar(config) {
       let statusClass = "";
       if (isPast) {
         statusClass = "past";
+      } else if (availabilityData[dateStr] === "closed") {
+        statusClass = "closed";
       } else if (availabilityData[dateStr] === "confirmed") {
         statusClass = "confirmed";
       } else {
@@ -70,7 +72,7 @@ function createCalendar(config) {
       }
 
       const todayClass = isToday ? " today" : "";
-      const clickable = !isPast && statusClass !== "confirmed" && statusClass !== "booked";
+      const clickable = !isPast && (statusClass === "available" || statusClass === "closed");
 
       html += `<div class="calendar-day ${statusClass}${todayClass}" 
                     data-date="${dateStr}" 
@@ -99,6 +101,13 @@ function createCalendar(config) {
     });
 
     container.querySelectorAll(".calendar-day:not(.empty):not(.past):not(.confirmed):not(.booked)").forEach(cell => {
+      cell.addEventListener("click", () => {
+        const date = cell.getAttribute("data-date");
+        if (onDayClick) onDayClick(date);
+      });
+    });
+
+    container.querySelectorAll(".calendar-day.closed").forEach(cell => {
       cell.addEventListener("click", () => {
         const date = cell.getAttribute("data-date");
         if (onDayClick) onDayClick(date);

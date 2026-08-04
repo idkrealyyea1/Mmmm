@@ -67,7 +67,8 @@
       <div class="decor-diamond rose" style="top:38%;left:8%"></div>
       <div class="decor-diamond" style="bottom:22%;right:8%"></div>
     </div>
-    <div class="hero-content">
+      <div class="hero-content">
+      <div class="closed-today-banner hidden" id="closedTodayBanner"></div>
       <div class="hero-logo-m" id="heroLogo"><img src="images/logo.webp" alt="Marshmallow" class="m-logo-img"></div>
       <h1 class="hero-title english-heading" data-t="hero_title">MARSHMALLOW</h1>
       <div class="hero-subtitle-ar" data-t="hero_subtitle"> PHOTO CHALET & EVENTS</div>
@@ -139,6 +140,18 @@
   <script src="js/testimonials.js"></script>
   <script>
     initPage("home");
+
+    (function() {
+      const today = new Date();
+      const dateStr = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+      API.getDayDetails("chalet", dateStr).then(result => {
+        if (result.success && result.closed) {
+          const banner = document.getElementById("closedTodayBanner");
+          banner.textContent = "⛔ " + t("day_closed_title") + " — " + (result.message || t("day_closed_msg"));
+          banner.classList.remove("hidden");
+        }
+      }).catch(() => {});
+    })();
 
     /* --- Landing Overlay --- */
     (function() {

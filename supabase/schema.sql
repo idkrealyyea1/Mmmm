@@ -180,6 +180,15 @@ create table if not exists push_subscriptions (
 );
 
 -- ============================================================
+-- CLOSED DAYS (admin blocks booking on specific dates)
+-- ============================================================
+create table if not exists closed_days (
+  date       text primary key,
+  message    text default '',
+  created_at timestamptz default now()
+);
+
+-- ============================================================
 -- Row Level Security — disable for service role (backend uses service key)
 -- ============================================================
 alter table users              disable row level security;
@@ -192,6 +201,7 @@ alter table testimonials       disable row level security;
 alter table pricing            disable row level security;
 alter table backups            disable row level security;
 alter table push_subscriptions disable row level security;
+alter table closed_days         disable row level security;
 
 -- ============================================================
 -- DEFAULT ADMIN USER

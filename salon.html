@@ -201,6 +201,7 @@
       const serviceName = document.getElementById("salonServiceName").value;
 
       if (!name || !phone) { showAlert("salonAlert", "error", t("modal_error_fill")); return; }
+      if (salonClosedMsg) { showAlert("salonAlert", "error", t("day_closed_title") + ": " + salonClosedMsg); return; }
 
       const btn = document.getElementById("submitSalonBtn");
       btn.disabled = true;
@@ -231,6 +232,20 @@
       btn.disabled = false;
       btn.querySelector("span").textContent = t("salon_request_btn");
     }
+
+    let salonClosedMsg = "";
+    document.getElementById("salonDate").addEventListener("change", async (e) => {
+      const date = e.target.value;
+      salonClosedMsg = "";
+      if (!date) return;
+      try {
+        const result = await API.getDayDetails("salon", date);
+        if (result.success && result.closed) {
+          salonClosedMsg = result.message || t("day_closed_msg");
+          showAlert("salonAlert", "error", t("day_closed_title") + ": " + salonClosedMsg);
+        }
+      } catch (err) { /* ignore */ }
+    });
 
     renderSalonServices();
     createGallery({ containerId: "salonGallery", category: "salon", columns: 3 });

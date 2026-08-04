@@ -172,6 +172,15 @@
 
       const dayOfWeek = new Date(date).getDay();
       try {
+        const dayResult = await API.getDayDetails("chalet", date);
+        if (dayResult.success && dayResult.closed) {
+          document.getElementById("slotsContainer").innerHTML =
+            '<div class="closed-day-msg">' + escapeHtml(dayResult.message || t("day_closed_msg")) + '</div>';
+          return;
+        }
+      } catch (err) { /* fallthrough */ }
+
+      try {
         const priceResult = await API.getPrice("chalet", "day", dayOfWeek);
         if (priceResult.success && priceResult.price) {
           currentPrice = parseFloat(priceResult.price);

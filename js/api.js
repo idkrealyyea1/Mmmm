@@ -47,6 +47,22 @@ const API = {
     return this._call("getDayDetails", { type, date });
   },
 
+  getClosedDays() {
+    return this._call("getClosedDays");
+  },
+
+  setClosedDay(date, message) {
+    return this._call("setClosedDay", { date, message });
+  },
+
+  deleteClosedDay(date) {
+    return this._call("deleteClosedDay", { date });
+  },
+
+  getTodayBookings() {
+    return this._call("getTodayBookings");
+  },
+
   getCustomerBookings(phone) {
     return this._call("getCustomerBookings", { phone });
   },

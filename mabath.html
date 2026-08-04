@@ -173,6 +173,11 @@
       try {
         const result = await API.getDayDetails("mabath", date);
         if (result.success) {
+          if (result.closed) {
+            document.getElementById("slotsContainer").innerHTML =
+              '<div class="closed-day-msg">' + escapeHtml(result.message || t("day_closed_msg")) + '</div>';
+            return;
+          }
           renderSlots(result.bookedSlots || []);
         } else {
           document.getElementById("slotsContainer").innerHTML =

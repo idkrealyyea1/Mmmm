@@ -457,7 +457,34 @@ const T = {
   "billing_no_data":        { ar: "لا توجد حجوزات في هذا القسم", en: "No bookings in this section" },
   "billing_stats_fully_paid":{ ar: " مدفوع بالكامل",    en: " Fully Paid" },
   "billing_stats_unpaid":   { ar: " غير مدفوع",         en: " Unpaid" },
-  "billing_revenue_sar":    { ar: " شيكل",              en: " ₪" }
+  "billing_revenue_sar":    { ar: " شيكل",              en: " ₪" },
+
+  // === Today / Closed Days ===
+  "admin_today":            { ar: "اليوم",              en: "Today" },
+  "admin_today_greet_morning":{ ar: "صباح الخير",        en: "Good morning" },
+  "admin_today_greet_evening":{ ar: "مساء الخير",        en: "Good evening" },
+  "admin_today_busy_quiet": { ar: "اليوم هادئ",         en: "Quiet day" },
+  "admin_today_busy_medium":{ ar: "اليوم متوسط",        en: "Medium day" },
+  "admin_today_busy_busy":  { ar: "اليوم مزدحم",        en: "Busy day" },
+  "admin_today_summary":    { ar: "لديك {count} حجوزات اليوم", en: "You have {count} bookings today" },
+  "admin_today_first":      { ar: "أول حجز اليوم يبدأ {time}", en: "First booking today starts at {time}" },
+  "admin_today_last":       { ar: "آخر حجز اليوم في {time}", en: "Last booking today is at {time}" },
+  "admin_today_none":       { ar: "لا توجد حجوزات اليوم، استمتع بيومك!", en: "No bookings today, enjoy your day!" },
+  "admin_closed_days":      { ar: "إغلاق الأيام",        en: "Closed Days" },
+  "admin_closed_add_title": { ar: "إغلاق يوم جديد",      en: "Close a New Day" },
+  "admin_closed_date":      { ar: "اليوم",               en: "Day" },
+  "admin_closed_msg_label": { ar: "الرسالة التي تظهر للعملاء", en: "Message shown to customers" },
+  "admin_closed_msg_ph":    { ar: "مثال: يوجد صيانة في المكان هذا اليوم، سيتم استئناف الحجوزات غدًا", en: "e.g. Maintenance at the venue today, bookings resume tomorrow" },
+  "admin_closed_add_btn":   { ar: "إغلاق اليوم",         en: "Close Day" },
+  "admin_closed_list_title":{ ar: "الأيام المغلقة",      en: "Closed Days" },
+  "admin_closed_added":     { ar: "تم إغلاق اليوم بنجاح", en: "Day closed successfully" },
+  "admin_closed_removed":   { ar: "تم فتح اليوم",        en: "Day reopened" },
+  "admin_closed_pick":      { ar: "اختر اليوم أولًا",    en: "Pick a day first" },
+  "admin_closed_empty":     { ar: "لا توجد أيام مغلقة",  en: "No closed days" },
+  "admin_closed_remove":    { ar: "فتح اليوم",           en: "Reopen" },
+  "day_closed_title":       { ar: "اليوم مغلق",          en: "Day Closed" },
+  "day_closed_msg":         { ar: "هذا اليوم مغلق، يرجى اختيار يوم آخر", en: "This day is closed, please pick another day" },
+  "time_full_day":          { ar: "طوال اليوم",          en: "All day" }
 };
 
 /* ===== Hall Booking Page ===== */

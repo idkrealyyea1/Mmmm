@@ -45,6 +45,9 @@
         <a href="#dashboard" class="active" onclick="showSection('dashboard')">
           <span class="icon">📊</span> <span data-t="admin_overview">نظرة عامة</span>
         </a>
+        <a href="#today" onclick="showSection('today')">
+          <span class="icon">☀️</span> <span data-t="admin_today">اليوم</span>
+        </a>
         <a href="#chalet-bookings" onclick="showSection('chalet-bookings')">
           <span class="icon">🏡</span> <span data-t="admin_chalet_bk">حجوزات الشاليه</span>
         </a>
@@ -74,6 +77,9 @@
         </a>
         <a href="#manual-booking" onclick="showSection('manual-booking')">
           <span class="icon">📝</span> <span data-t="admin_manual_booking">حجز يدوي</span>
+        </a>
+        <a href="#closed-days" onclick="showSection('closed-days')">
+          <span class="icon">🚫</span> <span data-t="admin_closed_days">إغلاق الأيام</span>
         </a>
         <a href="billing.html" style="border-top:1px solid rgba(184,144,126,0.15);margin-top:4px;padding-top:12px;">
           <span class="icon">💰</span> <span data-t="nav_billing">الفواتير</span>
@@ -169,6 +175,19 @@
           <div id="topPhotographers">
             <p style="opacity:0.5;text-align:center;padding:20px;" data-t="admin_no_data">جاري التحميل...</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Today Section -->
+      <div class="admin-section" id="section-today">
+        <div class="today-hero">
+          <div class="today-hero-greet" id="todayGreeting">صباح الخير</div>
+          <div class="today-hero-date" id="todayDate">-</div>
+          <div class="today-busy" id="todayBusy"></div>
+          <div class="today-summary" id="todaySummary"></div>
+        </div>
+        <div class="today-list" id="todayBookingsList">
+          <p style="opacity:0.5;text-align:center;padding:20px;" data-t="admin_no_data">جاري التحميل...</p>
         </div>
       </div>
 
@@ -523,6 +542,36 @@
         </div>
       </div>
 
+      <!-- Closed Days Section -->
+      <div class="admin-section" id="section-closed-days">
+        <h3 class="mb-3" data-t="admin_closed_days">إغلاق الأيام</h3>
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_closed_add_title">إغلاق يوم جديد</h3>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="admin_closed_date">اليوم</label>
+            <input type="date" class="form-input" id="closedDateInput">
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="admin_closed_msg_label">الرسالة التي تظهر للعملاء</label>
+            <textarea class="form-input" id="closedMsgInput" rows="2" data-t-ph="admin_closed_msg_ph" placeholder="مثال: يوجد صيانة في المكان هذا اليوم، سيتم استئناف الحجوزات غدًا"></textarea>
+          </div>
+          <div id="closedDayAlert"></div>
+          <button class="btn btn-primary" onclick="addClosedDay()">
+            <span data-t="admin_closed_add_btn">إغلاق اليوم</span>
+          </button>
+        </div>
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h3 data-t="admin_closed_list_title">الأيام المغلقة</h3>
+          </div>
+          <div id="closedDaysList">
+            <p style="opacity:0.5;text-align:center;padding:20px;" data-t="admin_no_data">جاري التحميل...</p>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -563,6 +612,8 @@
       document.querySelector(`[href="#${name}"]`).classList.add("active");
 
       if (name === "dashboard") loadDashboard();
+      if (name === "today") loadToday();
+      if (name === "closed-days") loadClosedDays();
       if (name === "chalet-bookings") loadChaletBookings();
       if (name === "hall-bookings") loadHallBookings();
       if (name === "mabath-bookings") loadMabathBookings();
@@ -641,6 +692,155 @@
         </div>`;
       });
       container.innerHTML = html;
+    }
+
+    // === Today ===
+    const SECTION_EMOJI = { chalet: "🏡", hall: "🏛️", mabath: "🌙", photography: "📸", salon: "💇‍♀️" };
+    const SECTION_LABELS = {
+      chalet: Lang.isAr() ? "الشاليه" : "Chalet",
+      hall: Lang.isAr() ? "الصالة" : "Hall",
+      mabath: Lang.isAr() ? "المبيت" : "Sleepover",
+      photography: Lang.isAr() ? "التصوير" : "Photography",
+      salon: Lang.isAr() ? "الكوافير" : "Salon"
+    };
+
+    function todayHourValue(hour) {
+      if (!hour) return "99:99";
+      if (hour === "full_day") return "00:00";
+      if (hour === "day") return "09:00";
+      if (hour === "night") return "21:00";
+      return hour;
+    }
+
+    function formatBookingHour(hour) {
+      if (hour === "full_day") return t("time_full_day");
+      if (hour === "day") return t("slot_day");
+      if (hour === "night") return t("slot_night");
+      if (!hour) return "-";
+      const parts = hour.split(":");
+      let h = parseInt(parts[0], 10);
+      const m = parts[1] || "00";
+      const period = h < 12 ? t("time_am") : t("time_pm");
+      h = h % 12 === 0 ? 12 : h % 12;
+      return `${h}:${m} ${period}`;
+    }
+
+    function renderTodayList(bookings) {
+      const container = document.getElementById("todayBookingsList");
+      if (!bookings.length) {
+        container.innerHTML = `<div class="today-empty">${t("admin_today_none")}</div>`;
+        return;
+      }
+      let html = "";
+      bookings.sort((a, b) => todayHourValue(a.booking.hour) < todayHourValue(b.booking.hour) ? -1 : 1);
+      bookings.forEach(item => {
+        const b = item.booking;
+        const statusClass = b.status === "confirmed" ? "confirmed" : (b.status === "pending" ? "pending" : "cancelled");
+        html += `<div class="today-item">
+          <div class="today-item-emoji">${SECTION_EMOJI[item.section] || "📌"}</div>
+          <div class="today-item-info">
+            <div class="today-item-title">${SECTION_LABELS[item.section] || item.section} — ${formatBookingHour(b.hour)}</div>
+            <div class="today-item-sub">${escapeHtml(b.customerName || "-")} • ${escapeHtml(b.phone || "-")}${b.guests ? " • " + escapeHtml(b.guests) + " " + t("th_guests") : ""}</div>
+          </div>
+          <span class="status-badge ${statusClass}">${t("status_" + b.status)}</span>
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    async function loadToday() {
+      const d = new Date();
+      const h = d.getHours();
+      document.getElementById("todayGreeting").textContent = h < 12 ? t("admin_today_greet_morning") : t("admin_today_greet_evening");
+      document.getElementById("todayDate").textContent = d.toLocaleDateString(Lang.isAr() ? "ar-SA" : "en-GB", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+      });
+
+      const container = document.getElementById("todayBookingsList");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getTodayBookings();
+        if (!result.success) throw new Error(result.message || "error");
+        const bookings = result.bookings || [];
+        const count = bookings.length;
+
+        let busyClass = "quiet", busyKey = "admin_today_busy_quiet";
+        if (count >= 4) { busyClass = "busy"; busyKey = "admin_today_busy_busy"; }
+        else if (count >= 1) { busyClass = "medium"; busyKey = "admin_today_busy_medium"; }
+        document.getElementById("todayBusy").innerHTML = `<span class="today-busy-badge ${busyClass}">${t(busyKey)}</span>`;
+
+        let summary = t("admin_today_summary").replace("{count}", count);
+        if (count > 0) {
+          const withHour = bookings.map(b => ({ ...b, sort: todayHourValue(b.booking.hour) })).sort((a, b) => a.sort < b.sort ? -1 : 1);
+          summary += "<br>" + t("admin_today_first").replace("{time}", formatBookingHour(withHour[0].booking.hour));
+          if (withHour.length > 1) {
+            summary += "<br>" + t("admin_today_last").replace("{time}", formatBookingHour(withHour[withHour.length - 1].booking.hour));
+          }
+        }
+        document.getElementById("todaySummary").innerHTML = summary;
+        renderTodayList(bookings);
+      } catch (err) {
+        container.innerHTML = `<p style="padding:20px;text-align:center;color:var(--error)">${t("alert_error")}</p>`;
+      }
+    }
+
+    // === Closed Days ===
+    async function loadClosedDays() {
+      const container = document.getElementById("closedDaysList");
+      container.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text">' + t("admin_loading_bookings") + '</p></div>';
+      try {
+        const result = await API.getClosedDays();
+        if (!result.success) throw new Error(result.message || "error");
+        const days = (result.days || []).sort((a, b) => a.date < b.date ? -1 : 1);
+        if (!days.length) {
+          container.innerHTML = `<p style="opacity:0.5;text-align:center;padding:20px;">${t("admin_closed_empty")}</p>`;
+          return;
+        }
+        let html = "";
+        days.forEach(dd => {
+          const parts = dd.date.split("-");
+          const nice = `${parts[2]}/${parts[1]}/${parts[0]}`;
+          html += `<div class="today-item">
+            <div class="today-item-emoji">🚫</div>
+            <div class="today-item-info">
+              <div class="today-item-title">${nice}</div>
+              <div class="today-item-sub">${escapeHtml(dd.message || t("day_closed_msg"))}</div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="removeClosedDay('${dd.date}')">${t("admin_closed_remove")}</button>
+          </div>`;
+        });
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<p style="padding:20px;text-align:center;color:var(--error)">${t("alert_error")}</p>`;
+      }
+    }
+
+    async function addClosedDay() {
+      const date = document.getElementById("closedDateInput").value;
+      if (!date) { showAlert("closedDayAlert", "error", t("admin_closed_pick")); return; }
+      const message = document.getElementById("closedMsgInput").value.trim();
+      try {
+        const result = await API.setClosedDay(date, message);
+        if (result.success) {
+          showAlert("closedDayAlert", "success", t("admin_closed_added"));
+          document.getElementById("closedDateInput").value = "";
+          document.getElementById("closedMsgInput").value = "";
+          loadClosedDays();
+        } else {
+          showAlert("closedDayAlert", "error", result.message || t("alert_error"));
+        }
+      } catch (err) {
+        showAlert("closedDayAlert", "error", t("alert_server"));
+      }
+    }
+
+    async function removeClosedDay(date) {
+      try {
+        await API.deleteClosedDay(date);
+        loadClosedDays();
+      } catch (err) {
+        showAlert("closedDayAlert", "error", t("alert_server"));
+      }
     }
 
     // === Chalet Bookings ===

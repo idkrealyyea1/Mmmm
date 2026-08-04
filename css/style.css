@@ -3054,3 +3054,30 @@ select.form-input {
 .decor-glow-rose   { background: radial-gradient(circle, rgba(184,144,126,0.30), transparent 70%); }
 .decor-glow-gold   { background: radial-gradient(circle, rgba(201,162,93,0.28), transparent 70%); }
 .decor-glow-light  { background: radial-gradient(circle, rgba(255,250,243,0.9), transparent 72%); }
+
+/* --- Closed Days (user side) --- */
+.closed-day-msg {
+  background: linear-gradient(135deg, rgba(184,144,126,0.10), rgba(201,162,93,0.08));
+  border: 1px dashed var(--gold, #C9A25D);
+  border-radius: 14px;
+  padding: 22px 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #8a5a3b;
+}
+.closed-today-banner {
+  background: rgba(184,144,126,0.12);
+  border: 1px solid var(--gold, #C9A25D);
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+  color: #8a5a3b;
+  text-align: center;
+}
+.calendar-day.closed {
+  background: repeating-linear-gradient(45deg, rgba(184,144,126,0.10), rgba(184,144,126,0.10) 6px, rgba(255,255,255,0.6) 6px, rgba(255,255,255,0.6) 12px);
+  color: #a0714f;
+  cursor: pointer;
+}

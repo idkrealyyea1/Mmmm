@@ -335,6 +335,11 @@
       try {
         const result = await API.getDayDetails("photography", date);
         if (result.success) {
+          if (result.closed) {
+            document.getElementById("photoSlotsContainer").innerHTML =
+              '<div class="closed-day-msg">' + escapeHtml(result.message || t("day_closed_msg")) + '</div>';
+            return;
+          }
           renderPhotoSlots(result.bookedSlots || []);
         } else {
           document.getElementById("photoSlotsContainer").innerHTML =

@@ -755,3 +755,71 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* --- Today Section --- */
+.today-hero {
+  background: linear-gradient(135deg, #FDF6EE 0%, #F3E6D8 100%);
+  border: 1px solid rgba(201,162,93,0.25);
+  border-radius: 18px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.today-hero-greet {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #7c4a2d;
+  margin-bottom: 4px;
+}
+.today-hero-date {
+  font-size: 0.9rem;
+  color: #a0714f;
+  margin-bottom: 14px;
+}
+.today-busy { margin-bottom: 12px; }
+.today-busy-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.today-busy-badge.quiet   { background: rgba(39,174,96,0.14); color: #1E8449; }
+.today-busy-badge.medium  { background: rgba(243,156,18,0.14); color: #B7791F; }
+.today-busy-badge.busy    { background: rgba(192,57,43,0.14); color: #922B21; }
+.today-summary {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: #6d4a32;
+}
+.today-list { display: flex; flex-direction: column; gap: 10px; }
+.today-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid rgba(184,144,126,0.15);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.today-item-emoji {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(184,144,126,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.today-item-info { flex: 1; min-width: 0; }
+.today-item-title { font-weight: 600; font-size: 0.95rem; }
+.today-item-sub { font-size: 0.82rem; color: #8a6a52; margin-top: 2px; }
+.today-empty {
+  text-align: center;
+  padding: 30px;
+  color: #8a6a52;
+  background: rgba(184,144,126,0.06);
+  border-radius: 14px;
+}
