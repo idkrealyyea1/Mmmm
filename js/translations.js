@@ -85,6 +85,9 @@ const T = {
   "track_notifications_denied": { ar: "لم يتم السماح بالإشعارات من المتصفح.", en: "Browser notifications were not allowed." },
   "track_notifications_unsupported": { ar: "الإشعارات غير متاحة في هذا المتصفح.", en: "Notifications are not available in this browser." },
   "track_notifications_unavailable": { ar: "إشعارات الحجوزات غير مهيأة على السيرفر حالياً.", en: "Booking notifications are not configured on the server yet." },
+  "track_ios_banner_title": { ar: "فعّل الإشعارات على الآيفون", en: "Enable notifications on iPhone" },
+  "track_ios_banner_copy": { ar: "لتفعيل الإشعارات على آيفون: اضغط زر المشاركة ⬆️ ثم «إضافة إلى الشاشة الرئيسية»، وافتح الموقع من أيقونته على الشاشة الرئيسية وابدأ التتبع من هناك.", en: "To get notifications on iPhone: tap the Share button ⬆️, choose \"Add to Home Screen\", then open the site from its home screen icon and track from there." },
+  "track_ios_banner_btn": { ar: "حسناً", en: "Got it" },
 
   // === Salon ===
   "salon_title":       { ar: "مركز التجميل والكوافير", en: "Beauty Salon & Styling" },

@@ -391,10 +391,42 @@ function toggleMobileNav() {
 }
 
 /* --- Init Page --- */
+function isIOSBrowser() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent)
+    && !window.navigator.standalone
+    && ("onapplepaybuttonclick" in window || /Safari/i.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS|EdgiOS/i.test(navigator.userAgent));
+}
+
+function showIOSInstallBanner() {
+  try {
+    if (localStorage.getItem("marshmallow_ios_banner_dismissed")) return;
+  } catch (e) { /* ignore */ }
+  if (!isIOSBrowser()) return;
+
+  const banner = document.createElement("div");
+  banner.className = "ios-install-banner";
+  banner.setAttribute("dir", "auto");
+  banner.innerHTML = `
+    <div class="ios-install-banner-inner">
+      <div class="ios-install-banner-icon" aria-hidden="true">📲</div>
+      <div class="ios-install-banner-body">
+        <div class="ios-install-banner-title">${t("track_ios_banner_title")}</div>
+        <div class="ios-install-banner-copy">${t("track_ios_banner_copy")}</div>
+      </div>
+      <button type="button" class="ios-install-banner-btn" aria-label="${t("track_ios_banner_btn")}">${t("track_ios_banner_btn")}</button>
+    </div>`;
+  banner.querySelector(".ios-install-banner-btn").addEventListener("click", () => {
+    try { localStorage.setItem("marshmallow_ios_banner_dismissed", "1"); } catch (e) { /* ignore */ }
+    banner.remove();
+  });
+  document.body.appendChild(banner);
+}
+
 function initPage(activePage) {
   Lang.init();
   renderHeader(activePage);
   renderFooter();
+  if (activePage === "track") showIOSInstallBanner();
 
   document.querySelectorAll(".modal-overlay").forEach(overlay => {
     overlay.addEventListener("click", (e) => {

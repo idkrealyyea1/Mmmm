@@ -2941,3 +2941,65 @@ select.form-input {
     animation: none;
   }
 }
+
+/* === iOS Install Banner === */
+.ios-install-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(58, 48, 43, 0.97);
+  color: var(--warm-white);
+  padding: 14px 16px;
+  box-shadow: 0 -6px 24px rgba(58, 48, 43, 0.35);
+  animation: iosBannerSlideUp 0.35s ease-out;
+}
+
+@keyframes iosBannerSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.ios-install-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ios-install-banner-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.ios-install-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ios-install-banner-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.ios-install-banner-copy {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.ios-install-banner-btn {
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #B8907E, #C9A25D);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
