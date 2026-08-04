@@ -344,6 +344,9 @@
           return;
         }
         renderPhotoSlots(dayRes.value.bookedSlots || []);
+      } else if (dayRes.status === "rejected") {
+        document.getElementById("photoSlotsContainer").innerHTML =
+          `<div class="alert alert-error">${t("alert_server")}</div>`;
       } else {
         document.getElementById("photoSlotsContainer").innerHTML =
           `<div class="alert alert-error">${t("alert_error")}</div>`;

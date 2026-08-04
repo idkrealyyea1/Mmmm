@@ -434,11 +434,6 @@ function initPage(activePage) {
   renderFooter();
   if (activePage === "track") showIOSInstallBanner();
 
-  // Register the caching service worker on every page (idle, never blocks UI).
-  if ("serviceWorker" in navigator && window.location.protocol === "https:") {
-    navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(() => {});
-  }
-
   document.querySelectorAll(".modal-overlay").forEach(overlay => {
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) overlay.classList.remove("active");
