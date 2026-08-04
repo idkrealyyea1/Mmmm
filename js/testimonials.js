@@ -22,7 +22,8 @@ function createTestimonialsSlider(config) {
 
   function render() {
     const item = testimonials[currentIndex];
-    const stars = "★".repeat(item.rating) + "☆".repeat(5 - item.rating);
+    const rating = Math.max(1, Math.min(5, Math.round(Number(item.rating) || 5)));
+    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
     const dateStr = item.date ? new Date(item.date).toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US") : "";
 
     let html = `

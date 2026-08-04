@@ -247,6 +247,7 @@ const T = {
   // === Admin ===
   "admin_title":       { ar: "لوحة التحكم",           en: "Admin Dashboard" },
   "admin_overview":    { ar: "نظرة عامة",              en: "Overview" },
+  "admin_notif_enable":{ ar: "تفعيل الإشعارات",        en: "Enable notifications" },
   "admin_chalet_bk":   { ar: "حجوزات الشاليه",        en: "Chalet Bookings" },
   "admin_hall_bk":     { ar: "حجوزات الصالة",         en: "Hall Bookings" },
   "admin_mabath_bk":   { ar: "حجوزات المبيت",         en: "Mabath Bookings" },

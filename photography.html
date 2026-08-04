@@ -105,7 +105,7 @@
   <div id="photographerBar" class="hidden" style="position:fixed;top:0;left:0;right:0;z-index:99997;background:var(--rose-mauve);color:var(--white);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:0.85rem">
     <span><span id="photogBadgeName"></span></span>
     <span style="display:flex;gap:12px;align-items:center">
-      <a href="admin.html" style="color:var(--white);text-decoration:underline;font-size:0.78rem" data-t="nav_admin">لوحة التحكم</a>
+      <a href="admin.html" id="photogAdminLink" style="color:var(--white);text-decoration:underline;font-size:0.78rem;display:none" data-t="nav_admin">لوحة التحكم</a>
       <button onclick="photographerLogout()" style="background:transparent;border:1px solid rgba(255,255,255,0.5);color:var(--white);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.78rem" data-t="photo_photog_logout">تسجيل الخروج</button>
     </span>
   </div>
@@ -284,6 +284,10 @@
       if (user) {
         const name = user.fullName || user.username;
         document.getElementById("photogBadgeName").textContent = t("photo_photog_badge").replace("{name}", name);
+        // Only admins may open the admin panel — photographers cannot.
+        if (user.role === "admin") {
+          document.getElementById("photogAdminLink").style.display = "inline";
+        }
         document.getElementById("photographerBar").classList.remove("hidden");
       }
     }
@@ -355,13 +359,13 @@
         const m = mins % 60;
         const slot = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
         const slotStatus = bookedMap[slot] || null;
-        const isConfirmed = slotStatus === "confirmed";
+        const isBooked = slotStatus === "confirmed" || slotStatus === "pending";
         const period = h < 12 ? t("time_am") : t("time_pm");
         const h12 = h > 12 ? h - 12 : h;
         const minStr = String(m).padStart(2, "0");
-        const slotClass = isConfirmed ? 'booked confirmed-slot' : 'available';
+        const slotClass = isBooked ? 'booked' : 'available';
         html += `<div class="time-slot ${slotClass}" data-slot="${slot}"
-                      ${isConfirmed ? '' : `onclick="selectPhotoSlot(this, '${slot}')"`}>
+                      ${isBooked ? '' : `onclick="selectPhotoSlot(this, '${slot}')"`}>
                     ${h12}:${minStr} ${period}</div>`;
       }
       html += '</div>';

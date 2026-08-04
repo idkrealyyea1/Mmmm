@@ -3003,3 +3003,54 @@ select.form-input {
   font-weight: 700;
   font-size: 0.85rem;
 }
+
+/* === New Home Decor: Soft Golden Light (2026 redesign) === */
+/* Concept: gentle dawn light — large soft glows, thin light beams,
+   fine gold arcs and tiny diamond glints. Calm, premium, minimal. */
+
+.decor-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.decor-beam {
+  position: absolute;
+  width: 120px;
+  height: 420px;
+  transform-origin: bottom center;
+  background: linear-gradient(to bottom, transparent, rgba(201, 162, 93, 0.14) 55%, rgba(201, 162, 93, 0.30));
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+}
+
+.decor-arc {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 162, 93, 0.28);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(25deg);
+}
+
+.decor-diamond {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #F0D9A8, var(--gold));
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  opacity: 0.85;
+  animation: diamondGlint 5s ease-in-out infinite;
+}
+
+.decor-diamond.rose {
+  background: linear-gradient(135deg, #E7C8B6, var(--rose-mauve));
+}
+
+@keyframes diamondGlint {
+  0%, 100% { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
+  50%      { opacity: 0.9;  transform: scale(1.15) rotate(45deg); }
+}
+
+.decor-glow-rose   { background: radial-gradient(circle, rgba(184,144,126,0.30), transparent 70%); }
+.decor-glow-gold   { background: radial-gradient(circle, rgba(201,162,93,0.28), transparent 70%); }
+.decor-glow-light  { background: radial-gradient(circle, rgba(255,250,243,0.9), transparent 72%); }

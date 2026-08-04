@@ -87,6 +87,19 @@
       <div class="admin-section active" id="section-dashboard">
         <h3 class="mb-3" data-t="admin_overview">نظرة عامة</h3>
 
+        <div class="admin-panel" id="adminNotifPanel" style="margin-bottom:24px">
+          <div class="admin-panel-header">
+            <h3>🔔 إشعارات الحجوزات الجديدة</h3>
+          </div>
+          <p style="font-size:0.85rem;opacity:0.75;margin-bottom:12px">فعّل الإشعارات لتصل إليك رسالة فور وصول طلب حجز جديد — حتى وأنت خارج لوحة التحكم.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn btn-primary btn-sm" id="adminNotifBtn" onclick="toggleAdminNotifications()">
+              <span data-t="admin_notif_enable">تفعيل الإشعارات</span>
+            </button>
+            <span id="adminNotifStatus" style="font-size:0.82rem;opacity:0.7"></span>
+          </div>
+        </div>
+
         <div class="stats-grid" id="statsGrid">
           <div class="stat-card">
             <div class="stat-icon rose">🏡</div>
@@ -1081,7 +1094,8 @@
           </tr></thead><tbody>`;
 
           result.testimonials.forEach(test => {
-            const stars = "★".repeat(test.rating) + "☆".repeat(5 - test.rating);
+            const rating = Math.max(1, Math.min(5, Math.round(Number(test.rating) || 5)));
+            const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
             const statusText = test.approved ? t("status_confirmed") : t("status_pending");
             const statusClass = test.approved ? "confirmed" : "pending";
             html += `<tr>
@@ -1252,6 +1266,99 @@
       } catch (err) { /* silent */ }
     }
     setInterval(checkNewBookings, 45000);
+
+    // === Admin Push Notifications (new booking alerts) ===
+    const ADMIN_NOTIF_KEY = "marshmallow_admin_notif_enabled";
+
+    function base64UrlToUint8ArrayAdmin(value) {
+      const padding = "=".repeat((4 - (value.length % 4)) % 4);
+      const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
+      const raw = atob(base64);
+      return Uint8Array.from(raw, char => char.charCodeAt(0));
+    }
+
+    function setAdminNotifStatus(text, isEnabled) {
+      const el = document.getElementById("adminNotifStatus");
+      const btn = document.getElementById("adminNotifBtn");
+      if (!el || !btn) return;
+      el.textContent = text || "";
+      if (isEnabled) {
+        btn.classList.add("btn-success");
+        btn.classList.remove("btn-primary");
+        btn.querySelector("span").textContent = Lang.isAr() ? "تم التفعيل" : "Enabled";
+      } else {
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-primary");
+        btn.querySelector("span").textContent = t("admin_notif_enable");
+      }
+    }
+
+    async function getAdminSubscription() {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window)) return null;
+      const registration = await navigator.serviceWorker.register("sw.js", { scope: "./" });
+      return registration.pushManager.getSubscription();
+    }
+
+    async function toggleAdminNotifications() {
+      try {
+        const existing = await getAdminSubscription();
+        if (existing) {
+          await existing.unsubscribe();
+          try { localStorage.removeItem(ADMIN_NOTIF_KEY); } catch (e) {}
+          setAdminNotifStatus(Lang.isAr() ? "تم إيقاف الإشعارات" : "Notifications disabled", false);
+          showToast(Lang.isAr() ? "تم إيقاف إشعارات الحجوزات" : "Booking notifications disabled", 'confirm');
+          return;
+        }
+
+        if (!("Notification" in window) || !("PushManager" in window)) {
+          showToast(Lang.isAr() ? "المتصفح لا يدعم الإشعارات" : "Notifications not supported by this browser", 'delete');
+          return;
+        }
+
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          showToast(Lang.isAr() ? "لم يتم السماح بالإشعارات" : "Notification permission denied", 'delete');
+          return;
+        }
+
+        const config = await API.getPushConfig();
+        if (!config.success || !config.enabled || !config.publicKey) {
+          showToast(Lang.isAr() ? "الإشعارات غير مهيأة على السيرفر" : "Notifications not configured on server", 'delete');
+          return;
+        }
+
+        const registration = await navigator.serviceWorker.register("sw.js", { scope: "./" });
+        let subscription = await registration.pushManager.getSubscription();
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: base64UrlToUint8ArrayAdmin(config.publicKey),
+          });
+        }
+
+        const result = await API.subscribePush("admin", subscription.toJSON());
+        if (result.success) {
+          try { localStorage.setItem(ADMIN_NOTIF_KEY, "1"); } catch (e) {}
+          setAdminNotifStatus(Lang.isAr() ? "الإشعارات مفعّلة ✅" : "Notifications enabled ✅", true);
+          showToast(Lang.isAr() ? "تم تفعيل إشعارات الحجوزات الجديدة" : "New booking notifications enabled", 'confirm');
+        } else {
+          showToast(Lang.isAr() ? "تعذر تفعيل الإشعارات" : "Could not enable notifications", 'delete');
+        }
+      } catch (err) {
+        console.error("Admin notification error:", err);
+        showToast(Lang.isAr() ? "خطأ في تفعيل الإشعارات" : "Error enabling notifications", 'delete');
+      }
+    }
+
+    async function restoreAdminNotificationStatus() {
+      try {
+        const sub = await getAdminSubscription();
+        if (sub && localStorage.getItem(ADMIN_NOTIF_KEY) === "1") {
+          setAdminNotifStatus(Lang.isAr() ? "الإشعارات مفعّلة ✅" : "Notifications enabled ✅", true);
+        }
+      } catch (err) { /* silent */ }
+    }
+    restoreAdminNotificationStatus();
 
     // === Pricing Management ===
     async function loadPricing() {

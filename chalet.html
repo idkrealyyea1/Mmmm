@@ -10,6 +10,10 @@
     body{background:none!important}
     .bg-fixed{position:fixed;inset:0;z-index:0;background:url('images/landingpageformobilefirstlandingpageandchaletbacground.webp') center center/cover no-repeat;pointer-events:none}
     .bg-fixed::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(252,245,239,0.5),rgba(245,234,225,0.4))}
+    @media(min-width:769px){
+      .bg-fixed{background-image:url('images/sallahbeackgrounddesktop.webp')}
+      .bg-fixed::after{background:linear-gradient(135deg,rgba(252,245,239,0.4),rgba(245,234,225,0.3))}
+    }
     .page-container{position:relative;z-index:1}
     .gallery-section{
       position:relative;
