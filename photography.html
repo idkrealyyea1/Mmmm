@@ -324,33 +324,29 @@
       document.getElementById("photoSlotsContainer").innerHTML = '<div class="loading-overlay"><div class="spinner"></div><p class="loading-text" data-t="slots_loading">جاري تحميل المواعيد...</p></div>';
       showModal("photoDayModal");
 
-      /* Fetch price */
+      /* Fetch price + availability in parallel */
       const dayOfWeek = new Date(date).getDay();
-      try {
-        const priceResult = await API.getPrice("photography", "hour", dayOfWeek);
-        if (priceResult.success && priceResult.price) {
-          photoCurrentPrice = parseFloat(priceResult.price);
-          document.getElementById("photoPriceValue").textContent = photoCurrentPrice;
-          document.getElementById("photoPriceDisplay").classList.remove("hidden");
-        }
-      } catch (err) { /* optional */ }
+      const [priceRes, dayRes] = await Promise.allSettled([
+        API.getPrice("photography", "hour", dayOfWeek),
+        API.getDayDetails("photography", date)
+      ]);
 
-      try {
-        const result = await API.getDayDetails("photography", date);
-        if (result.success) {
-          if (result.closed) {
-            document.getElementById("photoSlotsContainer").innerHTML =
-              '<div class="closed-day-msg">' + escapeHtml(result.message || t("day_closed_msg")) + '</div>';
-            return;
-          }
-          renderPhotoSlots(result.bookedSlots || []);
-        } else {
+      if (priceRes.status === "fulfilled" && priceRes.value.success && priceRes.value.price) {
+        photoCurrentPrice = parseFloat(priceRes.value.price);
+        document.getElementById("photoPriceValue").textContent = photoCurrentPrice;
+        document.getElementById("photoPriceDisplay").classList.remove("hidden");
+      }
+
+      if (dayRes.status === "fulfilled" && dayRes.value.success) {
+        if (dayRes.value.closed) {
           document.getElementById("photoSlotsContainer").innerHTML =
-            `<div class="alert alert-error">${t("alert_error")}</div>`;
+            '<div class="closed-day-msg">' + escapeHtml(dayRes.value.message || t("day_closed_msg")) + '</div>';
+          return;
         }
-      } catch (err) {
+        renderPhotoSlots(dayRes.value.bookedSlots || []);
+      } else {
         document.getElementById("photoSlotsContainer").innerHTML =
-          `<div class="alert alert-error">${t("alert_server")}</div>`;
+          `<div class="alert alert-error">${t("alert_error")}</div>`;
       }
     }
 

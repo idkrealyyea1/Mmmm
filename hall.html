@@ -174,31 +174,27 @@
       showModal("dayModal");
 
       const dayOfWeek = new Date(date).getDay();
-      try {
-        const priceResult = await API.getPrice("hall", "hall", dayOfWeek);
-        if (priceResult.success && priceResult.price) {
-          currentPrice = parseFloat(priceResult.price);
-          document.getElementById("priceValue").textContent = currentPrice;
-          document.getElementById("priceDisplay").classList.remove("hidden");
-        }
-      } catch (err) { /* price optional */ }
+      const [priceRes, dayRes] = await Promise.allSettled([
+        API.getPrice("hall", "hall", dayOfWeek),
+        API.getDayDetails("hall", date)
+      ]);
 
-      try {
-        const result = await API.getDayDetails("hall", date);
-        if (result.success) {
-          if (result.closed) {
-            document.getElementById("slotsContainer").innerHTML =
-              '<div class="closed-day-msg">' + escapeHtml(result.message || t("day_closed_msg")) + '</div>';
-            return;
-          }
-          renderSlots(result.bookedSlots || []);
-        } else {
+      if (priceRes.status === "fulfilled" && priceRes.value.success && priceRes.value.price) {
+        currentPrice = parseFloat(priceRes.value.price);
+        document.getElementById("priceValue").textContent = currentPrice;
+        document.getElementById("priceDisplay").classList.remove("hidden");
+      }
+
+      if (dayRes.status === "fulfilled" && dayRes.value.success) {
+        if (dayRes.value.closed) {
           document.getElementById("slotsContainer").innerHTML =
-            `<div class="alert alert-error">${t("alert_error")}</div>`;
+            '<div class="closed-day-msg">' + escapeHtml(dayRes.value.message || t("day_closed_msg")) + '</div>';
+          return;
         }
-      } catch (err) {
+        renderSlots(dayRes.value.bookedSlots || []);
+      } else {
         document.getElementById("slotsContainer").innerHTML =
-          `<div class="alert alert-error">${t("alert_server")}</div>`;
+          `<div class="alert alert-error">${t("alert_error")}</div>`;
       }
     }
 

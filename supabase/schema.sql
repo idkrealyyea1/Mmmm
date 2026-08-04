@@ -204,6 +204,21 @@ alter table push_subscriptions disable row level security;
 alter table closed_days         disable row level security;
 
 -- ============================================================
+-- INDEXES — speed up availability, customer lookup and stats
+-- ============================================================
+create index if not exists idx_chalet_date      on chalet_bookings (date);
+create index if not exists idx_hall_date        on hall_bookings (date);
+create index if not exists idx_mabath_date      on mabath_bookings (date);
+create index if not exists idx_photo_date       on photo_bookings (date);
+create index if not exists idx_salon_date       on salon_bookings (date);
+create index if not exists idx_chalet_phone     on chalet_bookings (phone);
+create index if not exists idx_hall_phone       on hall_bookings (phone);
+create index if not exists idx_mabath_phone     on mabath_bookings (phone);
+create index if not exists idx_photo_phone      on photo_bookings (phone);
+create index if not exists idx_salon_phone      on salon_bookings (phone);
+create index if not exists idx_photo_photog     on photo_bookings (photographer_username);
+
+-- ============================================================
 -- DEFAULT ADMIN USER
 -- password is: admin123  (CHANGE THIS IMMEDIATELY after first login)
 -- Hash generated with bcrypt cost 10

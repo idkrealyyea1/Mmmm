@@ -174,23 +174,23 @@
       showModal("dayModal");
 
       const dayOfWeek = new Date(date).getDay();
-      try {
-        const dayResult = await API.getDayDetails("chalet", date);
-        if (dayResult.success && dayResult.closed) {
-          document.getElementById("slotsContainer").innerHTML =
-            '<div class="closed-day-msg">' + escapeHtml(dayResult.message || t("day_closed_msg")) + '</div>';
-          return;
-        }
-      } catch (err) { /* fallthrough */ }
+      const [dayRes, priceRes] = await Promise.allSettled([
+        API.getDayDetails("chalet", date),
+        API.getPrice("chalet", "day", dayOfWeek)
+      ]);
 
-      try {
-        const priceResult = await API.getPrice("chalet", "day", dayOfWeek);
-        if (priceResult.success && priceResult.price) {
-          currentPrice = parseFloat(priceResult.price);
-          document.getElementById("priceValue").textContent = currentPrice;
-          document.getElementById("priceDisplay").classList.remove("hidden");
-        }
-      } catch (err) { /* price optional */ }
+      const dayResult = dayRes.status === "fulfilled" ? dayRes.value : null;
+      if (dayResult && dayResult.success && dayResult.closed) {
+        document.getElementById("slotsContainer").innerHTML =
+          '<div class="closed-day-msg">' + escapeHtml(dayResult.message || t("day_closed_msg")) + '</div>';
+        return;
+      }
+
+      if (priceRes.status === "fulfilled" && priceRes.value.success && priceRes.value.price) {
+        currentPrice = parseFloat(priceRes.value.price);
+        document.getElementById("priceValue").textContent = currentPrice;
+        document.getElementById("priceDisplay").classList.remove("hidden");
+      }
 
       document.getElementById("slotsContainer").innerHTML = '';
       document.getElementById("bookingForm").classList.remove("hidden");
