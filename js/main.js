@@ -32,8 +32,8 @@ function getSplashLogoSVG() {
         <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
-    <rect x="8" y="8" width="104" height="104" rx="28" fill="none" stroke="url(#spGrad1)" stroke-width="3" opacity="0.3"/>
-    <rect x="16" y="16" width="88" height="88" rx="20" fill="url(#spGrad1)" opacity="0.08"/>
+    <rect x="8" y="8" width="104" height="104" rx="28" pathLength="1" fill="none" stroke="url(#spGrad1)" stroke-width="3" opacity="0.3"/>
+    <rect class="sp-inner" x="16" y="16" width="88" height="88" rx="20" fill="url(#spGrad1)" opacity="0.08"/>
     <text x="60" y="84" text-anchor="middle" font-family="'Playfair Display',serif" font-size="66" font-weight="700" fill="url(#spGrad1)" filter="url(#spGlow1)">M</text>
   </svg>`;
 }
@@ -442,12 +442,8 @@ function initPage(activePage) {
 
   // Splash screen
   const splashLogo = document.getElementById("splashLogo");
-  if (splashLogo && !splashLogo.querySelector("img")) {
-    const img = document.createElement("img");
-    img.src = "images/logo.webp";
-    img.alt = "Marshmallow";
-    img.className = "m-logo-img";
-    splashLogo.appendChild(img);
+  if (splashLogo && !splashLogo.querySelector("svg")) {
+    splashLogo.innerHTML = getSplashLogoSVG();
   }
 
   const splash = document.getElementById("splash");
