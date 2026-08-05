@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Marshmallow — Brochure</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose:#B8907E;
+    --rose-dark:#8F6B5C;
+    --cream:#FDF8F3;
+    --warm:#F5EAE1;
+    --charcoal:#3A302B;
+    --gold:#C9A25D;
+    --gold-dark:#A9823E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  @page{size:A4;margin:0}
+  body{font-family:'Cairo',sans-serif;color:var(--charcoal);background:#e7ddd2;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;position:relative;overflow:hidden;background:var(--cream);page-break-after:always}
+  .page:last-child{page-break-after:auto}
+
+  /* ---------- Cover ---------- */
+  .cover{background:#221A16}
+  .cover-bg{position:absolute;inset:0;background:url('images/sallahbeackgrounddesktop.webp') center 30%/cover no-repeat;opacity:.55}
+  .cover .vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,18,14,.72) 0%,rgba(24,18,14,.42) 42%,rgba(24,18,14,.88) 100%)}
+  .cover .goldline{width:56mm;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto}
+  .cover-top{position:absolute;top:30mm;right:0;left:0;text-align:center}
+  .cover-top .goldline{margin-bottom:4mm}
+  .cover-top .eyebrow{font-family:'Poppins';font-size:4mm;letter-spacing:7px;color:#E8D9CB}
+  .cover .logo{width:44mm;height:44mm;margin:0 auto 8mm;border-radius:50%;border:1px solid rgba(201,162,93,.55);padding:4mm;background:rgba(255,255,255,.05)}
+  .cover .logo img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+  .brand-en{font-family:'Playfair Display',serif;font-weight:700;letter-spacing:9px;font-size:16mm;color:#FDF8F3}
+  .brand-sub{font-family:'Poppins',sans-serif;font-weight:400;letter-spacing:6px;font-size:5mm;color:var(--gold);margin-top:4mm}
+  .cover .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .cover-title{font-family:'Aref Ruqaa',serif;font-weight:700;font-size:9mm;color:#FDF8F3;margin:10mm 0 5mm}
+  .cover-desc{font-size:4.4mm;color:#F0E4D8;max-width:148mm;margin:0 auto;line-height:2.1}
+  .cover .goldline{margin:6mm auto 0}
+  .cover-dots{display:flex;justify-content:center;gap:4mm;margin-top:6mm}
+  .cover-dots i{width:2.6mm;height:2.6mm;border-radius:50%;background:var(--gold)}
+  .cover-dots i:nth-child(2){background:transparent;border:1px solid var(--gold)}
+  .cover .bottom{position:absolute;bottom:22mm;right:0;left:0;text-align:center}
+  .toc{display:inline-flex;gap:3mm;flex-wrap:wrap;justify-content:center;max-width:150mm}
+  .toc span{font-size:3.2mm;color:#E8D9CB;border:1px solid rgba(201,162,93,.5);border-radius:99px;padding:1.4mm 5mm}
+  .cover-phone{position:absolute;bottom:10mm;right:0;left:0;text-align:center;font-family:'Poppins';font-size:3.8mm;letter-spacing:1px;color:rgba(253,248,243,.75)}
+
+  /* ---------- Shared ---------- */
+  .inner{padding:20mm 17mm 14mm}
+  .page-title{display:flex;align-items:center;gap:6mm;margin-bottom:3mm}
+  .page-title .num{width:14mm;height:14mm;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:6mm;box-shadow:0 3mm 8mm rgba(201,162,93,.35);flex-shrink:0}
+  .page-title h2{font-family:'Aref Ruqaa',serif;font-size:8mm;font-weight:700;color:var(--charcoal)}
+  .page-title .en{font-family:'Playfair Display',serif;font-style:italic;font-size:3.8mm;color:var(--gold-dark);letter-spacing:2px}
+  .divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:4mm 0 6mm}
+  .lead{font-size:4.1mm;line-height:1.95;color:#4A3E38;margin-bottom:5mm}
+
+  .service{display:flex;gap:5mm;align-items:flex-start;background:#fff;border:1px solid #EFE3D8;border-radius:5.5mm;padding:4.5mm 5.5mm;margin-bottom:3.5mm;box-shadow:0 2mm 6mm rgba(58,48,43,.05)}
+  .service .ico{font-size:7mm;width:12.5mm;height:12.5mm;background:var(--warm);border-radius:4mm;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .service h3{font-size:4.6mm;font-weight:700;margin-bottom:1mm}
+  .service h3 small{display:block;font-family:'Poppins';font-weight:400;font-size:2.7mm;color:var(--gold-dark);letter-spacing:.5px}
+  .service p{font-size:3.5mm;color:#6B5B53;line-height:1.75}
+  .service .tags{margin-top:1.5mm}
+  .pill{display:inline-block;background:var(--warm);color:var(--rose-dark);border:1px solid #E3CDBE;border-radius:99px;padding:.5mm 3.2mm;font-size:2.6mm;font-weight:600;margin-left:1.5mm;margin-top:1mm}
+  .pill.gold{background:linear-gradient(135deg,#EFE3CF,#E4CFAE);color:var(--gold-dark);border-color:#D9BE8C}
+
+  .stats{display:flex;gap:3.5mm;margin-top:6mm}
+  .stat{flex:1;background:linear-gradient(160deg,#3A2E28,#221A16);border-radius:6mm;padding:5.5mm 3mm;text-align:center;color:#fff}
+  .stat .n{font-family:'Playfair Display',serif;font-weight:700;font-size:6.5mm;color:var(--gold)}
+  .stat .l{font-size:3mm;color:#E8D9CB;margin-top:1mm}
+
+  /* -------- cards grid -------- */
+  .card{background:#fff;border-radius:5mm;padding:4.5mm 5mm;margin-bottom:3.5mm;display:flex;gap:5mm;align-items:flex-start;box-shadow:0 2mm 6mm rgba(58,48,43,.05)}
+  .card .ico{font-size:6.5mm;flex-shrink:0;width:11mm;text-align:center;margin-top:.5mm}
+  .card h3{font-size:4.2mm;font-weight:700;margin-bottom:.5mm}
+  .card p{font-size:3.4mm;color:#6B5B53;line-height:1.7}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3.5mm}
+  .gold-card{border-right:2.2mm solid var(--gold)}
+  .rose-card{border-right:2.2mm solid var(--rose)}
+
+  .section-tag{font-family:'Aref Ruqaa',serif;font-size:5.5mm;font-weight:700;color:var(--rose-dark);display:flex;align-items:center;gap:3mm;margin:4mm 0 3mm}
+  .section-tag::before{content:'';width:6mm;height:1px;background:var(--gold)}
+  .section-tag .snum{font-family:'Playfair Display',serif;font-size:3.5mm;color:var(--gold-dark);font-weight:600}
+
+  /* -------- asset checklist -------- */
+  .asset{background:#fff;border-radius:4.5mm;padding:3.8mm 4.5mm;margin-bottom:3mm;display:flex;gap:4mm;align-items:flex-start;box-shadow:0 2mm 6mm rgba(58,48,43,.05)}
+  .asset .check{width:7.5mm;height:7.5mm;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-size:3.8mm;font-weight:700;flex-shrink:0;margin-top:.5mm}
+  .asset h3{font-size:4mm;font-weight:700}
+  .asset p{font-size:3.3mm;color:#6B5B53;line-height:1.7}
+
+  .cta{margin-top:7mm;background:linear-gradient(135deg,#3A2E28,#221A16);border-radius:7mm;padding:8mm 7mm;text-align:center;color:#fff}
+  .cta h3{font-family:'Aref Ruqaa',serif;font-size:6.5mm;color:var(--gold);margin-bottom:2.5mm}
+  .cta p{font-size:3.8mm;color:#E8D9CB;line-height:1.95}
+  .cta .phone{font-family:'Poppins',sans-serif;font-size:4.5mm;color:#fff;letter-spacing:1px;margin-top:3.5mm}
+
+  .strip{display:flex;gap:3mm;margin-top:4mm}
+  .strip div{flex:1;height:26mm;border-radius:4mm;background-size:cover;background-position:center;border:1px solid #EFE3D8}
+
+  .brand-band{position:absolute;bottom:0;right:0;left:0;background:#221A16;color:#F0E4D8;text-align:center;padding:5.5mm;font-size:3.2mm}
+  .brand-band b{font-family:'Playfair Display',serif;letter-spacing:3px;color:#FDF8F3}
+  .pageno{position:absolute;bottom:7mm;left:11mm;font-family:'Poppins';font-size:2.8mm;color:#A99B90}
+
+  .mini-table{width:100%;border-collapse:collapse;background:#fff;border-radius:4mm;overflow:hidden;box-shadow:0 2mm 6mm rgba(58,48,43,.06);font-size:3.2mm}
+  .mini-table th{background:#3A2E28;color:#F0E4D8;padding:2.5mm 3mm;font-weight:600;text-align:right;font-size:3mm}
+  .mini-table td{padding:2.2mm 3mm;border-bottom:1px solid #F1E6DB;color:#4A3E38}
+  .mini-table tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 : COVER ============ -->
+<div class="page cover">
+  <div class="cover-bg"></div>
+  <div class="vignette"></div>
+
+  <div class="cover-top">
+    <div class="goldline"></div>
+    <div class="eyebrow">EST. SAND BEACH</div>
+  </div>
+
+  <div class="center">
+    <div class="logo"><img src="images/logo.webp" alt="Marshmallow Logo"></div>
+    <div class="brand-en">MARSHMALLOW</div>
+    <div class="brand-sub">PHOTO CHALET &amp; EVENTS</div>
+    <div class="cover-title">وثيقة شاملة لعرض المشروع</div>
+    <p class="cover-desc">
+      كل ما يقدّمه <b style="color:var(--gold)">مشروع Marshmallow</b> — شاليه تصوير فاخر للمناسبات والأفراح على
+      شاطئ الرمال — بمنظومة رقمية متكاملة: موقع حجوزات، لوحة إدارة، فواتير، وتطبيق إشعارات. وما تحصل عليه عند
+      الاستحواذ على المشروع بالكامل.
+    </p>
+    <div class="goldline"></div>
+    <div class="cover-dots"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="bottom">
+    <div class="toc">
+      <span>الخدمات</span>
+      <span>تجربة العميل</span>
+      <span>لوحة الإدارة</span>
+      <span>نظام الفواتير</span>
+      <span>البنية التقنية</span>
+      <span>ما تحصل عليه</span>
+    </div>
+  </div>
+
+  <div class="cover-phone">WHATSAPP +972 56 600 4044</div>
+</div>
+
+<!-- ============ PAGE 2 : ABOUT + SERVICES ============ -->
+<div class="page">
+  <div class="inner">
+    <div class="page-title">
+      <div class="num">01</div>
+      <div>
+        <h2>عن المكان والخدمات</h2>
+        <div class="en">The Place &amp; Its Services</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <p class="lead">
+      <strong>Marshmallow</strong> شاليه تصوير فاخر على شاطئ الرمال (Sand Beach)، صُمّم ليكون الوجهة الأولى للمناسبات
+      الأنيقة وجلسات التصوير الاحترافية. يقدّم <strong>خمس خدمات رئيسية</strong>، وكلها قابلة للحجز إلكترونياً بالكامل
+      مع تأكيد فوري عبر واتساب:
+    </p>
+
+    <div class="service">
+      <div class="ico">🏡</div>
+      <div>
+        <h3>حجز الشاليه <small>CHALET — FULL DAY</small></h3>
+        <p>شاليه خاص بتصميم داخلي أنيق، يُحجز ليوم كامل للتصوير والمناسبات الخاصة والاسترخاء.</p>
+        <div class="tags"><span class="pill gold">حجز يوم كامل</span><span class="pill">تقويم مباشر</span></div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="ico">🏛️</div>
+      <div>
+        <h3>حجز قاعة المناسبات <small>EVENT HALL — BY HOUR</small></h3>
+        <p>قاعة فسيحة مجهزة للأفراح والاحتفالات، تُحجز بالساعة من 9:00 صباحاً حتى 11:00 ليلاً.</p>
+        <div class="tags"><span class="pill gold">حجز بالساعة</span><span class="pill">15 موعداً يومياً</span></div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="ico">🌙</div>
+      <div>
+        <h3>المبيت <small>OVERNIGHT — DAY / NIGHT</small></h3>
+        <p>إقامة مريحة بعد المناسبة، بخيارين: مبيت نهاري أو ليلة كاملة، بتجهيزات متكاملة.</p>
+        <div class="tags"><span class="pill gold">نهار / ليلة</span><span class="pill">إقامة كاملة</span></div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="ico">📸</div>
+      <div>
+        <h3>استوديو التصوير <small>PHOTO SESSIONS</small></h3>
+        <p>جلسات تصوير احترافية بفترات كل 30 دقيقة من 8:00 صباحاً حتى 6:00 مساءً، مع خيار مصوّر المكان أو إحضار مصوّرك الخاص.</p>
+        <div class="tags"><span class="pill gold">فترات نصف ساعة</span><span class="pill">بوابة للمصورين</span></div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="ico">💇‍♀️</div>
+      <div>
+        <h3>مركز التجميل والكوافير <small>BEAUTY CENTER</small></h3>
+        <p>خدمات تجميل وعناية متكاملة بأيدي أمهر الخبيرات، مع كتالوج خدمات وأسعار واضحة.</p>
+        <div class="tags"><span class="pill gold">كتالوج خدمات</span><span class="pill">أسعار واضحة</span></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">+500</div><div class="l">جلسة تصوير</div></div>
+      <div class="stat"><div class="n">+300</div><div class="l">عميل سعيد</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">خدمات رئيسية</div></div>
+      <div class="stat"><div class="n">5★</div><div class="l">تقييم العملاء</div></div>
+    </div>
+
+    <div class="strip">
+      <div style="background-image:url('images/sallah/1785597395964.webp')"></div>
+      <div style="background-image:url('images/sallah/1785597395982.webp')"></div>
+      <div style="background-image:url('images/mabith/imagesingallery.webp')"></div>
+      <div style="background-image:url('images/salon/1.webp')"></div>
+      <div style="background-image:url('images/salon/2.webp')"></div>
+    </div>
+  </div>
+  <div class="pageno">01</div>
+</div>
+
+<!-- ============ PAGE 3 : CUSTOMER EXPERIENCE ============ -->
+<div class="page">
+  <div class="inner">
+    <div class="page-title">
+      <div class="num">02</div>
+      <div>
+        <h2>تجربة العميل — واجهة الموقع</h2>
+        <div class="en">The Customer Experience</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-tag"><span class="snum">A</span> صفحات الحجز لكل خدمة</div>
+    <div class="two-col">
+      <div class="card gold-card">
+        <div class="ico">📅</div>
+        <div>
+          <h3>تقويم تفاعلي حي</h3>
+          <p>يعرض الأيام المتاحة والمحجوزة لكل خدمة، والحجز يتم بنقرة واحدة دون تسجيل دخول.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">💰</div>
+        <div>
+          <h3>أسعار ديناميكية</h3>
+          <p>السعر يتغيّر تلقائياً حسب اليوم من الأسبوع والوقت ونوع الخدمة.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">💬</div>
+        <div>
+          <h3>تأكيد عبر واتساب</h3>
+          <p>بعد الحجز تُجهَّز رسالة واتساب جاهزة بكل التفاصيل يرسلها العميل بضغطة واحدة.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">🚫</div>
+        <div>
+          <h3>إشعارات أيام الإغلاق</h3>
+          <p>رسالة تلقائية تظهر للعميل عند حجز يوم مغلق (صيانة أو مناسبة خاصة).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag"><span class="snum">B</span> خدمة ما بعد الحجز</div>
+    <div class="two-col">
+      <div class="card gold-card">
+        <div class="ico">🧭</div>
+        <div>
+          <h3>تتبع حالة الحجز</h3>
+          <p>صفحة مخصصة تتيح للعميل استعراض كل حجوزاته برقم هاتفه مع شريط تقدّم للحالة (قيد الانتظار / مؤكّد / ملغي).</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">🔔</div>
+        <div>
+          <h3>إشعارات لحظية (PWA)</h3>
+          <p>إشعارات متصفح فورية تُعلم العميل فور تأكيد حجزه، وتُعلم الإدارة بكل طلب حجز جديد.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">⭐</div>
+        <div>
+          <h3>آراء وتقييمات العملاء</h3>
+          <p>عرض تقييمات حقيقية للعملاء في الصفحة الرئيسية ومن نحن.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">🖼️</div>
+        <div>
+          <h3>معارض صور لكل قسم</h3>
+          <p>معرض صور لكل خدمة + جولة في المكان مع خريطة جوجل للوصول.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag"><span class="snum">C</span> صفحات إضافية</div>
+    <table class="mini-table">
+      <tr><th style="width:34%">الصفحة</th><th>ما تقدمه للعميل</th></tr>
+      <tr><td>🏠 الصفحة الرئيسية</td><td>شاشة دخول (Landing) فاخرة + بطاقات الخدمات الخمس + آراء العملاء</td></tr>
+      <tr><td>📖 من نحن</td><td>القصة، الرؤية، الأرقام، جولة في المكان، خطوات الحجز، الموقع على الخريطة</td></tr>
+      <tr><td>📸 حجز جلسة تصوير</td><td>دخول كزائر أو مصوّر، اختيار مصوّر المكان أو مصوّر العميل</td></tr>
+      <tr><td>🔐 تسجيل الدخول</td><td>بوابة آمنة للمدير والمصورين تُوجّه كل دور لصفحته</td></tr>
+      <tr><td>🌐 ثنائي اللغة</td><td>عربي / إنجليزي، بواجهة RTL أنيقة تعمل على الجوال والحاسوب</td></tr>
+    </table>
+  </div>
+  <div class="pageno">02</div>
+</div>
+
+<!-- ============ PAGE 4 : ADMIN + BILLING ============ -->
+<div class="page">
+  <div class="inner">
+    <div class="page-title">
+      <div class="num">03</div>
+      <div>
+        <h2>نظام الإدارة الكامل</h2>
+        <div class="en">Admin Panel &amp; Billing</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-tag"><span class="snum">A</span> لوحة التحكم (Admin)</div>
+    <div class="two-col">
+      <div class="card rose-card">
+        <div class="ico">📊</div>
+        <div>
+          <h3>نظرة عامة</h3>
+          <p>إحصائيات الحجوزات لكل خدمة، المؤكّدة وقيد الانتظار، مخطط حجوزات الشهر، وأكثر المصورين نشاطاً.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">🗂️</div>
+        <div>
+          <h3>جداول حجوزات لكل قسم</h3>
+          <p>عرض وتأكيد أو إلغاء حجوزات الشاليه والصالة والمبيت والتصوير والكوافير.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">👥</div>
+        <div>
+          <h3>إدارة المصورين</h3>
+          <p>إضافة مصورين جدد بحساباتهم وكلمات مرور مشفّرة، وإدارة نشاطهم.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">⭐</div>
+        <div>
+          <h3>إدارة آراء العملاء</h3>
+          <p>الموافقة على التقييمات أو حذفها قبل نشرها للزوار.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">💲</div>
+        <div>
+          <h3>إدارة التسعير</h3>
+          <p>إضافة وتعديل الأسعار لكل خدمة ونوع ويوم من أيام الأسبوع.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">📝</div>
+        <div>
+          <h3>حجز يدوي</h3>
+          <p>إنشاء حجز مباشر للعملاء القادمين هاتفياً دون استخدام الموقع.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">🚫</div>
+        <div>
+          <h3>إغلاق الأيام</h3>
+          <p>فتح أو إغلاق أي يوم مع رسالة مخصصة تظهر للعملاء فوراً.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">📦</div>
+        <div>
+          <h3>تصدير ونسخ احتياطي</h3>
+          <p>تصدير بيانات كل خدمة أو كل البيانات، وإنشاء سجل نسخ احتياطية.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag"><span class="snum">B</span> نظام الفواتير (Billing)</div>
+    <table class="mini-table">
+      <tr><th style="width:34%">الميزة</th><th>الوظيفة</th></tr>
+      <tr><td>💰 إجمالي الإيرادات</td><td>حساب تلقائي لإجمالي الحجوزات والإيرادات والمدفوع والمتبقي</td></tr>
+      <tr><td>💳 تتبع المدفوعات</td><td>حالات دفع: غير مدفوع، دفعة جزئية، نصف المبلغ، مدفوع بالكامل</td></tr>
+      <tr><td>🔎 بحث وتصفية</td><td>بحث بالعميل أو الهاتف وتصفية حسب كل خدمة</td></tr>
+      <tr><td>✏️ تعديل الدفع</td><td>تعديل المبلغ الإجمالي والمدفوع مع حساب المتبقي تلقائياً</td></tr>
+      <tr><td>🗑️ حذف الحجز</td><td>إلغاء أي حجز خاطئ من الجدول مباشرة</td></tr>
+    </table>
+  </div>
+  <div class="pageno">03</div>
+</div>
+
+<!-- ============ PAGE 5 : BACKEND ============ -->
+<div class="page">
+  <div class="inner">
+    <div class="page-title">
+      <div class="num">04</div>
+      <div>
+        <h2>البنية التقنية للمشروع</h2>
+        <div class="en">The Technology Behind It</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="two-col">
+      <div class="card gold-card">
+        <div class="ico">🔌</div>
+        <div>
+          <h3>واجهة برمجية API آمنة</h3>
+          <p>خادم Express يقدّم +40 عملية: توفر الأيام، الأسعار، جميع الحجوزات، الإحصائيات، الفواتير والمزيد.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">🗄️</div>
+        <div>
+          <h3>قاعدة بيانات سحابية (Supabase)</h3>
+          <p>جداول حجوزات الخدمات الخمس + المستخدمين + الأسعار + الأيام المغلقة + التقييمات + الإشعارات.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">🔐</div>
+        <div>
+          <h3>أمان وتسجيل دخول</h3>
+          <p>كلمات مرور مشفّرة (bcrypt) ومدخلات JWT مع صلاحيات لكل دور: مدير / مصوّر / عميل.</p>
+        </div>
+      </div>
+      <div class="card rose-card">
+        <div class="ico">🔔</div>
+        <div>
+          <h3>إشعارات ويب فورية</h3>
+          <p>تقنية Web Push (VAPID) — إشعار للعميل عند تأكيد الحجز، وإشعار للإدارة عند وصول طلب جديد.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">📱</div>
+        <div>
+          <h3>تطبيق ويب (PWA)</h3>
+          <p>عامل خدمة (Service Worker) يسمح بالتثبيت على الجوال وتلقي الإشعارات في الخلفية.</p>
+        </div>
+      </div>
+      <div class="card gold-card">
+        <div class="ico">📞</div>
+        <div>
+          <h3>توحيد أرقام الهواتف</h3>
+          <p>نظام يوحّد صيغ الأرقام تلقائياً لتطابق الحجوزات وتتبعها بدقة.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-tag"><span class="snum">C</span> المكدس التقني (Tech Stack)</div>
+    <table class="mini-table">
+      <tr><th style="width:34%">الطبقة</th><th>التقنية</th></tr>
+      <tr><td>واجهة المستخدم</td><td>HTML / CSS / JavaScript — تصميم فاخر بألوان العلامة (ذهبي + روز) وخطوط عربية وأجنبية</td></tr>
+      <tr><td>الواجهة الخلفية</td><td>Node.js + Express (TypeScript) في مشروع <b>marshmello-api</b></td></tr>
+      <tr><td>قاعدة البيانات</td><td>Supabase / PostgreSQL سحابية مع نسخ احتياطية</td></tr>
+      <tr><td>المصادقة</td><td>JWT + bcrypt مع نظام أدوار (مدير / مصوّر)</td></tr>
+      <tr><td>الإشعارات</td><td>Web Push (VAPID) + PWA Service Worker</td></tr>
+      <tr><td>اللغات</td><td>عربي (RTL) وإنجليزي — تبديل لحظي بدون إعادة تحميل</td></tr>
+    </table>
+
+    <div class="cta" style="margin-top:7mm">
+      <h3>مشروع متكامل من الألف إلى الياء</h3>
+      <p>موقع حجز + لوحة إدارة + فواتير + إشعارات + قاعدة بيانات — يعمل من اليوم الأول باحترافية.</p>
+    </div>
+  </div>
+  <div class="pageno">04</div>
+</div>
+
+<!-- ============ PAGE 6 : WHAT YOU GET ============ -->
+<div class="page">
+  <div class="inner">
+    <div class="page-title">
+      <div class="num">05</div>
+      <div>
+        <h2>ماذا تحصل عليه عند الشراء؟</h2>
+        <div class="en">Everything Included With the Purchase</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="two-col">
+      <div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>الموقع الكامل (11 صفحة)</h3>
+            <p>الرئيسية، من نحن، صفحات حجز الخدمات الخمس، تتبع الحجز، تسجيل الدخول.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>الواجهة الخلفية الكاملة</h3>
+            <p>خادم marshmello-api بكامل نقاط النهاية (Endpoints) والمنطق التشغيلي.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>لوحة التحكم + نظام الفواتير</h3>
+            <p>كامل الإدارة والحسابات والمدفوعات والتصدير والنسخ الاحتياطي.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>قاعدة البيانات والبيانات الفعلية</h3>
+            <p>سكربتات الإعداد، وهيكل جداول Supabase، والبيانات التشغيلية.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>بوابات المصورين والإدارة</h3>
+            <p>حسابات جاهزة مع نظام صلاحيات لكل دور.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>نظام الإشعارات (PWA + Web Push)</h3>
+            <p>إشعارات العملاء والإدارة مع دليل تفعيل مفاتيح VAPID.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>نظام الأسعار الديناميكي</h3>
+            <p>كامل جداول الأسعار مع إمكانية تعديلها في أي لحظة.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>معرض الصور الكامل</h3>
+            <p>جميع صور المكان بكل الأقسام جاهزة للتسويق.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>دليل النشر (Deployment Guide)</h3>
+            <p>توثيق كامل لإطلاق الموقع واستضافة قاعدة البيانات وخطوات التشغيل.</p>
+          </div>
+        </div>
+        <div class="asset">
+          <div class="check">✓</div>
+          <div>
+            <h3>حقوق الاستخدام الكاملة</h3>
+            <p>كامل حقوق الكود والتصميم والعلامة، مع إمكانية التطوير المستقبلي.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h3>جاهز للاستحواذ والانطلاق فوراً</h3>
+      <p>المشروع يعمل بالكامل من اليوم الأول: الموقع ينشر، الأنظمة مفعّلة، قاعدة العملاء موجودة، والتوثيق بين يديك.
+      تحصل على منظومة تشغيل كاملة — مكان + موقع + إدارة + فواتير + إشعارات.</p>
+      <div class="phone">📞 WHATSAPP +972 56 600 4044</div>
+    </div>
+  </div>
+  <div class="pageno">05</div>
+  <div class="brand-band">
+    <b>MARSHMALLOW</b> — PHOTO CHALET &amp; EVENTS · SAND BEACH · شاطئ الرمال
+  </div>
+</div>
+
+</body>
+</html>

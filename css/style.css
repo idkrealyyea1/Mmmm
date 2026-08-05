@@ -25,6 +25,7 @@
   --font-arabic-body: 'Cairo', sans-serif;
   --font-english-heading: 'Playfair Display', serif;
   --font-english-body: 'Poppins', sans-serif;
+  --gold-gradient: linear-gradient(110deg, #C9A25D 0%, #E9D3A3 28%, #B8907E 62%, #C9A25D 100%);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -102,6 +103,14 @@ h3 { font-size: 1.3rem; }
   font-family: var(--font-english-body);
 }
 
+.brand-gradient {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* --- Header --- */
 .site-header {
   background: var(--white);
@@ -148,9 +157,13 @@ h3 { font-size: 1.3rem; }
   font-family: var(--font-english-heading);
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--charcoal);
   letter-spacing: 2px;
   line-height: 1.2;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .header-logo-text .brand-sub {
@@ -293,8 +306,12 @@ h3 { font-size: 1.3rem; }
   font-family: var(--font-english-heading);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--charcoal);
   letter-spacing: 2px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .mobile-nav-links {
@@ -371,6 +388,11 @@ h3 { font-size: 1.3rem; }
   color: rgba(255,255,255,0.9);
   letter-spacing: 2px;
   margin-bottom: 4px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .footer-tagline {
@@ -1181,9 +1203,25 @@ select.form-input {
   font-family: var(--font-english-heading);
   font-size: 2.6rem;
   font-weight: 700;
+  font-style: italic;
   letter-spacing: 4px;
-  color: var(--charcoal);
   margin-bottom: 8px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero-title::after {
+  content: "✦";
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 1.1rem;
+  letter-spacing: 0;
+  color: var(--gold);
+  -webkit-text-fill-color: var(--gold);
 }
 
 .hero-subtitle-ar {
@@ -1288,6 +1326,11 @@ select.form-input {
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 4px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .login-subtitle {
@@ -2345,10 +2388,15 @@ select.form-input {
   font-family: var(--font-english-heading);
   font-size: 2.6rem;
   font-weight: 700;
-  color: #fff;
+  font-style: italic;
   letter-spacing: 8px;
   margin-top: 14px;
   text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
   opacity: 0;
   transform: translateY(20px);
   animation: landingFadeUp 0.8s ease 0.6s forwards;
@@ -2497,9 +2545,14 @@ select.form-input {
   font-family: var(--font-english-heading);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--charcoal);
+  font-style: italic;
   letter-spacing: 6px;
   margin-top: 20px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
   opacity: 0;
   transform: translateY(10px);
   animation: splashTextIn 0.6s ease 0.6s forwards;
