@@ -1,4 +1,4 @@
-/* ===== Marshmallow API — Real Backend (Supabase + Render) ===== */
+/* ===== Marshmello API — Real Backend (Supabase + Render) ===== */
 
 /*
  * IMPORTANT: Replace the URL below with your actual Render service URL

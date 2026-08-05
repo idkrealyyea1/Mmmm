@@ -1,13 +1,13 @@
-/* Marshmallow booking notifications */
+/* Marshmello booking notifications */
 self.addEventListener("push", event => {
   let data = {};
   try {
     data = event.data ? event.data.json() : {};
   } catch (error) {
-    data = { title: "Marshmallow", body: "Your booking status was updated." };
+    data = { title: "Marshmello", body: "Your booking status was updated." };
   }
 
-  event.waitUntil(self.registration.showNotification(data.title || "Marshmallow", {
+  event.waitUntil(self.registration.showNotification(data.title || "Marshmello", {
     body: data.body || "Your booking status was updated.",
     icon: "images/logo.webp",
     badge: "images/logo.webp",

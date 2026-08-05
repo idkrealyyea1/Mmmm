@@ -4,7 +4,7 @@ const LANG_KEY = "marshmallow_lang";
 
 const T = {
   // === Global ===
-  "brand_name":        { ar: "مارشميلو",              en: "MARSHMALLOW" },
+  "brand_name":        { ar: "مارشميلو",              en: "MARSHMELLO" },
   "brand_sub":         { ar: " PHOTO CHALET & EVENTS", en: " PHOTO CHALET & EVENTS" },
   "nav_home":          { ar: "الرئيسية",              en: "Home" },
   "nav_chalet":        { ar: "الشاليه",               en: "Chalet" },
@@ -19,7 +19,7 @@ const T = {
   "nav_login":         { ar: "دخول",                  en: "Login" },
 
   // === Home Page ===
-  "hero_title":        { ar: "MARSHMALLOW",            en: "MARSHMALLOW" },
+  "hero_title":        { ar: "MARSHMELLO",            en: "MARSHMELLO" },
   "hero_subtitle":     { ar: " PHOTO CHALET & EVENTS", en: " PHOTO CHALET & EVENTS" },
   "hero_tagline":      { ar: "استوديو تصوير وشاليه فاخر للمناسبات والأفراح. نوفر لك تجربة مميزة من الحجز والتصوير في أجواء رومانسية فاخرة.",
                          en: "A premium photo studio and chalet for events and celebrations. We offer a unique booking and photography experience in an elegant romantic atmosphere." },
@@ -183,15 +183,15 @@ const T = {
   // === About Page ===
   "about_title":       { ar: "من نحن",                en: "About Us" },
   "about_story_title": { ar: "قصتنا",                 en: "Our Story" },
-  "about_story":       { ar: "تأسست Marshmallow لتكون الوجهة الأولى للمناسبات الأنيقة والتصوير الاحترافي في أجواء فاخرة ومميزة. نؤمن بأن كل لحظة تستحق أن تُخلّد بأجمل صورة، وكل مناسبة تستحق أجواء استثنائية.",
-                         en: "Marshmallow was founded to be the premier destination for elegant events and professional photography in a luxurious atmosphere. We believe every moment deserves to be captured beautifully, and every occasion deserves an exceptional setting." },
+  "about_story":       { ar: "تأسست Marshmello لتكون الوجهة الأولى للمناسبات الأنيقة والتصوير الاحترافي في أجواء فاخرة ومميزة. نؤمن بأن كل لحظة تستحق أن تُخلّد بأجمل صورة، وكل مناسبة تستحق أجواء استثنائية.",
+                         en: "Marshmello was founded to be the premier destination for elegant events and professional photography in a luxurious atmosphere. We believe every moment deserves to be captured beautifully, and every occasion deserves an exceptional setting." },
   "about_vision_title": { ar: "رؤيتنا",               en: "Our Vision" },
   "about_vision":      { ar: "أن نكون الخيار الأول للمناسبات والتصوير في المنطقة، من خلال تقديم تجربة فريدة تجمع بين الفخامة والاحترافية.",
                          en: "To be the first choice for events and photography in the region, delivering a unique experience that combines luxury and professionalism." },
   "about_mission_title":{ ar: "رسالتنا",              en: "Our Mission" },
   "about_mission":     { ar: "تقديم خدمات تصوير ومناسبات بأعلى معايير الجودة، مع الاهتمام بأدق التفاصيل لضمان تجربة لا تُنسى لعملائنا.",
                          en: "To deliver event and photography services at the highest quality standards, paying attention to every detail to ensure an unforgettable experience for our clients." },
-  "about_why_title":   { ar: "لماذا مارشميلو؟",       en: "Why Marshmallow?" },
+  "about_why_title":   { ar: "لماذا مارشميلو؟",       en: "Why Marshmello?" },
   "about_why_1_title": { ar: "شاليه فاخر",            en: "Luxurious Chalet" },
   "about_why_1":       { ar: "تصميم داخلي أنيق وتجهيزات متكاملة", en: "Elegant interior design and complete facilities" },
   "about_why_2_title": { ar: "تصوير احترافي",          en: "Professional Photography" },
