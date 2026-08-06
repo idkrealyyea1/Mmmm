@@ -484,6 +484,7 @@ const T = {
   "admin_closed_remove":    { ar: "فتح اليوم",           en: "Reopen" },
   "day_closed_title":       { ar: "اليوم مغلق",          en: "Day Closed" },
   "day_closed_msg":         { ar: "هذا اليوم مغلق، يرجى اختيار يوم آخر", en: "This day is closed, please pick another day" },
+  "day_fully_booked":       { ar: "الفترتان محجوزتان في هذا اليوم", en: "Both periods are booked for this day" },
   "time_full_day":          { ar: "طوال اليوم",          en: "All day" }
 };
 

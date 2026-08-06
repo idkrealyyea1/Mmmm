@@ -365,7 +365,7 @@
     }
 
     async function deleteBookingRow(id, section) {
-      const typeMap = { chalet: "chalet", hall: "hall", photography: "photography", overnight: "mabath" };
+      const typeMap = { chalet: "chalet", hall: "hall", photography: "photography", overnight: "mabath", salon: "salon" };
       const type = typeMap[section];
       if (!type) { alert(t("alert_error")); return; }
       try {

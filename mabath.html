@@ -84,6 +84,13 @@
         <div id="bookingForm" class="hidden">
           <div style="width:60px;height:1px;background:var(--gold);margin:16px auto;"></div>
           <div class="form-group">
+            <label class="form-label">الفترة</label>
+            <select class="form-input" id="periodSelect" onchange="onPeriodChange()">
+              <option value="day"></option>
+              <option value="night"></option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="form-label" data-t="modal_full_name">الاسم الكامل</label>
             <input type="text" class="form-input" id="customerName" data-t-ph="modal_full_name_ph" placeholder="أدخل اسمك الكامل">
           </div>
@@ -194,6 +201,15 @@
 
     const SLOTS = ["day", "night"];
 
+    function slotTimeLabel(slot) {
+      if (Lang.isAr()) {
+        return slot === "day"
+          ? " (6 صباحًا - 6 مساءً)"
+          : " (6 مساءً - 6 صباحًا)";
+      }
+      return slot === "day" ? " (6 AM - 6 PM)" : " (6 PM - 6 AM)";
+    }
+
     function renderSlots(bookedSlots) {
       const container = document.getElementById("slotsContainer");
       const bookedMap = {};
@@ -201,41 +217,53 @@
         if (typeof s === "object") bookedMap[s.hour] = s.status;
         else bookedMap[s] = "pending";
       });
+
       let html = '<div class="slots-container" style="grid-template-columns:1fr 1fr">';
-
       SLOTS.forEach(slot => {
-        const slotStatus = bookedMap[slot] || null;
-        const isConfirmed = slotStatus === "confirmed";
+        const isConfirmed = bookedMap[slot] === "confirmed";
         const slotClass = isConfirmed ? 'booked confirmed-slot' : 'available';
-        const label = t("slot_" + slot);
-        html += `<div class="time-slot ${slotClass}"
-                      data-slot="${slot}"
-                      ${isConfirmed ? '' : `onclick="selectSlot(this, '${slot}')"`}>
-                    ${label}
-                  </div>`;
+        html += `<div class="time-slot ${slotClass}">${t("slot_" + slot)}${slotTimeLabel(slot)}</div>`;
       });
-
       html += '</div>';
       container.innerHTML = html;
+
+      const select = document.getElementById("periodSelect");
+      select.innerHTML = "";
+      SLOTS.forEach(slot => {
+        const opt = document.createElement("option");
+        opt.value = slot;
+        opt.textContent = t("slot_" + slot) + slotTimeLabel(slot);
+        opt.disabled = bookedMap[slot] === "confirmed";
+        select.appendChild(opt);
+      });
+
+      const available = SLOTS.filter(slot => bookedMap[slot] !== "confirmed");
+      if (available.length === 0) {
+        container.innerHTML = '<div class="closed-day-msg">' + t("day_fully_booked") + '</div>';
+        return;
+      }
+
+      selectedSlot = available[0];
+      select.value = selectedSlot;
+      document.getElementById("bookingForm").classList.remove("hidden");
+      updatePriceForSlot(selectedSlot);
     }
 
-    function selectSlot(el, slot) {
-      document.querySelectorAll(".time-slot").forEach(s => s.classList.remove("selected"));
-      el.classList.add("selected");
-      selectedSlot = slot;
-      document.getElementById("bookingForm").classList.remove("hidden");
+    function onPeriodChange() {
+      selectedSlot = document.getElementById("periodSelect").value;
+      updatePriceForSlot(selectedSlot);
+    }
 
+    function updatePriceForSlot(slot) {
       const dayOfWeek = new Date(selectedDate).getDay();
       API.getPrice("mabath", slot, dayOfWeek).then(priceResult => {
         if (priceResult.success && priceResult.price) {
           currentPrice = parseFloat(priceResult.price);
-          document.getElementById("priceValue").textContent = currentPrice;
-          document.getElementById("priceDisplay").classList.remove("hidden");
         } else {
           currentPrice = 0;
-          document.getElementById("priceValue").textContent = "0";
-          document.getElementById("priceDisplay").classList.remove("hidden");
         }
+        document.getElementById("priceValue").textContent = currentPrice;
+        document.getElementById("priceDisplay").classList.remove("hidden");
       }).catch(() => {
         currentPrice = 0;
         document.getElementById("priceValue").textContent = "0";
