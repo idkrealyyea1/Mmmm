@@ -262,7 +262,7 @@ function renderHeader(activePage) {
   header.innerHTML = `
     <div class="header-inner">
       <a href="index.html" class="header-logo">
-        <div class="m-logo"><img src="images/logo.webp" alt="Marshmello" class="m-logo-img" fetchpriority="high"></div>
+        <div class="m-logo"><img src="images/logo.webp" alt="Marshmallo" class="m-logo-img" fetchpriority="high"></div>
         <div class="header-logo-text">
           <span class="brand-name english-heading">${t("brand_name")}</span>
           <span class="brand-sub">${t("brand_sub")}</span>
@@ -288,8 +288,8 @@ function renderHeader(activePage) {
     <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="toggleMobileNav()"></div>
     <div class="mobile-nav" id="mobileNav">
       <div class="mobile-nav-header">
-        <div class="m-logo"><img src="images/logo.webp" alt="Marshmello" class="m-logo-img" loading="lazy"></div>
-        <div class="mobile-nav-brand">MARSHMELLO</div>
+        <div class="m-logo"><img src="images/logo.webp" alt="Marshmallo" class="m-logo-img" loading="lazy"></div>
+        <div class="mobile-nav-brand">MARSHMALLO</div>
       </div>
       <div class="mobile-nav-links">
         <a href="index.html" class="${activePage === 'home' ? 'nav-active' : ''}">${t("nav_home")}</a>
@@ -319,7 +319,7 @@ function renderFooter() {
     <div class="footer-inner">
       <div class="footer-grid">
         <div class="footer-col footer-col-brand">
-          <div class="footer-logo-wrap"><img src="images/logo.webp" alt="Marshmello" class="m-logo-img" loading="lazy"></div>
+          <div class="footer-logo-wrap"><img src="images/logo.webp" alt="Marshmallo" class="m-logo-img" loading="lazy"></div>
           <div class="footer-brand english-heading">${t("brand_name")}</div>
           <div class="footer-tagline">${t("brand_sub")}</div>
         </div>
@@ -371,7 +371,7 @@ function renderFooter() {
       </div>
       <div class="footer-divider"></div>
       <div class="footer-bottom">
-        <div class="footer-copyright">&copy; ${year} Marshmello — Photo Chalet & Events. ${t("footer_rights")}.</div>
+        <div class="footer-copyright">&copy; ${year} Marshmallo — Photo Chalet & Events. ${t("footer_rights")}.</div>
       </div>
     </div>`;
 }

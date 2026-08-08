@@ -2,10 +2,10 @@
 
 const GALLERY = {
   chalet: [
-    { src: "images/landingpageformobilefirstlandingpageandchaletbacground.webp", alt: { ar: "شاليه مارشميلو - الواجهة", en: "Marshmello Chalet - Front View" } },
-    { src: "images/chaletmobilegallery1.webp", alt: { ar: "شاليه مارشميلو - الجلسة الخارجية", en: "Marshmello Chalet - Outdoor Seating" } },
-    { src: "images/chaletmobilegallery2.webp", alt: { ar: "شاليه مارشميلو - الديكور الداخلي", en: "Marshmello Chalet - Interior" } },
-    { src: "images/chaletmobilegallery3.webp", alt: { ar: "شاليه مارشميلو - الصالة الرئيسية", en: "Marshmello Chalet - Main Hall" } }
+    { src: "images/landingpageformobilefirstlandingpageandchaletbacground.webp", alt: { ar: "شاليه مارشميلو - الواجهة", en: "Marshmallo Chalet - Front View" } },
+    { src: "images/chaletmobilegallery1.webp", alt: { ar: "شاليه مارشميلو - الجلسة الخارجية", en: "Marshmallo Chalet - Outdoor Seating" } },
+    { src: "images/chaletmobilegallery2.webp", alt: { ar: "شاليه مارشميلو - الديكور الداخلي", en: "Marshmallo Chalet - Interior" } },
+    { src: "images/chaletmobilegallery3.webp", alt: { ar: "شاليه مارشميلو - الصالة الرئيسية", en: "Marshmallo Chalet - Main Hall" } }
   ],
   photography: [
     { src: "images/galleryinphotobooking.webp", alt: { ar: "جلسة تصوير - استوديو", en: "Photo Session - Studio" } },
@@ -13,16 +13,16 @@ const GALLERY = {
     { src: "images/photography-bg-desktop.webp", alt: { ar: "جلسة تصوير - مناسبات", en: "Photo Session - Events" } }
   ],
   hall: [
-    { src: "images/gallery/hall/hall-1.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/gallery/hall/hall-2.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/gallery/hall/hall-3.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/gallery/hall/hall-4.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallahbeackgrounddesktop.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallah/1785597395964.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallah/1785597395982.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallah/1785597395993.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallah/1785597396009.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } },
-    { src: "images/sallah/1785597396025.webp", alt: { ar: "صالة مارشميلو", en: "Marshmello Hall" } }
+    { src: "images/gallery/hall/hall-1.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/gallery/hall/hall-2.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/gallery/hall/hall-3.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/gallery/hall/hall-4.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallahbeackgrounddesktop.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallah/1785597395964.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallah/1785597395982.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallah/1785597395993.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallah/1785597396009.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } },
+    { src: "images/sallah/1785597396025.webp", alt: { ar: "صالة مارشميلو", en: "Marshmallo Hall" } }
   ],
   mabath: [
     { src: "images/mabith/imagesingallery.webp", alt: { ar: "المبيت", en: "Overnight Stay" } },
